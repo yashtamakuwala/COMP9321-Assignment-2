@@ -1,9 +1,8 @@
 .idea/*
 
-data/listings.csv
+data/**
 */.ipynb_checkpoints/*
-.DS_Store
-exploratory analysis/.DS_Store
+**/.DS_Store
 *.db
 
 # Byte-compiled / optimized / DLL files
