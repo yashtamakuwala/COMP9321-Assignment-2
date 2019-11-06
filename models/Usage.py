@@ -11,7 +11,8 @@ class Usage(Base):
     status_code = Column(Integer)
     used_at = Column(DateTime)
 
-    def __init__(self, id, user_id, ip_address, path, status_code, used_at):
+    def __init__(self, id=None, user_id, ip_address, path, status_code,
+                 used_at):
         self.id = id
         self.user_id = user_id
         self.ip_address = ip_address
