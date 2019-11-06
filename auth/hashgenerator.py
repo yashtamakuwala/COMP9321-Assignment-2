@@ -1,4 +1,4 @@
-import bycrpt
+import bcrypt
 
 class HashGenerator:
     def __init__(self, plaintext):
