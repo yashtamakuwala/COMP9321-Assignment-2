@@ -1,30 +1,27 @@
 from flask import Blueprint, request
+from flask_restplus import Namespace, fields, Resource
 from tahelka.auth.credentials_authenticator import CredentialsAuthenticator
-from tahelka.exceptions import BadRequestError
+from werkzeug.exceptions import Forbidden
 
-blueprint = Blueprint('session', __name__, url_prefix='/api/v1/sessions')
+api = Namespace('sessions')
 
-@api.route('/', methods=['POST'])
-def create():
-    validate_args()
+session = api.model('Session', {
+    'email': fields.String(required=True),
+    'password': fields.String(required=True)
+})
 
-    email = request.args['email']
-    password = requests.args['password']
-    authenticator = CredentialsAuthenticator(email, password)
-    token = authenticator.authenticate()
+@api.route('')
+class Sessions(Resource):
+    def post(self):
+        email = request.json['email']
+        password = request.json['password']
+        authenticator = CredentialsAuthenticator(email, password)
+        token = authenticator.authenticate()
 
-    # Analytics here
+        # Analytics here
 
-    response_dict = {
-        'message': 'Login successful.',
-        'token': token
-    }
-    return jsonify(response_dict), 200
-
-def validate_args():
-    for param in ['email', 'password']:
-        if param not in request.args:
-            raise BadRequestError
-
-        if not request.args[param]:
-            raise BadRequestError
+        response = {
+            'message': 'Login successful.',
+            'token': token
+        }
+        return response, 200

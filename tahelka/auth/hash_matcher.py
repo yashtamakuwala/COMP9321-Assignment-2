@@ -7,4 +7,9 @@ class HashMatcher:
 
     def is_matched(self):
         plaintext_bytes = self.plaintext.encode()
-        return bcrypt.checkpw(plaintext_bytes, self.hash)
+        try:
+            result = bcrypt.checkpw(plaintext_bytes, self.hash.encode())
+        except(ValueError):
+            return False
+
+        return result

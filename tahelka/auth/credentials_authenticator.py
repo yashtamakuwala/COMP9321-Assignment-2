@@ -1,23 +1,26 @@
 from alchemy import Session
-from tahelka.exceptions import UnauthorizedError
-from tahelka.models import User
+from flask import current_app
+from tahelka.auth.hash_matcher import HashMatcher
+from tahelka.auth.token_generator import TokenGenerator
+from tahelka.models.User import User
+from werkzeug.exceptions import Unauthorized
 
 class CredentialsAuthenticator:
-    def __init__(email, password):
+    def __init__(self, email, password):
         self.email = email
         self.password = password
 
     def authenticate(self):
         user = self.find_user()
         if user is None:
-            raise UnauthorizedError
+            raise Unauthorized
 
         matcher = HashMatcher(self.password, user.password)
         if not matcher.is_matched():
-            raise UnauthorizedError
+            raise Unauthorized
 
-        return 'Token'
+        return TokenGenerator(user).generate()
 
     def find_user(self):
         session = Session()
-        return session.query.filter(User.email == self.email)
+        return session.query(User).filter(User.email == self.email).first()
