@@ -1,10 +1,6 @@
 from flask import Flask
 from apis import blueprint as api_blueprint
 from apis import api
-from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden
-from tahelka.error_handler import handle_unauthorized, handle_bad_request
-from tahelka.error_handler import handle_forbidden, handle_not_found
-from tahelka.error_handler import handle_internal_server_error
 
 app = Flask(__name__)
 
