@@ -2,8 +2,8 @@ from unittest import TestCase
 from faker import Faker
 faker = Faker()
 
-from auth.hashgenerator import HashGenerator
-from auth.hashmatcher import HashMatcher
+from auth.hash_generator import HashGenerator
+from auth.hash_matcher import HashMatcher
 
 class TestHashing(TestCase):
     def test_matched(self):
