@@ -1,5 +1,5 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
-from models.Base import Base
+from tahelka.models.Base import Base
 
 class Usage(Base):
     __tablename__ = "usages"

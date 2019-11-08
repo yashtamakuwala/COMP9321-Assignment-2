@@ -1,5 +1,5 @@
 from flask import Flask
-from tahelka.blueprint import session
+from tahelka.blueprints import session
 from tahelka.exceptions import UnauthorizedError
 from tahelka import error_handler
 

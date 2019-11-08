@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from models.Base import Base
+from tahelka.models.Base import Base
 
 class User(Base):
     __tablename__ = "users"

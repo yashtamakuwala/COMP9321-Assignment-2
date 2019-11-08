@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from models.Base import Base
+from tahelka.models.Base import Base
 
 class Property(Base):
     __tablename__ = "properties"
