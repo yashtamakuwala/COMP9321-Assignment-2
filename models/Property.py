@@ -12,9 +12,8 @@ class Property(Base):
     bed_count = Column(Integer)
     price_range = Column(String)
 
-    def __init__(self, id=None, zip_code, property_type, room_type,
+    def __init__(self, zip_code, property_type, room_type,
                  guests_count, bed_count, price_range):
-        self.id = id
         self.zip_code = zip_code
         self.property_type = property_type
         self.room_type = room_type
