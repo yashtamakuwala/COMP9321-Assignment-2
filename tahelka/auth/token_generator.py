@@ -8,19 +8,16 @@ class TokenGenerator:
 
     def generate(self):
         payload = self.construct_payload()
-        secret = self.get_secret()
+        secret = current_app.config['JWT_SECRET']
         return jwt.encode(payload, secret, algorithm='HS256').decode()
 
     def construct_payload(self):
         return {
             'id': self.user.id,
             'role': self.user.role,
-            'expire_at': self.decide_expire_time()
+            'expired_at': TokenGenerator.decide_expire_time()
         }
 
-    def get_secret(self):
-        return current_app.config['JWT_SECRET']
-
-    def decide_expire_time(self):
+    def decide_expire_time():
         # Expire in 24 hours
         return int(time.time()) + (60 * 60 * 24)
