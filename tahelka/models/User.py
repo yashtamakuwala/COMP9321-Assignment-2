@@ -7,12 +7,12 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String)
     last_name = Column(String)
-    email = Column(String)
-    role = Column(String)
-    password = Column(String)
+    email = Column(String, nullable=False, unique=True)
+    role = Column(String, nullable=False)
+    password = Column(String, nullable=False)
 
-    def __init__(self, id, first_name, last_name, email, role, password):
-        self.id = id
+    def __init__(self, first_name, last_name, email, role, password):
+        self.id = None
         self.first_name = first_name
         self.last_name = last_name
         self.email = email
