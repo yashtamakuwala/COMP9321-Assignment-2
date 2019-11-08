@@ -1,7 +1,6 @@
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.auth.credentials_authenticator import CredentialsAuthenticator
-from werkzeug.exceptions import Forbidden
 
 api = Namespace('sessions')
 

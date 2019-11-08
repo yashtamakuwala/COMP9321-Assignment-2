@@ -3,11 +3,13 @@ from flask_restplus import Api
 from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden
 
 from apis.session import api as session
+from apis.user import api as user
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
 api = Api(blueprint)    #TODO Add metadata
 
 api.add_namespace(session)
+api.add_namespace(user)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):
