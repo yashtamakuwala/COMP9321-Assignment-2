@@ -4,6 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from werkzeug.exceptions import BadRequest
 from pprint import pprint
+import json
 
 api = Namespace('properties')
 
@@ -18,23 +19,28 @@ listing = api.model('Property', {
 
 # TODO: check for user role
 @api.route('')
+@api.param('start')
+@api.param('limit')
 class Properties(Resource):
-    def post(self):
-        start = request.json['start']
-        limit = request.json['limit']
+    def get(self):
+        start = request.args.get('start')
+        limit = request.args.get('limit')
+
+        start = int(start)
+        limit = int(limit)
 
         session = Session()
-        records = session.query(Property).order_by(Property.id).all()
+        records = session.query(Property).order_by(Property.id)[start:limit]
         
+        respJson = list()
         for record in records:
-            pprint(record.id)
+            record = record.__dict__
+            record.pop('_sa_instance_state', None)
+            respJson.append(record)
 
-        # return record.__dict__, 200
-        return {'Hello':'world'}
+        msg = {'data':respJson}
+        return msg, 200
 
-
-@api.route('/add')
-class Properties(Resource):
     def post(self):
         zip_code = request.json['zip_code']
         p_type = request.json['property_type']
@@ -50,3 +56,5 @@ class Properties(Resource):
 
         response = {'message' : 'Property Added.'}
         return response, 201
+
+    
