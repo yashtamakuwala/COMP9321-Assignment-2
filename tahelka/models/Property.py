@@ -17,6 +17,6 @@ class Property(Base):
         self.zip_code = zip_code
         self.property_type = property_type
         self.room_type = room_type
-        self.guest_count = guests_count
+        self.guest_count = guest_count
         self.bed_count = bed_count
         self.price_range = price_range
