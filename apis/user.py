@@ -30,12 +30,11 @@ class Users(Resource):
 
         # Create new user
         hashed_password = HashGenerator(password).generate()
-        new_user = User(first_name, last_name, email, 'nonadmin',
-                        hashed_password)
+        new_user = User(first_name, last_name, email, hashed_password)
         session.add(new_user)
+        session.flush()     #to get id of inserted user
         session.commit()
 
         # Analytics here
-
         response = {'message': 'Registration successful.'}
-        return response, 200
+        return response, 201
