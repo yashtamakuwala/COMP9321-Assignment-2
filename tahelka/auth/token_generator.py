@@ -12,11 +12,15 @@ class TokenGenerator:
         return jwt.encode(payload, secret, algorithm='HS256').decode()
 
     def construct_payload(self):
-        return {
+        payload = {
             'id': self.user.id,
-            'role': self.user.role,
             'expired_at': TokenGenerator.decide_expire_time()
         }
+
+        if self.user.is_admin:
+            payload['is_admin'] = True
+
+        return payload
 
     def decide_expire_time():
         # Expire in 24 hours

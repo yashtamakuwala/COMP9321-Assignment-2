@@ -32,7 +32,6 @@ class Users(Resource):
         hashed_password = HashGenerator(password).generate()
         new_user = User(first_name, last_name, email, hashed_password)
         session.add(new_user)
-        session.flush()     #to get id of inserted user
         session.commit()
 
         # Analytics here

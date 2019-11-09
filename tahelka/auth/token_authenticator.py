@@ -4,9 +4,9 @@ from jwt.exceptions import InvalidTokenError
 from werkzeug.exceptions import Forbidden, Unauthorized
 
 class TokenAuthenticator:
-    def __init__(self, token, roles):
+    def __init__(self, token, must_be_admin):
         self.token = token
-        self.role = roles
+        self.must_be_admin = must_be_admin
 
     def authenticate(self):
         # Decode
@@ -18,7 +18,7 @@ class TokenAuthenticator:
             raise Unauthorized
 
         # Check role
-        if self.is_forbidden()
+        if self.must_be_admin and 'is_admin' not in payload:
             raise Forbidden
 
         return payload['id']
@@ -26,19 +26,16 @@ class TokenAuthenticator:
     def decode_token(self):
         secret = current_app.config['JWT_SECRET']
         try:
-            payload = jwt.decode(self.token, secret, )
+            payload = jwt.decode(self.token, secret, algorithm='HS256')
         except(InvalidTokenError):
             raise Unauthorized
 
         return payload
 
     def validate_payload(payload):
-        for key in ['id', 'role', 'expired_at']:
+        for key in ['id', 'expired_at']:
             if key not in payload:
                 raise Unauthorized
-
-    def is_forbidden(self, payload):
-        return payload['role'] not in self.roles:
 
     def is_expired(payload):
         return int(time.time()) > int(payload['expired_at'])

@@ -23,4 +23,4 @@ class Sessions(Resource):
             'message': 'Login successful.',
             'token': token
         }
-        return response, 200
+        return response, 201
