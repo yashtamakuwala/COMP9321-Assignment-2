@@ -1,3 +1,4 @@
+# Checks if all fields have values, True when all are None
 def areFieldsEmpty(*argv):
     params = list()
     for arg in argv:

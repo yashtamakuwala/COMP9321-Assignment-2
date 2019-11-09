@@ -75,7 +75,7 @@ class Properties(Resource):
 
         return prop, 200
 
-    def put(self, id):
+    def patch(self, id):
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
 
@@ -127,4 +127,30 @@ class Properties(Resource):
         session.delete(prop)
         session.commit()
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
+        return msg, 200
+
+    def put(self, id):
+        session = Session()
+        prop = session.query(Property).filter(Property.id == id).first()
+
+        # Resource not found
+        if prop is None:
+            raise NotFound
+
+        zip_code = request.json.get('zip_code')
+        p_type = request.json.get('property_type')
+        r_type = request.json.get('room_type')
+        g_count = request.json.get('guest_count')
+        b_count = request.json.get('bed_count')
+        p_range = request.json.get('price_range')
+
+        prop.zip_code = zip_code
+        prop.property_type = p_type
+        prop.room_type = r_type
+        prop.guest_count = g_count
+        prop.bed_count = b_count
+        prop.price_range = p_range
+        
+        session.commit()
+        msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
