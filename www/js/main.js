@@ -1,4 +1,4 @@
-server_url = 'http://127.0.0.1:5000/register'
+const API_URL = 'http://127.0.0.1:5000/api/v1/'
 
 function getQuote() {
     const zipcode = document.getElementById('zipCode').value;
@@ -11,28 +11,42 @@ function getQuote() {
         console.log(this.responseText);
         alert(this.responseText)
     };
-    xhttp.open("GET", server_url, true);
+    xhttp.open("GET", API_URL, true);
     xhttp.send();
 }
 
 function signup() {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const firstName = document.getElementById('firstName').value;
-    const lastName = document.getElementById('lastName').value;
+    let user = {};
+    const URL = API_URL + 'users';
+    user.email = document.getElementById('email').value;
+    user.password = document.getElementById('password').value;
+    let confirmPassword = document.getElementById('confirmPassword').value;
+    user.first_name = document.getElementById('firstName').value;
+    user.last_name = document.getElementById('lastName').value;
+    let jsonString = JSON.stringify(user);
 
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-            alert(this.responseText)
+    if (user.password === confirmPassword) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && (this.status === 201 || this.status === 400)) {
+                const div = document.createElement('div');
+                div.setAttribute('id', 'response');
+                let res = document.getElementById('response');
+                if (res) {
+                    res.parentNode.removeChild(res);
+                }
+                let response = JSON.parse(this.responseText);
+                div.innerHTML = response.message;
+                document.getElementById('information').appendChild(div);
+            }
+        };
+        xhttp.open("POST", URL, true);
+        xhttp.setRequestHeader("Content-Type", "application/json");
+        console.log(jsonString);
+        xhttp.send(jsonString);
+    } else {
+        alert('Passwords do not match, Try again');
+    }
 
-        if (this.status === 400) {
-            alert(this.responseText)
-        }
-    };
-    xhttp.open("POST", server_url, true);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    let postMessage = `email=${email}&lname=Ford`
-    xhttp.send(postMessage);
-    xhttp.send();
+
 }
