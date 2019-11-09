@@ -10,7 +10,7 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 import time
 from werkzeug.exceptions import Forbidden, Unauthorized
 
-class TestToken(TestCase):
+class TestTokenAuth(TestCase):
     def test_happy_admin(self):
         user = Mock()
         id = randrange(1, 100)
