@@ -1,6 +1,7 @@
 from flask import current_app
 import jwt
 from jwt.exceptions import InvalidTokenError
+import time
 from werkzeug.exceptions import Forbidden, Unauthorized
 
 class TokenAuthenticator:
@@ -26,7 +27,7 @@ class TokenAuthenticator:
     def decode_token(self):
         secret = current_app.config['JWT_SECRET']
         try:
-            payload = jwt.decode(self.token, secret, algorithm='HS256')
+            payload = jwt.decode(self.token, secret, algorithms='HS256')
         except(InvalidTokenError):
             raise Unauthorized
 
