@@ -1,0 +1,33 @@
+<div class="login-form">
+  <form [formGroup] = "myform" (submit)="onSignUp($event)">
+    <h2 class="text-center">Sign up</h2>
+    <div class="form-group">
+      <input formControlName="email" type="text" id="email" class="form-control" placeholder="Email" required="required">
+    </div>
+    <div class="form-group">
+      <input formControlName="password" type="password" id="password" class="form-control" placeholder="Password" required="required">
+    </div>
+    <div class="form-group">
+      <input formControlName="confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required="required">
+    </div>
+    <div class="form-group">
+      <input formControlName="firstName" type="text" id="firstName" class="form-control" placeholder="First Name" required="required">
+    </div>
+    <div class="form-group">
+      <input formControlName="lastName" type="text" id="lastName" class="form-control" placeholder="Last Name" required="required">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary btn-block">Sign up</button>
+    </div>
+  </form>
+  <br>
+  <div *ngIf="hasError">
+    {{error}}
+  </div>
+  <div *ngIf="responseReceived">
+    <button routerLink="/login" class="btn btn-success btn-block">Sign up successful! Log in</button>
+  </div>
+  <div *ngIf="signUpUnsuccessful">
+    The sign up was unsuccessful. Please check your details and try again.
+  </div>
+</div>
