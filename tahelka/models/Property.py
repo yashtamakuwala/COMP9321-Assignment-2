@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String
-from models.Base import Base
+from tahelka.models.Base import Base
 
 class Property(Base):
     __tablename__ = "properties"
@@ -12,9 +12,8 @@ class Property(Base):
     bed_count = Column(Integer)
     price_range = Column(String)
 
-    def __init__(self, id=None, zip_code, property_type, room_type,
-                 guests_count, bed_count, price_range):
-        self.id = id
+    def __init__(self, zip_code, property_type, room_type, guest_count,
+                 bed_count, price_range):
         self.zip_code = zip_code
         self.property_type = property_type
         self.room_type = room_type
