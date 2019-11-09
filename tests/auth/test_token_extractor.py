@@ -12,7 +12,7 @@ class TestTokenExtractor(TestCase):
         auth_header = f'Bearer {token}'
 
         extractor = TokenExtractor(auth_header)
-        self.assertEqual(extractor.extract(), token)
+        self.assertEqual(extractor.extract(), token.encode())
 
     def test_wrong_header(self):
         extractor = TokenExtractor(faker.sentence())

@@ -10,11 +10,11 @@ api = Namespace('properties')
 
 listing = api.model('Property', {
     'zip_code' : fields.Integer(),
-    'property_type' : fields.String(), 
-    'room_type' : fields.String(), 
-    'guest_count' : fields.Integer(), 
-    'bed_count' : fields.Integer(), 
-    'price_range' : fields.String(), 
+    'property_type' : fields.String(),
+    'room_type' : fields.String(),
+    'guest_count' : fields.Integer(),
+    'bed_count' : fields.Integer(),
+    'price_range' : fields.String(),
 })
 
 # TODO: check for user role
@@ -31,7 +31,7 @@ class PropertyList(Resource):
 
         session = Session()
         records = session.query(Property).order_by(Property.id)[start:limit]
-        
+
         respJson = list()
         for record in records:
             record = record.__dict__
@@ -89,7 +89,7 @@ class Properties(Resource):
         g_count = request.json.get('guest_count', None)
         b_count = request.json.get('bed_count', None)
         p_range = request.json.get('price_range', None)
-        
+
         # Empty request
         if areFieldsEmpty(zip_code, p_range, p_type, g_count, b_count, r_type):
             raise BadRequest
@@ -99,7 +99,7 @@ class Properties(Resource):
 
         if p_type is not None:
             prop.property_type = p_type
-        
+
         if r_type is not None:
             prop.room_type = r_type
 
@@ -111,7 +111,7 @@ class Properties(Resource):
 
         if p_range is not None:
             prop.price_range = p_range
-        
+
         session.commit()
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
@@ -150,7 +150,7 @@ class Properties(Resource):
         prop.guest_count = g_count
         prop.bed_count = b_count
         prop.price_range = p_range
-        
+
         session.commit()
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200

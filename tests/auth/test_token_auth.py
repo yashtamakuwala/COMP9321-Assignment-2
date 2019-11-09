@@ -28,7 +28,8 @@ class TestTokenAuth(TestCase):
         with patch('tahelka.auth.token_authenticator.current_app') as app:
             app.config = {'JWT_SECRET': secret}
 
-            authenticator = TokenAuthenticator(token, True)
+            auth_header = f'Bearer {token}'
+            authenticator = TokenAuthenticator(auth_header, True)
             self.assertEqual(authenticator.authenticate(), id)
 
     def test_happy_non_admin(self):
@@ -48,7 +49,8 @@ class TestTokenAuth(TestCase):
         with patch('tahelka.auth.token_authenticator.current_app') as app:
             app.config = {'JWT_SECRET': secret}
 
-            authenticator = TokenAuthenticator(token, False)
+            auth_header = f'Bearer {token}'
+            authenticator = TokenAuthenticator(auth_header, False)
             self.assertEqual(authenticator.authenticate(), id)
 
     def test_forbidden(self):
@@ -67,7 +69,8 @@ class TestTokenAuth(TestCase):
         with patch('tahelka.auth.token_authenticator.current_app') as app:
             app.config = {'JWT_SECRET': secret}
 
-            authenticator = TokenAuthenticator(token, True)
+            auth_header = f'Bearer {token}'
+            authenticator = TokenAuthenticator(auth_header, True)
             with self.assertRaises(Forbidden):
                 authenticator.authenticate()
 
@@ -75,7 +78,8 @@ class TestTokenAuth(TestCase):
         with patch('tahelka.auth.token_authenticator.current_app') as app:
             app.config = {'JWT_SECRET': faker.sentence()}
 
-            authenticator = TokenAuthenticator(faker.sentence(), True)
+            auth_header = f'Bearer {faker.sentence()}'
+            authenticator = TokenAuthenticator(auth_header, True)
             with self.assertRaises(Unauthorized):
                 authenticator.authenticate()
 
@@ -101,6 +105,7 @@ class TestTokenAuth(TestCase):
             ) as mock_time:
                 mock_time.return_value = expired_time
 
-                authenticator = TokenAuthenticator(token, False)
+                auth_header = f'Bearer {token}'
+                authenticator = TokenAuthenticator(auth_header, False)
                 with self.assertRaises(Unauthorized):
                     authenticator.authenticate()

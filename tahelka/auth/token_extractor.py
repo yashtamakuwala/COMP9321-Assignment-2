@@ -12,4 +12,4 @@ class TokenExtractor:
         if not words[0] == 'Bearer':
             raise Unauthorized
 
-        return words[1]
+        return words[1].encode()
