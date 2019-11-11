@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
 import {GetQuoteComponent} from './get-quote/get-quote.component';
+import {AuthGuard} from './_helpers/auth.guard';
 
 
 const routes: Routes = [
@@ -16,10 +17,11 @@ const routes: Routes = [
   },
   {
     path: 'quote',
-    component: GetQuoteComponent
+    component: GetQuoteComponent,
+    canActivate: [AuthGuard]
   },
   {
-    path: '',
+    path: '**',
     component: LoginComponent
   },
 ];
