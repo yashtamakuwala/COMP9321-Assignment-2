@@ -15,12 +15,14 @@ class Sessions(Resource):
         email = request.json['email']
         password = request.json['password']
         authenticator = CredentialsAuthenticator(email, password)
-        token = authenticator.authenticate()
+        user, token = authenticator.authenticate()
 
         # Analytics here
 
         response = {
             'message': 'Login successful.',
+            'email': user.email,
+            'is_admin': user.is_admin,
             'token': token
         }
         return response, 201

@@ -18,7 +18,7 @@ class CredentialsAuthenticator:
         if not matcher.is_matched():
             raise Unauthorized
 
-        return TokenGenerator(user).generate()
+        return user, TokenGenerator(user).generate()
 
     def find_user(self):
         session = Session()
