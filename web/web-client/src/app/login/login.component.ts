@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
     this.webService.login(this.user).subscribe(success => {
       const authUser = new AuthenticatedUser(success.email, success.is_admin, success.token);
       this.authenticationService.login(authUser);
-      // extract api key and save it to session storage
       this.router.navigate(['/quote']);
     }, error => {
       this.error = true;

@@ -16,9 +16,9 @@ export class AuthenticationService {
     return this.currentUser;
   }
   login(authenticatedUser: AuthenticatedUser) {
-    localStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
+    sessionStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
   }
   logout() {
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
   }
 }
