@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {WebMethodsService} from '../services/web-methods.service';
-import {User} from '../models/user';
+import {User} from '../models/User';
 import { Router } from '@angular/router';
 import {ReactiveFormsModule,
   FormsModule,
@@ -8,6 +8,7 @@ import {ReactiveFormsModule,
   FormControl,
   Validators,
   FormBuilder} from '@angular/forms';
+import {AuthenticatedUser} from '../models/AuthenticatedUser';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +34,8 @@ export class LoginComponent implements OnInit {
     this.user.email = this.myform.value.email;
     this.user.password = this.myform.value.password;
     this.webService.login(this.user).subscribe(success => {
+      const authUser = new AuthenticatedUser(success.email, success.is_admin, success.token);
+      console.log(authUser);
       // extract api key and save it to session storage
       this.router.navigate(['/quote']);
     }, error => {
