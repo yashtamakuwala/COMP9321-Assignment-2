@@ -18,8 +18,8 @@ user = api.model('User', {
 class Users(Resource):
     def post(self):
         # Get params
-        first_name = request.json.get('first_name', None)
-        last_name = request.json.get('last_name', None)
+        first_name = request.json.get('first_name')
+        last_name = request.json.get('last_name')
         email = request.json['email']
         password = request.json['password']
 

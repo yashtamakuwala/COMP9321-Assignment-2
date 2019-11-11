@@ -1,5 +1,4 @@
 from alchemy import Session
-from flask import current_app
 from tahelka.auth.hash_matcher import HashMatcher
 from tahelka.auth.token_generator import TokenGenerator
 from tahelka.models.User import User
