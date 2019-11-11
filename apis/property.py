@@ -38,6 +38,8 @@ class PropertyList(Resource):
             record.pop('_sa_instance_state', None)
             respJson.append(record)
 
+        # Analytics
+
         msg = {'data':respJson}
         return msg, 200
 
@@ -152,5 +154,7 @@ class Properties(Resource):
         prop.price_range = p_range
         
         session.commit()
+        Recorder(user),
+
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200

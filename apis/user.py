@@ -35,5 +35,7 @@ class Users(Resource):
         session.commit()
 
         # Analytics here
+
+
         response = {'message': 'Registration successful.'}
         return response, 201
