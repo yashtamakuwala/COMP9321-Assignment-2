@@ -1,5 +1,4 @@
 from alchemy import Session
-from flask import current_app
 from tahelka.auth.hash_matcher import HashMatcher
 from tahelka.auth.token_generator import TokenGenerator
 from tahelka.models.User import User
@@ -19,7 +18,7 @@ class CredentialsAuthenticator:
         if not matcher.is_matched():
             raise Unauthorized
 
-        return TokenGenerator(user).generate()
+        return user, TokenGenerator(user).generate()
 
     def find_user(self):
         session = Session()
