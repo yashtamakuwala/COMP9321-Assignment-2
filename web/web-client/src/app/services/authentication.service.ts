@@ -13,7 +13,7 @@ export class AuthenticationService {
     this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   public get currentUserValue(): AuthenticatedUser {
-    return this.currentUser;
+    return JSON.parse(sessionStorage.getItem('currentUser'));
   }
   login(authenticatedUser: AuthenticatedUser) {
     sessionStorage.setItem('currentUser', JSON.stringify(authenticatedUser));
