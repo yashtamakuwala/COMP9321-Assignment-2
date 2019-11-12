@@ -3,18 +3,17 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from werkzeug.exceptions import NotFound, BadRequest
-from pprint import pprint
-from tahelka.util.util import *
+from tahelka.util.util import areFieldsEmpty
 
 api = Namespace('properties')
 
 listing = api.model('Property', {
     'zip_code' : fields.Integer(),
-    'property_type' : fields.String(), 
-    'room_type' : fields.String(), 
-    'guest_count' : fields.Integer(), 
-    'bed_count' : fields.Integer(), 
-    'price_range' : fields.String(), 
+    'property_type' : fields.String(),
+    'room_type' : fields.String(),
+    'guest_count' : fields.Integer(),
+    'bed_count' : fields.Integer(),
+    'price_range' : fields.String(),
 })
 
 # TODO: check for user role
@@ -23,15 +22,15 @@ listing = api.model('Property', {
 @api.param('limit')
 class PropertyList(Resource):
     def get(self):
-        start = request.args.get('start')
-        limit = request.args.get('limit')
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
 
-        start = int(start)
-        limit = int(limit)
+        start = int(request.args.get('start'))
+        limit = int(request.args.get('limit'))
 
         session = Session()
         records = session.query(Property).order_by(Property.id)[start:limit]
-        
+
         respJson = list()
         for record in records:
             record = record.__dict__
@@ -44,6 +43,9 @@ class PropertyList(Resource):
         return msg, 200
 
     def post(self):
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
+
         zip_code = request.json['zip_code']
         p_type = request.json['property_type']
         r_type = request.json['room_type']
@@ -59,12 +61,16 @@ class PropertyList(Resource):
         session.add(new_property)
         session.commit()
 
+        # Analytics
+
         response = {'message' : 'Property Added.'}
         return response, 201
 
 @api.route('/<int:id>')
 class Properties(Resource):
     def get(self, id):
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
 
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
@@ -75,9 +81,14 @@ class Properties(Resource):
         prop = prop.__dict__
         prop.pop('_sa_instance_state', None)
 
+        # Analytics
+
         return prop, 200
 
     def patch(self, id):
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
+
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
 
@@ -85,13 +96,13 @@ class Properties(Resource):
         if prop is None:
             raise NotFound
 
-        zip_code = request.json.get('zip_code', None)
-        p_type = request.json.get('property_type', None)
-        r_type = request.json.get('room_type', None)
-        g_count = request.json.get('guest_count', None)
-        b_count = request.json.get('bed_count', None)
-        p_range = request.json.get('price_range', None)
-        
+        zip_code = request.json.get('zip_code')
+        p_type = request.json.get('property_type')
+        r_type = request.json.get('room_type')
+        g_count = request.json.get('guest_count')
+        b_count = request.json.get('bed_count')
+        p_range = request.json.get('price_range')
+
         # Empty request
         if areFieldsEmpty(zip_code, p_range, p_type, g_count, b_count, r_type):
             raise BadRequest
@@ -101,7 +112,7 @@ class Properties(Resource):
 
         if p_type is not None:
             prop.property_type = p_type
-        
+
         if r_type is not None:
             prop.room_type = r_type
 
@@ -113,12 +124,18 @@ class Properties(Resource):
 
         if p_range is not None:
             prop.price_range = p_range
-        
+
         session.commit()
+
+        # Analytics
+
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
 
     def delete(self, id):
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
+
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
 
@@ -128,10 +145,16 @@ class Properties(Resource):
 
         session.delete(prop)
         session.commit()
+
+        # Analytics
+
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, 200
 
     def put(self, id):
+        auth_header = request.headers.get('Authorization')
+        user_id = TokenAuthenticator(auth_header, True).authenticate()
+
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
 
@@ -152,9 +175,10 @@ class Properties(Resource):
         prop.guest_count = g_count
         prop.bed_count = b_count
         prop.price_range = p_range
-        
+
         session.commit()
-        Recorder(user),
+
+        # Analytics
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200

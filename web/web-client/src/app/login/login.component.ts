@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {WebMethodsService} from '../services/web-methods.service';
-import {User} from '../models/user';
+import {User} from '../models/User';
 import { Router } from '@angular/router';
 import {ReactiveFormsModule,
   FormsModule,
@@ -8,6 +8,8 @@ import {ReactiveFormsModule,
   FormControl,
   Validators,
   FormBuilder} from '@angular/forms';
+import {AuthenticatedUser} from '../models/AuthenticatedUser';
+import {AuthenticationService} from '../services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
   myform: FormGroup;
   user: User;
   error: boolean;
-  constructor(private webService: WebMethodsService, private router: Router) { }
+  constructor(private webService: WebMethodsService, private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.myform = new FormGroup({
@@ -33,7 +35,8 @@ export class LoginComponent implements OnInit {
     this.user.email = this.myform.value.email;
     this.user.password = this.myform.value.password;
     this.webService.login(this.user).subscribe(success => {
-      // extract api key and save it to session storage
+      const authUser = new AuthenticatedUser(success.email, success.is_admin, success.token);
+      this.authenticationService.login(authUser);
       this.router.navigate(['/quote']);
     }, error => {
       this.error = true;
