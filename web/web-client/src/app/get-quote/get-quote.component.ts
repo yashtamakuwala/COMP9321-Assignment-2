@@ -34,7 +34,11 @@ export class GetQuoteComponent implements OnInit {
       this.myform.value.zipCode, this.myform.value.propertyType,
       this.myform.value.roomType, this.myform.value.guestCount,
       this.myform.value.bedCount);
-    this.webService.getQuote(quote);
+    this.webService.getQuote(quote).subscribe(success => {
+      console.log(success);
+    }, error => {
+      console.log(error);
+    });
   }
   logout() {
     this.authenticationService.logout();

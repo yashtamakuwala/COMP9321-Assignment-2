@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import {User} from '../models/User';
 import {Observable} from 'rxjs';
 import {NewUser} from '../models/NewUser';
@@ -31,12 +31,21 @@ export class WebMethodsService {
 
   getQuote(quote: Quote): Observable<any> {
     const quoteUrl = this.API_URL + 'predictions';
-    const httpOptionsKey = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.authenticationService.currentUserValue.token,
-      })
-    };
-    return this.http.get(quoteUrl, httpOptionsKey);
+    // const httpOptionsKey = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type':  'application/json',
+    //     'Authorization': this.authenticationService.currentUserValue.token
+    //   })
+    // };
+    let headers = new HttpHeaders();
+    headers.set('Authorization', this.authenticationService.currentUserValue.token);
+    // httpOptions.headers = httpOptions.headers.set('Authorization', this.authenticationService.currentUserValue.token);
+    const params = new HttpParams()
+      .set('zip_code', String(quote.zip_code))
+      .set('property_type', quote.property_type)
+      .set('room_type', quote.room_type)
+      .set('guest_count', String(quote.guest_count))
+      .set('bed_count', String(quote.bed_count));
+    return this.http.get(quoteUrl, {params: params, headers: headers});
   }
 }
