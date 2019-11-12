@@ -7,6 +7,8 @@ import {ReactiveFormsModule,
   FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '../services/authentication.service';
+import {Quote} from '../models/Quote';
+import {WebMethodsService} from '../services/web-methods.service';
 
 @Component({
   selector: 'app-get-quote',
@@ -15,7 +17,7 @@ import {AuthenticationService} from '../services/authentication.service';
 })
 export class GetQuoteComponent implements OnInit {
   myform: FormGroup;
-  constructor(private router: Router, private authenticationService: AuthenticationService) { }
+  constructor(private router: Router, private authenticationService: AuthenticationService, private webService: WebMethodsService) { }
 
   ngOnInit() {
     this.myform = new FormGroup({
@@ -28,7 +30,11 @@ export class GetQuoteComponent implements OnInit {
   }
   getQuote(event) {
     event.preventDefault();
-    console.log(this.myform.value);
+    const quote = new Quote(
+      this.myform.value.zipCode, this.myform.value.propertyType,
+      this.myform.value.roomType, this.myform.value.guestCount,
+      this.myform.value.bedCount);
+    this.webService.getQuote(quote);
   }
   logout() {
     this.authenticationService.logout();
