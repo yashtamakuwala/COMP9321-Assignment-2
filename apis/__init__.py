@@ -6,6 +6,7 @@ from apis.session import api as session
 from apis.user import api as user
 from apis.property import api as property
 from apis.analytics import api as analytics
+from apis.predictions import api as predictions
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
 api = Api(blueprint)    #TODO Add metadata
@@ -14,6 +15,7 @@ api.add_namespace(session)
 api.add_namespace(user)
 api.add_namespace(property)
 api.add_namespace(analytics)
+api.add_namespace(predictions)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):
