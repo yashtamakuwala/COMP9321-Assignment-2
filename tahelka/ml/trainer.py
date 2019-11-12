@@ -51,6 +51,7 @@ def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, addit
 
     #the 5 columns that required for the ML algorithm         
     df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price"]]
+    print(df4["accommodates"])
     df4 = df4.drop(df4[(df4.price > 10000.00)].index)
     return df4
 
@@ -92,7 +93,7 @@ class Trainer:
      
         #the 3 columns are updated with the preprocessed values
 
-        print(df4['property_type'].iloc[:5])
+        #print(df4['property_type'].iloc[:5])
         df4['property_type'] = le_property_type.fit_transform(df4['property_type'])
         df4['room_type'] = le_room_type.fit_transform(df4['room_type'])
         df4['zipcode'] = df4['zipcode'].apply(convert_to_str)
