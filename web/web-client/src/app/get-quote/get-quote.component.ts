@@ -5,6 +5,8 @@ import {ReactiveFormsModule,
   FormControl,
   Validators,
   FormBuilder} from '@angular/forms';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../services/authentication.service';
 
 @Component({
   selector: 'app-get-quote',
@@ -13,7 +15,7 @@ import {ReactiveFormsModule,
 })
 export class GetQuoteComponent implements OnInit {
   myform: FormGroup;
-  constructor() { }
+  constructor(private router: Router, private authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     this.myform = new FormGroup({
@@ -28,5 +30,8 @@ export class GetQuoteComponent implements OnInit {
     event.preventDefault();
     console.log(this.myform.value);
   }
-
+  logout() {
+    this.authenticationService.logout();
+    this.router.navigate(['/login']);
+  }
 }

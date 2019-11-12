@@ -10,7 +10,7 @@ import {AuthenticatedUser} from '../models/AuthenticatedUser';
 export class AuthenticationService {
   private currentUser: AuthenticatedUser;
   constructor() {
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
   }
   public get currentUserValue(): AuthenticatedUser {
     return this.currentUser;
