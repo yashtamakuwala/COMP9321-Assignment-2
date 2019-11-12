@@ -4,6 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.util.util import areFieldsEmpty
+from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('properties')
 
@@ -182,3 +183,29 @@ class Properties(Resource):
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
+
+
+@api.route('/price')
+class PriceRange(Resource):
+    def get(self):
+
+        # auth_header = request.headers.get('Authorization')
+        # user_id = TokenAuthenticator(auth_header, True).authenticate()
+
+        zip_code = int(request.args.get('zip_code'))
+        p_type = str(request.args.get('property_type'))
+        r_type = str(request.args.get('room_type'))
+        g_count = int(request.args.get('guest_count'))
+        b_count = int(request.args.get('bed_count'))
+
+        # TODO: call predictor function here
+        low, high = 50, 90
+
+        msg = {
+            'low': low,
+            'high': high
+        }
+
+        return msg, 200
+
+

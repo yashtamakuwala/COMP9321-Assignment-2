@@ -39,10 +39,10 @@ class TokenAuthenticator:
     def extract_token(self):
         return TokenExtractor(self.auth_header).extract()
 
-    def validate_payload(payload):
+    def validate_payload(self, payload):
         for key in ['id', 'expired_at']:
             if key not in payload:
                 raise Unauthorized
 
-    def is_expired(payload):
+    def is_expired(self, payload):
         return int(time.time()) > int(payload['expired_at'])
