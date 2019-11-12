@@ -4,6 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.util.util import areFieldsEmpty
+from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('properties')
 
@@ -182,3 +183,8 @@ class Properties(Resource):
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
+
+
+
+
+

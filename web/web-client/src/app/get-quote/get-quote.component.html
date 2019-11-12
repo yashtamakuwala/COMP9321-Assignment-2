@@ -1,6 +1,6 @@
 <nav class="navbar navbar-light bg-light">
   <a class="navbar-brand">Search</a>
-  <a class="btn btn-outline-secondary my-2 my-sm-0" routerLink='/login'>Log out</a>
+  <a class="btn btn-outline-secondary my-2 my-sm-0" (click)="logout()">Log out</a>
 </nav>
 <div class="container">
   <form [formGroup]="myform" (submit)="getQuote($event)">

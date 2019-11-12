@@ -50,7 +50,6 @@ export class SignupComponent implements OnInit {
       this.webService.signup(this.newUser).subscribe(x => {
         this.responseReceived = true;
         this.signUpUnsuccessful = false;
-        console.log(x);
       },
         msg => {
           this.signUpUnsuccessful = true;
