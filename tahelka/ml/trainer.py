@@ -38,6 +38,21 @@ def convert_to_int(i):
 def convert_to_str(i):
     return str(i)
 
+def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, additional_columns):
+    for k in required_columns:
+        if (k in integer_columns):
+            df4[k] = df3[k].apply(convert_to_int)
+        else:
+            df4[k] = df3[k].apply(convert_to_float)
+            
+    #adding additional columns in df4
+    for i in additional_columns:
+        df4[additional_columns] = df[additional_columns]
+
+    #the 5 columns that required for the ML algorithm         
+    df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price"]]
+    df4 = df4.drop(df4[(df4.price > 10000.00)].index)
+    return df4
 
 
 class Trainer:
@@ -53,21 +68,9 @@ class Trainer:
         df3 = df[required_columns]
         # copy df3 to df3 
         df4 = df3.copy()
+        df4 = convert_to_type_and_clean(df3, df4, integer_columns,
+                            required_columns, additional_columns)
 
-        for k in required_columns:
-            if (k in integer_columns):
-                df4[k] = df3[k].apply(convert_to_int)
-            else:
-                df4[k] = df3[k].apply(convert_to_float)
-                
-        #adding additional columns in df4
-        for i in additional_columns:
-            df4[additional_columns] = df[additional_columns]
-
-        #the 5 columns that required for the ML algorithm 
-        
-        df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price"]]
-        df4 = df4.drop(df4[(df4.price > 10000.00)].index)
         '''
         The bins are decided here
         The labels are one less than the size of bins
@@ -79,31 +82,31 @@ class Trainer:
         df4['price_bin'] = pd.cut(df4['price'], bins=bins, labels=labels)
 
         #The main df on which we creaTE OUR ML MODEL
-        '''
-        THe label encoder which does the preprocessing
-        where categorical data is converted to numerical.
-        '''
+       
+        #THe label encoder which does the preprocessing
+        #where categorical data is converted to numerical.
+        
         le_property_type = LabelEncoder()
-
         le_room_type = LabelEncoder()
         le_zipcode = LabelEncoder()
+     
+        #the 3 columns are updated with the preprocessed values
 
-        '''
-        the 3 columns are updated with the preprocessed values
-        '''
+        print(df4['property_type'].iloc[:5])
         df4['property_type'] = le_property_type.fit_transform(df4['property_type'])
         df4['room_type'] = le_room_type.fit_transform(df4['room_type'])
-
         df4['zipcode'] = df4['zipcode'].apply(convert_to_str)
         df4['zipcode'] = le_zipcode.fit_transform(df4['zipcode'])
+        #print(le_zipcode.classes_)
+        np.save('classes.npy', le_property_type.classes_)
+        #print(df4['property_type'].iloc[:5])
+
         #X axis would have columns "property_type","accommodates","beds","room_type","zipcode"
         Xaxis = df4.values[:, [0,1,2,3,4]] 
         # Y axis would have price bins
         Yaxis = df4.values[:,6]
         Xaxis =Xaxis.astype('int') 
         Yaxis = Yaxis.astype('int')
-
-
         X_train, X_test, y_train, y_test = train_test_split(  
                 Xaxis, Yaxis, test_size = 0.33, random_state = 100)
         # predict the test set
@@ -125,6 +128,9 @@ class Trainer:
         # To store the Machine learning model- PICKLE is used
         os.chdir("tahelka/ml")
         filename = 'price_prediction_model.sav'
+        file_for_zipcode = open('zipcode_encoder.pkl', 'wb')
+        pickle.dump(le_zipcode,file_for_zipcode)
+        #consider the model with higher accuracy
         if ((accuracy_score(y_test,y_pred)*100) >= (accuracy_score(y_test,entropy_pred)*100) ):
             with open(filename, 'wb') as file:  
                 pickle.dump(gini, file)
