@@ -29,11 +29,10 @@ dfc = dfc.drop(month_columns, axis=1)
 # Group by LGA
 dfc = dfc.groupby(['LGA']).sum().reset_index()
 
-# Merge with listing
+# Filter according to LGA in listing
 listings_path = os.path.join(root, 'data/listings_cleaned.csv')
 dfl = pd.read_csv(listings_path)
 
-dfl = dfl.merge(dfc, on='LGA')
 airbnb_cities = dfl['LGA'].unique()
 
 dfc = dfc[dfc['LGA'].isin(airbnb_cities)]

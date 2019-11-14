@@ -6,7 +6,7 @@ path_of_data = os.path.join(root, 'data/crime_raw.csv')
 df = pd.read_csv(path_of_data)
 
 # Remove useless columns
-df = df.drop([df.columns[0], df.columns[2], df.columns[3]], axis = 1)
+df = df.drop([df.columns[1:3]], axis=1)
 
 # Remove the last 4 rows
 df = df.iloc[:-4]

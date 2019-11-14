@@ -9,5 +9,5 @@ df = pd.read_csv(path_of_data)
 columns = ['LGA', 'rating']
 df = df[columns]
 
-df = df.groupby('LGA').mean().reset_index().sort_values('rating')
+df = df.groupby('LGA').mean().reset_index().sort_values('LGA')
 print(df)
