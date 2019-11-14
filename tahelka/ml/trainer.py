@@ -71,7 +71,6 @@ class Trainer:
         path_of_data2 = os.path.join(root, 'data/RCI_OffenceByMonth2.csv')
         df = pd.read_csv(path_of_data)
         dfc = pd.read_csv(path_of_data2)
-        dfc['LGA']
         
         required_columns = ["latitude","longitude", "bathrooms","bedrooms",
                     "square_feet","minimum_nights","maximum_nights","price","weekly_price","monthly_price","beds"]
