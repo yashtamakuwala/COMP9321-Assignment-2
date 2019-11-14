@@ -53,7 +53,8 @@ def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, addit
     df4 = df4.drop(df4[(df4.price > 10000.00)].index)
     df4['street'] = df4['street'].apply(lambda x: x.split()[0].strip().lower() if x else None)
     df4['street'] = df4['street'].apply(lambda x: x.replace(',',''))
-
+    df4["street"] = df4["street"].str.replace(r"[^a-zA-Z\d\_]+", "")    
+    df4["street"] = df4["street"].str.replace(r"[^a-zA-Z\d\_]+", "")
     return df4
 
 
