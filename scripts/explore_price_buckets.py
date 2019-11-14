@@ -16,7 +16,7 @@ def decide_bucket(price):
     return f'> ${buckets[-1]}'
 
 root = os.path.abspath(os.curdir)
-path_of_data = os.path.join(root, 'data/listings_cleaned.csv')
+path_of_data = os.path.join(root, 'data/listings_clean.csv')
 df = pd.read_csv(path_of_data)
 
 df = df.sort_values('price')

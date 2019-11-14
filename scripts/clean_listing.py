@@ -63,4 +63,4 @@ df['price'] = df['price'].apply(normalize_price)
 df['price_range'] = df['price'].apply(decide_bucket)
 
 # export
-df.to_csv('data/listings_cleaned.csv', index=False)
+df.to_csv('data/listings_clean.csv', index=False)

@@ -16,7 +16,7 @@ def decide_bucket(mean_crime_count):
     return levels[-1]
 
 root = os.path.abspath(os.curdir)
-path_of_data = os.path.join(root, 'data/crime_cleaned.csv')
+path_of_data = os.path.join(root, 'data/crime_clean.csv')
 dfc = pd.read_csv(path_of_data)
 
 # Get monthly mean of crime count
@@ -30,7 +30,7 @@ dfc = dfc.drop(month_columns, axis=1)
 dfc = dfc.groupby(['LGA']).sum().reset_index()
 
 # Filter according to LGA in listing
-listings_path = os.path.join(root, 'data/listings_cleaned.csv')
+listings_path = os.path.join(root, 'data/listings_clean.csv')
 dfl = pd.read_csv(listings_path)
 
 airbnb_cities = dfl['LGA'].unique()

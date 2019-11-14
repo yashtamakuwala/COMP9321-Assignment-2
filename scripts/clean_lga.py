@@ -22,4 +22,4 @@ df['LGA_NAME_2011'] = df['LGA_NAME_2011'].str.replace(' \([A-Z]+\)', '')
 df['LGA_NAME_2016'] = df['LGA_NAME_2016'].str.replace(' \([A-Z]+\)', '')
 
 # export
-df.to_csv('data/lga_conversion_cleaned.csv', index=False)
+df.to_csv('data/lga_conversion_clean.csv', index=False)
