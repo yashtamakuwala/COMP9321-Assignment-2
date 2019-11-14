@@ -34,35 +34,23 @@ root = os.path.abspath(os.curdir)
 listing_path = os.path.join(root, 'data/listings.csv')
 df = pd.read_csv(listing_path)
 
+# Rename columns
+map = {'review_scores_rating': 'rating', 'neighbourhood_cleansed': 'LGA'}
+df = df.rename(map, axis=1)
+
 # Keep required columns
-required_columns = ['zipcode', 'beds', 'accommodates', 'property_type',
-                    'room_type', 'price', 'review_scores_rating']
+required_columns = ['LGA', 'beds', 'accommodates',
+                    'property_type', 'room_type', 'price',
+                    'rating']
 df = df[required_columns]
 
-# Rename review column
-df = df.rename({'review_scores_rating': 'rating'}, axis=1)
-
-# Remove rows with NaN ML attributes
+# Remove rows used for ML with NaN
 ml_columns = required_columns[:-1]
 df = df.dropna(subset=ml_columns)
 
-# Clean zipcode
-df['zipcode'] = df['zipcode'].str.replace(r'[^0-9.]', '') # Remove non-numeric
-df['zipcode'] = df['zipcode'].str.strip()                 # Strip
-df = df.dropna(subset=['zipcode'])                        # Dropna
-df = df.astype({'zipcode': int})                          # Convert to int
-
-# Map zipcode to LGA values
-lga_postcode_map_path = os.path.join(root, 'data/lga_postcode_map_cleaned.csv')
-dfm = pd.read_csv(lga_postcode_map_path)
-df = df.merge(dfm, left_on='zipcode', right_on='Postcode')
-df = df.drop(['zipcode'], axis=1)
-
-# Take only LGA in crime datasets
-crime_path = os.path.join(root, 'data/crime_cleaned.csv')
-dfc = pd.read_csv(crime_path)
-crime_lgas = dfc['LGA'].unique()
-df = df[df['LGA'].isin(crime_lgas)]
+# Normalize LGA
+df['LGA'] = df['LGA'].str.replace('Ku-Ring-Gai', 'Ku-ring-gai')
+df['LGA'] = df['LGA'].str.replace('City Of Kogarah', 'Kogarah')
 
 # Convert beds to integer
 df = df.astype({'beds' : int})
