@@ -16,11 +16,8 @@ from sklearn.utils import shuffle
 from sklearn.metrics import precision_score, accuracy_score, recall_score
 
 
-os.chdir("..")
-os.chdir("..")
-root = os.path.abspath(os.curdir)
-path_of_data = os.path.join(root, 'data/listings.csv')
-df = pd.read_csv(path_of_data)
+
+
 
 '''
 Convert string to float 
@@ -38,7 +35,14 @@ def convert_to_int(i):
 def convert_to_str(i):
     return str(i)
 
-def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, additional_columns):
+def lower_and_remove_special_char(df,col):
+    df[col] = df[col].apply(lambda x: x.split()[0].strip().lower() if x else None)
+    df[col] = df[col].apply(lambda x: x.replace(',',''))
+    df[col] = df[col].str.replace(r"[^a-zA-Z\d\_]+", "")    
+    df[col] = df[col].str.replace(r"[^a-zA-Z\d\_]+", "")
+    return df
+
+def convert_to_type_and_clean(df, df3, df4, integer_columns, required_columns, additional_columns):
     for k in required_columns:
         if (k in integer_columns):
             df4[k] = df3[k].apply(convert_to_int)
@@ -51,16 +55,22 @@ def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, addit
     #the 5 columns that required for the ML algorithm         
     df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price","city"]]
     df4 = df4.drop(df4[(df4.price > 10000.00)].index)
-    df4['city'] = df4['city'].apply(lambda x: x.split()[0].strip().lower() if x else None)
-    df4['city'] = df4['city'].apply(lambda x: x.replace(',',''))
-    df4["city"] = df4["city"].str.replace(r"[^a-zA-Z\d\_]+", "")    
-    df4["city"] = df4["city"].str.replace(r"[^a-zA-Z\d\_]+", "")
+    df4 = lower_and_remove_special_char(df4,"city")
+    
     df4 = df4[df4.city != '']
     return df4
 
 
 class Trainer:
     def train(self):
+        os.chdir("..")
+        os.chdir("..")
+        root = os.path.abspath(os.curdir)
+        path_of_data = os.path.join(root, 'data/listings.csv')
+        path_of_data2 = os.path.join(root, 'data/RCI_OffenceByMonth 2.csv')
+        df = pd.read_csv(path_of_data)
+        dfc = pd.read_csv(path_of_data2)
+        
         required_columns = ["latitude","longitude", "bathrooms","bedrooms",
                     "square_feet","minimum_nights","maximum_nights","price","weekly_price","monthly_price","beds"]
         # the values of these columns would be converted to int
@@ -72,11 +82,15 @@ class Trainer:
         df3 = df[required_columns]
         # copy df3 to df3 
         df4 = df3.copy()
-        df4 = convert_to_type_and_clean(df3, df4, integer_columns,
+        df4 = convert_to_type_and_clean(df, df3, df4, integer_columns,
                             required_columns, additional_columns)
-        a = df4["city"].unique()
-        print(sorted(a))
-
+        #a = df4["city"].unique()
+        #print(sorted(a))
+        dfc['LGA'] = dfc['LGA'].apply(convert_to_str)
+        dfc = lower_and_remove_special_char(dfc,"LGA")
+        dfc['city'] = dfc['LGA']
+        df4 = df4.merge(dfc,on="city", how = 'left')
+        print(df4.iloc[:10])
         '''
         The bins are decided here
         The labels are one less than the size of bins
