@@ -1,10 +1,5 @@
 import os
 import pandas as pd
-import copy
-import math
-import numpy as np
-from sklearn.metrics import confusion_matrix 
-from sklearn.model_selection import train_test_split
 
 os.chdir("..")
 os.chdir("..")
@@ -38,4 +33,4 @@ df['price'] = df['price'].apply(lambda x: float(x.replace(',','').replace('$',''
 df = df.astype({'price': int})
 
 # export
-df.to_csv('data/cleaned_listings.csv', index=True)
+df.to_csv('data/listings_cleaned.csv', index=True)
