@@ -19,6 +19,7 @@ required_columns = ["price", "beds", "accommodates", "property_type","room_type"
 df = df[required_columns]
 
 # Remove NaN
+df = df.dropna()
 
 # Convert beds to integer
 df = df.astype({'beds' : int})
