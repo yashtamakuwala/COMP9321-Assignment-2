@@ -47,14 +47,15 @@ def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, addit
             
     #adding additional columns in df4
     df4[additional_columns] = df[additional_columns]
-
+    df4['city'] = df4['city'].apply(convert_to_str)
     #the 5 columns that required for the ML algorithm         
-    df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price","street"]]
+    df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price","city"]]
     df4 = df4.drop(df4[(df4.price > 10000.00)].index)
-    df4['street'] = df4['street'].apply(lambda x: x.split()[0].strip().lower() if x else None)
-    df4['street'] = df4['street'].apply(lambda x: x.replace(',',''))
-    df4["street"] = df4["street"].str.replace(r"[^a-zA-Z\d\_]+", "")    
-    df4["street"] = df4["street"].str.replace(r"[^a-zA-Z\d\_]+", "")
+    df4['city'] = df4['city'].apply(lambda x: x.split()[0].strip().lower() if x else None)
+    df4['city'] = df4['city'].apply(lambda x: x.replace(',',''))
+    df4["city"] = df4["city"].str.replace(r"[^a-zA-Z\d\_]+", "")    
+    df4["city"] = df4["city"].str.replace(r"[^a-zA-Z\d\_]+", "")
+    df4 = df4[df4.city != '']
     return df4
 
 
@@ -65,7 +66,7 @@ class Trainer:
         # the values of these columns would be converted to int
         integer_columns = ["bathrooms","bedrooms","minimum_nights","maximum_nights","beds"]
         # few more columns thar are strings
-        additional_columns = ["accommodates","property_type","bed_type","zipcode","room_type","street"]
+        additional_columns = ["accommodates","property_type","bed_type","zipcode","room_type","city"]
         for i in integer_columns:
             df[i] = df[i].fillna(int(-1))
         df3 = df[required_columns]
@@ -73,7 +74,7 @@ class Trainer:
         df4 = df3.copy()
         df4 = convert_to_type_and_clean(df3, df4, integer_columns,
                             required_columns, additional_columns)
-        a = df4["street"].unique()
+        a = df4["city"].unique()
         print(sorted(a))
 
         '''
