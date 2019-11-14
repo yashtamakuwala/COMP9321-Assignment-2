@@ -2,8 +2,8 @@ import os
 import pandas as pd
 
 def decide_bucket(price):
-    buckets = [45, 50, 60, 70, 80, 90, 100, 120, 130, 145, 160, 190, 210, 250,
-               300, 500]
+    buckets = [45, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
+               250, 300, 400, 600]
     if price <= buckets[0]:
         return f'<= ${buckets[0]}'
 
@@ -11,7 +11,7 @@ def decide_bucket(price):
         if price > bucket:
             continue
 
-        return f'${buckets[index - 1]} - ${bucket}'
+        return f'${buckets[index - 1] + 1} - ${bucket}'
 
     return f'> ${buckets[-1]}'
 
