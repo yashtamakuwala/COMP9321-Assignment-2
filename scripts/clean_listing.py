@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 
+buckets = [40, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
+           250, 300, 400, 600]
+
 def normalize_price(price_raw):
     return int(float(price_raw.replace(',','').replace('$','')))
 
 def decide_bucket(price):
-    buckets = [40, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
-               250, 300, 400, 600]
     if price <= buckets[0]:
         return f'<= ${buckets[0]}'
 
@@ -15,17 +16,6 @@ def decide_bucket(price):
             continue
 
         return f'${buckets[index - 1] + 1} - ${bucket}'
-
-    return f'> ${buckets[-1]}'
-
-    if price <= buckets[0]:
-        return f'<= ${buckets[0]}'
-
-    for index, bucket in enumerate(buckets):
-        if price > bucket:
-            continue
-
-        return f'${buckets[index - 1]} - ${bucket}'
 
     return f'> ${buckets[-1]}'
 
@@ -39,9 +29,8 @@ map = {'review_scores_rating': 'rating', 'neighbourhood_cleansed': 'LGA'}
 df = df.rename(map, axis=1)
 
 # Keep required columns
-required_columns = ['LGA', 'beds', 'accommodates',
-                    'property_type', 'room_type', 'price',
-                    'rating']
+required_columns = ['LGA', 'beds', 'accommodates', 'property_type',
+                    'room_type', 'price', 'rating']
 df = df[required_columns]
 
 # Remove rows used for ML with NaN
