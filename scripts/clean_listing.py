@@ -5,7 +5,7 @@ def normalize_price(price_raw):
     return int(float(price_raw.replace(',','').replace('$','')))
 
 def decide_bucket(price):
-    buckets = [45, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
+    buckets = [40, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
                250, 300, 400, 600]
     if price <= buckets[0]:
         return f'<= ${buckets[0]}'
