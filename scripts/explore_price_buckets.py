@@ -7,7 +7,7 @@ def decide_bucket(price):
     if price <= buckets[0]:
         return f'<= ${buckets[0]}'
 
-    for index, bucket in enumerate(buckets):
+    for index, bucket in enumerate(buckets[1:]):
         if price > bucket:
             continue
 
