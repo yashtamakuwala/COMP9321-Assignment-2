@@ -11,11 +11,11 @@ dfc = pd.read_csv(path_of_data2)
 
 # Keep required columns
 required_columns = ["price", "beds", "accommodates", "property_type","room_type",
-                    "city", "review_scores_rating"]
+                    "city"]
 df = df[required_columns]
 
 # Rename review column
-df = df.rename({'review_scores_rating': 'rating'}, axis=1)
+#df = df.rename({'review_scores_rating': 'rating'}, axis=1)
 
 # Remove NaN
 df = df.dropna()
@@ -25,12 +25,12 @@ df['city'] = df['city'].apply(lambda x: x.strip())
 crime_cities = dfc["LGA"].unique()
 df = df[df['city'].isin((crime_cities))]
 
-# Convert beds and review to integer
-df = df.astype({'beds' : int, 'rating': int})
+# Convert beds to integer
+df = df.astype({'beds' : int})
 
 # Convert price to int
 df['price'] = df['price'].apply(lambda x: float(x.replace(',','').replace('$','')))
 df = df.astype({'price': int})
 
 # export
-df.to_csv('data/listings_cleaned.csv', index=True)
+df.to_csv('data/listings_cleaned.csv', index=False)
