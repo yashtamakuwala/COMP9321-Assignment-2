@@ -45,14 +45,16 @@ df = df[df['city'].isin((crime_cities))]
 # Convert beds to integer
 df = df.astype({'beds' : int})
 
+# Remove rows with esoteric property type
+s = df['property_type'].value_counts()
+major_types = s[s >= 15].index
+df = df[df['property_type'].isin(major_types)]
+
 # Normalize price
 df['price'] = df['price'].apply(normalize_price)
 
 # Put price to buckets
 df['price_range'] = df['price'].apply(decide_bucket)
-
-print(df)
-print(len(df))
 
 # export
 df.to_csv('data/listings_cleaned.csv', index=False)
