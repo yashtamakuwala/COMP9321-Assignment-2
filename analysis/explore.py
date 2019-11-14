@@ -94,6 +94,7 @@ df4['room_type'] = le_room_type.fit_transform(df4['room_type'])
 
 df4['zipcode'] = df4['zipcode'].apply(convert_to_str)
 df4['zipcode'] = le_zipcode.fit_transform(df4['zipcode'])
+
 print(list(le_property_type.classes_))
 #X axis would have columns "property_type","accommodates","beds","room_type","zipcode"
 Xaxis = df4.values[:, [0,1,2,3,4]] 

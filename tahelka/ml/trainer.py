@@ -46,13 +46,14 @@ def convert_to_type_and_clean(df3, df4, integer_columns, required_columns, addit
             df4[k] = df3[k].apply(convert_to_float)
             
     #adding additional columns in df4
-    for i in additional_columns:
-        df4[additional_columns] = df[additional_columns]
+    df4[additional_columns] = df[additional_columns]
 
     #the 5 columns that required for the ML algorithm         
-    df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price"]]
-    print(df4["accommodates"])
+    df4 = df4[["property_type","accommodates","beds","room_type","zipcode","price","street"]]
     df4 = df4.drop(df4[(df4.price > 10000.00)].index)
+    df4['street'] = df4['street'].apply(lambda x: x.split()[0].strip().lower() if x else None)
+    df4['street'] = df4['street'].apply(lambda x: x.replace(',',''))
+
     return df4
 
 
@@ -63,7 +64,7 @@ class Trainer:
         # the values of these columns would be converted to int
         integer_columns = ["bathrooms","bedrooms","minimum_nights","maximum_nights","beds"]
         # few more columns thar are strings
-        additional_columns = ["accommodates","property_type","bed_type","zipcode","room_type"]
+        additional_columns = ["accommodates","property_type","bed_type","zipcode","room_type","street"]
         for i in integer_columns:
             df[i] = df[i].fillna(int(-1))
         df3 = df[required_columns]
@@ -71,6 +72,8 @@ class Trainer:
         df4 = df3.copy()
         df4 = convert_to_type_and_clean(df3, df4, integer_columns,
                             required_columns, additional_columns)
+        a = df4["street"].unique()
+        print(sorted(a))
 
         '''
         The bins are decided here
@@ -86,7 +89,7 @@ class Trainer:
        
         #THe label encoder which does the preprocessing
         #where categorical data is converted to numerical.
-        
+
         le_property_type = LabelEncoder()
         le_room_type = LabelEncoder()
         le_zipcode = LabelEncoder()
@@ -94,6 +97,7 @@ class Trainer:
         #the 3 columns are updated with the preprocessed values
 
         #print(df4['property_type'].iloc[:5])
+        '''
         df4['property_type'] = le_property_type.fit_transform(df4['property_type'])
         df4['room_type'] = le_room_type.fit_transform(df4['room_type'])
         df4['zipcode'] = df4['zipcode'].apply(convert_to_str)
@@ -138,6 +142,7 @@ class Trainer:
         else:
             with open(filename, 'wb') as file:  
                 pickle.dump(entropy, file)
+        '''
 
 train_model = Trainer()
 train_model.train()
