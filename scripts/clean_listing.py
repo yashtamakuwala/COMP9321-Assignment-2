@@ -4,6 +4,21 @@ import pandas as pd
 def normalize_price(price_raw):
     return int(float(price_raw.replace(',','').replace('$','')))
 
+def decide_bucket(price):
+    buckets = [40, 50, 60, 70, 80, 90, 100, 120, 130, 145, 160, 190, 210, 250,
+               300, 500]
+
+    if price <= buckets[0]:
+        return f'<= ${buckets[0]}'
+
+    for index, bucket in enumerate(buckets):
+        if price > bucket:
+            continue
+
+        return f'${buckets[index - 1]} - ${bucket}'
+
+    return f'> ${buckets[-1]}'
+
 root = os.path.abspath(os.curdir)
 listing_path = os.path.join(root, 'data/listings.csv')
 clean_crime_path = os.path.join(root, 'data/crime_cleaned.csv')
@@ -32,6 +47,9 @@ df = df.astype({'beds' : int})
 
 # Normalize price
 df['price'] = df['price'].apply(normalize_price)
+
+# Put price to buckets
+df['price_range'] = df['price'].apply(decide_bucket)
 
 print(df)
 print(len(df))
