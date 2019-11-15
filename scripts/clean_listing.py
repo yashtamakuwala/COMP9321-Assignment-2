@@ -18,7 +18,7 @@ df = df.rename(map, axis=1)
 
 # Keep required columns
 required_columns = ['LGA_2011', 'beds', 'accommodates', 'property_type',
-                    'room_type', 'price', 'rating']
+                    'room_type', 'price', 'rating', 'bedrooms']
 df = df[required_columns]
 
 # Remove rows used for ML with NaN
