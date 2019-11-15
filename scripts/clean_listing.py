@@ -7,18 +7,6 @@ buckets = [40, 50, 60, 70, 80, 90, 100, 115, 125, 140, 150, 175, 200, 210,
 def normalize_price(price_raw):
     return int(float(price_raw.replace(',','').replace('$','')))
 
-def decide_bucket(price):
-    if price <= buckets[0]:
-        return f'<= ${buckets[0]}'
-
-    for index, bucket in enumerate(buckets[1:]):
-        if price > bucket:
-            continue
-
-        return f'${buckets[index - 1] + 1} - ${bucket}'
-
-    return f'> ${buckets[-1]}'
-
 # Load airbnb dataset
 root = os.path.abspath(os.curdir)
 listing_path = os.path.join(root, 'data/listings.csv')
@@ -42,7 +30,7 @@ df['LGA_2011'] = df['LGA_2011'].str.replace('Ku-Ring-Gai', 'Ku-ring-gai')
 df['LGA_2011'] = df['LGA_2011'].str.replace('City Of Kogarah', 'Kogarah')
 
 # Convert LGA to 2016
-conversion_path = os.path.join(root, 'data/lga_conversion_cleaned.csv')
+conversion_path = os.path.join(root, 'data/lga_conversion_clean.csv')
 dfco = pd.read_csv(conversion_path)
 df = df.merge(dfco, left_on='LGA_2011', right_on='LGA_NAME_2011')
 df = df.drop(['LGA_2011', 'LGA_NAME_2011'], axis=1)
@@ -59,8 +47,6 @@ df = df[df['property_type'].isin(major_types)]
 # Normalize price
 df['price'] = df['price'].apply(normalize_price)
 
-# Put price to buckets
-df['price_range'] = df['price'].apply(decide_bucket)
 
 # export
 df.to_csv('data/listings_clean.csv', index=False)

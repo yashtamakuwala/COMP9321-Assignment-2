@@ -15,11 +15,11 @@ df = df[df['LGA_CODE_2011'] < 20000]
 df = df[df['PERCENTAGE'] >= 50]
 
 # Drop unneeded columns
-df = df.drop(['LGA_CODE_2011', 'LGA_CODE_2016', 'RATIO'], axis=1)
+df = df.drop(['LGA_CODE_2011', 'LGA_CODE_2016', 'RATIO', 'PERCENTAGE'], axis=1)
 
 # Normalize names
-df['LGA_NAME_2011'] = df['LGA_NAME_2011'].str.replace(' \([A-Z]+\)', '')
-df['LGA_NAME_2016'] = df['LGA_NAME_2016'].str.replace(' \([A-Z]+\)', '')
+df['LGA_NAME_2011'] = df['LGA_NAME_2011'].str.replace(r' \([A-Z]+\)', '')
+df['LGA_NAME_2016'] = df['LGA_NAME_2016'].str.replace(r' \([A-Z]+\)', '')
 
 # export
 df.to_csv('data/lga_conversion_clean.csv', index=False)

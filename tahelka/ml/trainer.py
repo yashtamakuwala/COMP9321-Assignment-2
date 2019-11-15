@@ -119,7 +119,7 @@ class Trainer:
         #the 3 columns are updated with the preprocessed values
 
         #print(df4['property_type'].iloc[:5])
-        '''
+
         df4['property_type'] = le_property_type.fit_transform(df4['property_type'])
         df4['room_type'] = le_room_type.fit_transform(df4['room_type'])
         df4['zipcode'] = df4['zipcode'].apply(convert_to_str)
@@ -164,7 +164,6 @@ class Trainer:
         else:
             with open(filename, 'wb') as file:  
                 pickle.dump(entropy, file)
-        '''
 
 train_model = Trainer()
 train_model.train()
