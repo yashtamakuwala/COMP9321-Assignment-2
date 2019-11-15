@@ -2,7 +2,9 @@ A Data Analysis project that analyses Airbnb data of properties in Sydney, Austr
 
 To setup all the things before running the server:
 `pip3 install -r requirements.txt`
+
 `python3 db_setup.py`
+
 `python3 data_setup.py`
 
 To run the server:
