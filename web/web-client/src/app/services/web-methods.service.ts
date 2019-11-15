@@ -31,21 +31,14 @@ export class WebMethodsService {
 
   getQuote(quote: Quote): Observable<any> {
     const quoteUrl = this.API_URL + 'predictions';
-    // const httpOptionsKey = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type':  'application/json',
-    //     'Authorization': this.authenticationService.currentUserValue.token
-    //   })
-    // };
-    let headers = new HttpHeaders();
-    headers.set('Authorization', this.authenticationService.currentUserValue.token);
-    // httpOptions.headers = httpOptions.headers.set('Authorization', this.authenticationService.currentUserValue.token);
-    const params = new HttpParams()
+    let headers_ = new HttpHeaders();
+    headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
+    const params_ = new HttpParams()
       .set('zip_code', String(quote.zip_code))
       .set('property_type', quote.property_type)
       .set('room_type', quote.room_type)
       .set('guest_count', String(quote.guest_count))
       .set('bed_count', String(quote.bed_count));
-    return this.http.get(quoteUrl, {params: params, headers: headers});
+    return this.http.get(quoteUrl, {params: params_, headers: headers_});
   }
 }
