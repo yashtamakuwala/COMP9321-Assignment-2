@@ -1,6 +1,12 @@
 .idea/*
 
-data/**
+# Datasets
+data/listings.csv
+data/listings_clean.csv
+data/crime_clean.csv
+data/lga_conversion_clean.csv
+data/unemployment_clean.csv
+
 */.ipynb_checkpoints/*
 **/.DS_Store
 *.db
