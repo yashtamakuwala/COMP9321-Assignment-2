@@ -9,15 +9,14 @@ api = Namespace('predictions')
 @api.route('')
 class PriceRange(Resource):
     def get(self):
-
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        user_id = TokenAuthenticator(auth_header, False).authenticate()
 
-        lga = int(request.args.get('lga'))
-        p_type = str(request.args.get('property_type'))
-        r_type = str(request.args.get('room_type'))
-        g_count = int(request.args.get('guest_count'))
-        b_count = int(request.args.get('bed_count'))
+        lga = request.args['lga']
+        p_type = request.args['property_type']
+        r_type = request.args['room_type']
+        g_count = request.args['guest_count']
+        b_count = request.args['bed_count']
 
         # TODO: call predictor function here
         low, high = 50, 90

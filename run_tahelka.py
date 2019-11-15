@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 from apis import blueprint as api_blueprint
 from apis import api
 
 app = Flask(__name__)
+CORS(app)
 
 # Read config
 app.config.from_pyfile('config.py')
