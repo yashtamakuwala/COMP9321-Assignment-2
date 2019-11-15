@@ -31,11 +31,14 @@ dtype_mapping = {
 }
 
 # Dump DF
-df.to_sql('properties_df', con=Engine, if_exists='replace', dtype = dtype_mapping, index_label='id')
+df.to_sql('properties_df', con=Engine, if_exists='replace',
+          dtype=dtype_mapping, index_label='id')
 
 # Copy the DF table to our sql table
 sql = ('insert into properties '
-       'select id, lga, property_type, room_type, guest_count, bed_count, rating, price '
+       'select '
+       '    id, lga, property_type, room_type, guest_count, bed_count, '
+       '    rating, price '
        'from properties_df')
 Engine.execute(sql)
 
