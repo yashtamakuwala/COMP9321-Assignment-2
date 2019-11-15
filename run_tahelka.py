@@ -10,7 +10,7 @@ app.config.from_pyfile('config.py')
 # Register blueprint
 app.register_blueprint(api_blueprint)
 
-# Register error handler
+# Register app error handlers
 @app.errorhandler(404)
 def handle_not_found(error):
     # Analytics

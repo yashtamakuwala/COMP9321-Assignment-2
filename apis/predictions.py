@@ -13,7 +13,7 @@ class PriceRange(Resource):
         auth_header = request.headers.get('Authorization')
         user_id = TokenAuthenticator(auth_header, True).authenticate()
 
-        zip_code = int(request.args.get('zip_code'))
+        lga = int(request.args.get('lga'))
         p_type = str(request.args.get('property_type'))
         r_type = str(request.args.get('room_type'))
         g_count = int(request.args.get('guest_count'))

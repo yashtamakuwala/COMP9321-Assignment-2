@@ -9,12 +9,12 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 api = Namespace('properties')
 
 listing = api.model('Property', {
-    'zip_code' : fields.Integer(),
-    'property_type' : fields.String(),
-    'room_type' : fields.String(),
-    'guest_count' : fields.Integer(),
-    'bed_count' : fields.Integer(),
-    'price_range' : fields.String(),
+    'lga' : fields.Integer(required=True),
+    'property_type' : fields.String(required=True),
+    'room_type' : fields.String(required=True),
+    'guest_count' : fields.Integer(required=True),
+    'bed_count' : fields.Integer(required=True),
+    'price' : fields.Integer(required=True),
 })
 
 # TODO: check for user role
@@ -26,11 +26,12 @@ class PropertyList(Resource):
         auth_header = request.headers.get('Authorization')
         user_id = TokenAuthenticator(auth_header, True).authenticate()
 
-        start = int(request.args.get('start'))
-        limit = int(request.args.get('limit'))
+        start = int(request.args.get('start', 0))
+        limit = int(request.args.get('limit', 100))
+        end = start + limit
 
         session = Session()
-        records = session.query(Property).order_by(Property.id)[start:limit]
+        records = session.query(Property).order_by(Property.id)[start:end]
 
         respJson = list()
         for record in records:
@@ -40,24 +41,25 @@ class PropertyList(Resource):
 
         # Analytics
 
-        msg = {'data':respJson}
+        msg = {'data': respJson}
         return msg, 200
 
     def post(self):
         auth_header = request.headers.get('Authorization')
         user_id = TokenAuthenticator(auth_header, True).authenticate()
 
-        zip_code = request.json['zip_code']
+        lga = request.json['lga']
         p_type = request.json['property_type']
         r_type = request.json['room_type']
         g_count = request.json['guest_count']
         b_count = request.json['bed_count']
-        p_range = request.json['price_range']
+        price = request.json['price']
 
-        if areFieldsEmpty(zip_code, p_range, p_type, g_count, b_count, r_type):
+        if areFieldsEmpty(lga, price, p_type, g_count, b_count, r_type):
             raise BadRequest
 
-        new_property = Property(zip_code, p_type, r_type, g_count, b_count, p_range)
+        new_property = Property(lga, p_type, r_type, g_count, b_count, None,
+                                price)
         session = Session()
         session.add(new_property)
         session.commit()
@@ -97,19 +99,19 @@ class Properties(Resource):
         if prop is None:
             raise NotFound
 
-        zip_code = request.json.get('zip_code')
+        lga = request.json.get('lga')
         p_type = request.json.get('property_type')
         r_type = request.json.get('room_type')
         g_count = request.json.get('guest_count')
         b_count = request.json.get('bed_count')
-        p_range = request.json.get('price_range')
+        price = request.json.get('price')
 
         # Empty request
-        if areFieldsEmpty(zip_code, p_range, p_type, g_count, b_count, r_type):
+        if areFieldsEmpty(lga, price, p_type, g_count, b_count, r_type):
             raise BadRequest
 
-        if zip_code is not None:
-            prop.zip_code = zip_code
+        if lga is not None:
+            prop.lga = lga
 
         if p_type is not None:
             prop.property_type = p_type
@@ -123,8 +125,8 @@ class Properties(Resource):
         if b_count is not None:
             prop.bed_count = b_count
 
-        if p_range is not None:
-            prop.price_range = p_range
+        if price is not None:
+            prop.price = price
 
         session.commit()
 
@@ -163,19 +165,19 @@ class Properties(Resource):
         if prop is None:
             raise NotFound
 
-        zip_code = request.json.get('zip_code')
+        lga = request.json.get('lga')
         p_type = request.json.get('property_type')
         r_type = request.json.get('room_type')
         g_count = request.json.get('guest_count')
         b_count = request.json.get('bed_count')
-        p_range = request.json.get('price_range')
+        price = request.json.get('price')
 
-        prop.zip_code = zip_code
+        prop.lga = lga
         prop.property_type = p_type
         prop.room_type = r_type
         prop.guest_count = g_count
         prop.bed_count = b_count
-        prop.price_range = p_range
+        prop.price = price
 
         session.commit()
 
@@ -183,8 +185,3 @@ class Properties(Resource):
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
-
-
-
-
-

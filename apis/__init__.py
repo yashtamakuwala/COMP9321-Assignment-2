@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask_restplus import Api
-from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden
+from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, NotFound
 
 from apis.session import api as session
 from apis.user import api as user
@@ -25,6 +25,13 @@ def handle_bad_request(error):
 
     response = {"message": "The request parameters are invalid."}
     return response, 400
+
+@api.errorhandler(NotFound)
+def handle_not_found(error):
+    # Analytics
+
+    response = {"message": "Resource not found."}
+    return response, 404
 
 @api.errorhandler(Unauthorized)
 def handle_unauthorized(error):
