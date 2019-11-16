@@ -89,6 +89,9 @@ export class GetQuoteComponent implements OnInit {
       guestCount: new FormControl(),
       bedCount: new FormControl(),
     });
+    this.myform.controls.LGA.setValue(this.LGAArray[0], {onlySelf: true});
+    this.myform.controls.propertyType.setValue(this.propertyTypeArray[0], {onlySelf: true});
+    this.myform.controls.roomType.setValue(this.roomTypeArray[0], {onlySelf: true});
   }
   getQuote(event) {
     event.preventDefault();
