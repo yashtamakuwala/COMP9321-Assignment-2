@@ -22,20 +22,27 @@
         <select formControlName="roomType" class="form-control" id="roomType">
           <option *ngFor="let i of roomTypeArray">{{i}}</option>
         </select>
-<!--        <input formControlName="roomType" type="text" class="form-control" id="roomType" placeholder="Room Type">-->
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="guestCount">Guest Count</label>
+      <div class="form-group col-md-4 ">
+        <label for="guestCount" class="required">Guest Count (1-16)</label>
         <input formControlName="guestCount" type="number" class="form-control" id="guestCount" placeholder="Guest Count">
+        <span *ngIf="(this.myform.get('guestCount').dirty || this.myform.get('guestCount').touched) &&
+          (this.myform.get('guestCount').invalid && this.myform.get('guestCount').errors.required)">
+          Guest Count between 1-16
+        </span>
       </div>
       <div class="form-group col-md-4">
-        <label for="bedCount">Bed Count</label>
+        <label for="bedCount" class="required">Bed Count (0-19)</label>
         <input formControlName="bedCount" type="number" class="form-control" id="bedCount" placeholder="Bed Count">
+        <span *ngIf="(this.myform.get('bedCount').dirty || this.myform.get('bedCount').touched) &&
+          (this.myform.get('bedCount').invalid && this.myform.get('bedCount').errors.required)">
+          Bed Count between 0-19
+        </span>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary" >Get Quote</button>
+    <button *ngIf="this.myform.valid" type="submit" class="btn btn-primary" >Get Quote</button>
   </form>
 </div>
 
