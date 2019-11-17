@@ -5,11 +5,11 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.ml.trainer import Trainer
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('model_trainings')
+api = Namespace('model')
 
 @api.route('')
 class Training(Resource):
-    def post(self):
+    def put(self):
 
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
