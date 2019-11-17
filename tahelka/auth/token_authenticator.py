@@ -1,4 +1,5 @@
 from flask import current_app
+from flask import g
 import jwt
 from jwt.exceptions import InvalidTokenError
 import time
@@ -16,6 +17,9 @@ class TokenAuthenticator:
         payload = self.decode_token()
         TokenAuthenticator.validate_payload(payload)
 
+        # Set the user_id as global
+        g.user_id = payload['id']
+
         # Check expiry
         if TokenAuthenticator.is_expired(payload):
             raise Unauthorized
@@ -23,8 +27,6 @@ class TokenAuthenticator:
         # Check role
         if self.must_be_admin and 'is_admin' not in payload:
             raise Forbidden
-
-        return payload['id']
 
     def decode_token(self):
         secret = current_app.config['JWT_SECRET']
