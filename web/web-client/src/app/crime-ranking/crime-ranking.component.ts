@@ -42,7 +42,6 @@ export class CrimeRankingComponent implements OnInit {
     event.preventDefault();
     this.webservice.getRanking(this.myform.value, 'crime_rankings').subscribe(success => {
       this.parseResponse(success.data);
-      console.log(success);
     }, error => {
       console.log(error);
     });
