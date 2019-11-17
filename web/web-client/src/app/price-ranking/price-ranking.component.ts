@@ -7,6 +7,8 @@ import {ReactiveFormsModule,
   FormControl,
   Validators,
   FormBuilder} from '@angular/forms';
+import {WebMethodsService} from '../services/web-methods.service';
+import {PriceRankingResponse} from '../models/PriceRankingResponse';
 
 @Component({
   selector: 'app-price-ranking',
@@ -25,7 +27,8 @@ export class PriceRankingComponent implements OnInit {
     '20',
     'all'
   ];
-  constructor(private authenticationService: AuthenticationService, private router: Router) {
+  responseArray = Array<PriceRankingResponse>();
+  constructor(private webservice: WebMethodsService, private authenticationService: AuthenticationService, private router: Router) {
     this.myform = new FormGroup({
       order: new FormControl(),
       limit: new FormControl()
@@ -36,8 +39,16 @@ export class PriceRankingComponent implements OnInit {
 
   ngOnInit() {
   }
+  parseResponse(response: Array<PriceRankingResponse>) {
+    this.responseArray = response;
+  }
   getPriceRanking(event) {
     event.preventDefault();
+    this.webservice.getPriceRanking(this.myform.value, 'price_rankings').subscribe(success => {
+      this.parseResponse(success.data);
+    }, error => {
+      console.log(error);
+    });
   }
   logout() {
     this.authenticationService.logout();

@@ -1,16 +1,20 @@
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
+<<<<<<< HEAD
 from tahelka.ml.predictor import Predictor
+=======
+from tahelka.analytics.recorder import Recorder
+>>>>>>> 8c68da52bbcbfd9c273699dc752732bb0e15acf4
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('predictions')
 
 @api.route('')
-class PriceRange(Resource):
+class Predictions(Resource):
     def get(self):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, False).authenticate()
+        TokenAuthenticator(auth_header, False).authenticate()
 
         lga = request.args['lga']
         p_type = request.args['property_type']
@@ -21,4 +25,8 @@ class PriceRange(Resource):
         p  = Predictor(lga, p_type, r_type, g_count, b_count)
         msg = p.predict()
 
-        return msg, 200
+        status_code = 200
+        record = Recorder('predictions', status_code)
+        record.recordUsage()
+
+        return msg, status_code

@@ -5,6 +5,7 @@ import {Observable} from 'rxjs';
 import {NewUser} from '../models/NewUser';
 import {Quote} from '../models/Quote';
 import {AuthenticationService} from './authentication.service';
+import {PriceRanking} from '../models/PriceRanking';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -41,4 +42,14 @@ export class WebMethodsService {
       .set('bed_count', String(quote.bed_count));
     return this.http.get(quoteUrl, {params: params_, headers: headers_});
   }
+  getPriceRanking(priceRanking: PriceRanking, functionName: string): Observable<any> {
+    const queryUrl = this.API_URL + functionName;
+    let headers_ = new HttpHeaders();
+    headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
+    const params_ = new HttpParams()
+      .set('order', priceRanking.order)
+      .set('limit', priceRanking.limit);
+    return this.http.get(queryUrl, {params: params_, headers: headers_});
+  }
+
 }
