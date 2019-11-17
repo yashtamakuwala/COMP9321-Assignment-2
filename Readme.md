@@ -11,13 +11,13 @@ To run the server:
 ```
 python3 run_tahelka.py
 ```
-To run the you must have node.js installed with npm bundled. You can download from the below link
+To run the client, you must have node.js installed with npm bundled. You can download from the below link
 ```
 https://nodejs.org/en/download/
 ```
 You will need angular CLI to run the development of Web-Client
 ```
-npm install -g @angular/cli 
+npm install -g @angular/cli
 ```
 Navigate to the web client folder and install dependencies
 ```
