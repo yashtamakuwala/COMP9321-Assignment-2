@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from tahelka.ml.crime_level_preparer import CrimeDataframePreparer
 from tahelka.ml.unemp_level_preparer import UnempDataframePreparer
-
+from werkzeug.exceptions import BadRequest
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 
@@ -30,14 +30,23 @@ class Predictor:
         with open(filename, 'rb') as file:
             loaded_model = pickle.load(file)
 
-        self.property_type = property_type_encoder.transform([self.property_type])[0]
-        self.room_type = room_type_encoder.transform([self.room_type])[0]
+        try:
+            self.property_type = property_type_encoder.transform([self.property_type])[0]
+            self.room_type = room_type_encoder.transform([self.room_type])[0]
+        except(ValueError): # If unexpected property type and room type input
+            raise BadRequest
 
         dfc = CrimeDataframePreparer.prepare()
-        crime_level = dfc.loc[dfc['LGA'] == self.lga, 'crime_level'].iloc[0]
+        crime_levels = dfc.loc[dfc['LGA'] == self.lga, 'crime_level']
+        if len(crime_levels) == 0: # If no such LGA, raise error
+            raise BadRequest
+        crime_level = crime_levels.iloc[0]
 
         dfu = UnempDataframePreparer.prepare()
-        unemp_level = dfu.loc[dfu['LGA'] == self.lga, 'unemp_level'].iloc[0]
+        unemp_levels = dfu.loc[dfu['LGA'] == self.lga, 'unemp_level']
+        if len(unemp_levels) == 0: # If no such LGA, raise error
+            raise BadRequest
+        unemp_level = unemp_levels.iloc[0]
 
         X_test = [[self.property_type, self.room_type, self.guest_count, self.bed_count, crime_level, unemp_level]]
         predicted_result = loaded_model.predict(X_test)
