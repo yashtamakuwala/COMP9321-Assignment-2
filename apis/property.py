@@ -20,7 +20,7 @@ listing = api.model('Property', {
 })
 
 parser = api.parser()
-parser.add_argument('Authorization', description="Session token", location="headers")
+parser.add_argument('Authorization', location="headers")
 
 @api.route('')
 class PropertyList(Resource):
