@@ -11,13 +11,13 @@ api = Namespace('crime_rankings')
 @api.route('')
 class CrimeRankings(Resource):
     def get(self):
-        
+
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 
         limit = request.args.get('limit', 5)
         order = str(request.args.get('order', 'ascending'))
-       
+
         order = order == "ascending"    #order is true for ascending, false otherwise
 
         if limit == "all" :
@@ -28,7 +28,7 @@ class CrimeRankings(Resource):
         data = CrimeRanker(limit, order).rank()
 
         status_code = 200
-        record = Recorder('crime_ranking', status_code)
+        record = Recorder('crime_rankings', status_code)
         record.recordUsage()
 
         resp = {'data' : data }

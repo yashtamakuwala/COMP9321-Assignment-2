@@ -27,7 +27,7 @@ class Predictions(Resource):
         }
 
         status_code = 200
-        record = Recorder('prediction', status_code)
+        record = Recorder('predictions', status_code)
         record.recordUsage()
 
         return msg, status_code

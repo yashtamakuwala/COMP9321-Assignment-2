@@ -11,13 +11,13 @@ api = Namespace('rating_rankings')
 @api.route('')
 class RatingRankings(Resource):
     def get(self):
-        
+
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 
         limit = request.args.get('limit', 5)
         order = str(request.args.get('order', 'ascending'))
-       
+
         order = order == "ascending"    #order is true for ascending, false otherwise
 
         if limit == "all" :
@@ -29,7 +29,7 @@ class RatingRankings(Resource):
 
 
         status_code = 200
-        record = Recorder('rating_ranking', status_code)
+        record = Recorder('rating_rankings', status_code)
         record.recordUsage()
 
         resp = {'data' : data }

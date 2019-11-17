@@ -36,10 +36,10 @@ class Users(Resource):
         session.commit()
 
         # Put the current user id in global
-        g.user_id = user.id
+        g.user_id = new_user.id
 
         # Analytics here
-        Recorder("Register", 201).recordUsage()
+        Recorder("register", 201).recordUsage()
 
         # method = request.method
         # ip_address = request.remote_addr

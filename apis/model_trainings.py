@@ -19,7 +19,7 @@ class Training(Resource):
         }
 
         status_code = 200
-        record = Recorder('model_training', status_code)
+        record = Recorder('put_model', status_code)
         record.recordUsage()
 
         return msg, status_code
