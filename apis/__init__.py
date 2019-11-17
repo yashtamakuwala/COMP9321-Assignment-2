@@ -8,6 +8,7 @@ from apis.property import api as property
 from apis.analytics import api as analytics
 from apis.predictions import api as predictions
 from apis.model_trainings import api as model_trainings
+from apis.price_rankings import api as price_rankings
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
 api = Api(blueprint)    #TODO Add metadata
@@ -18,6 +19,7 @@ api.add_namespace(property)
 api.add_namespace(analytics)
 api.add_namespace(predictions)
 api.add_namespace(model_trainings)
+api.add_namespace(price_rankings)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):
