@@ -11,7 +11,7 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 api = Namespace('properties')
 
 listing = api.model('Property', {
-    'lga' : fields.Integer(required=True),
+    'lga' : fields.String(required=True),
     'property_type' : fields.String(required=True),
     'room_type' : fields.String(required=True),
     'guest_count' : fields.Integer(required=True),
@@ -19,11 +19,15 @@ listing = api.model('Property', {
     'price' : fields.Integer(required=True),
 })
 
-# TODO: check for user role
+parser = api.parser()
+parser.add_argument('Authorization', description="Session token", location="headers")
+
 @api.route('')
-@api.param('start')
-@api.param('limit')
 class PropertyList(Resource):
+    @api.doc(description="Get all properties")
+    @api.param('start')
+    @api.param('limit')
+    @api.expect(parser)
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -50,6 +54,7 @@ class PropertyList(Resource):
 
         return msg, status_code
 
+    @api.doc(description="Create property listing", parser = parser, body = listing)
     def post(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -79,7 +84,10 @@ class PropertyList(Resource):
         return response, status_code
 
 @api.route('/<int:id>')
+@api.param('id','The Property identifier')
 class Properties(Resource):
+
+    @api.doc(description='Get Property by id', parser= parser)
     def get(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -102,6 +110,7 @@ class Properties(Resource):
 
         return prop, status_code
 
+    @api.doc(description='Partial update Property by id', parser= parser)
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -152,6 +161,7 @@ class Properties(Resource):
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, status_code
 
+    @api.doc(description='Delete Property by id', parser= parser)
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -174,6 +184,7 @@ class Properties(Resource):
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, status_code
 
+    @api.doc(description='Update Property by id', parser= parser)
     def put(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
