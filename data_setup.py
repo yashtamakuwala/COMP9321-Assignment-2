@@ -1,5 +1,5 @@
-import scripts.clean_crime
-import scripts.clean_unemployment
-import scripts.clean_lga
-import scripts.clean_listing
-import scripts.dump_to_db
+from scripts import clean_crime
+from scripts import clean_unemployment
+from scripts import clean_lga
+from scripts import clean_listing
+from scripts import dump_to_db
