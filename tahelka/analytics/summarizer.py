@@ -27,7 +27,6 @@ class Summarizer:
         summary['actions'] = per_action_count
         summary['status_codes'] = status_code_count
 
-        print(summary)
         return summary
 
     def get_total(self):

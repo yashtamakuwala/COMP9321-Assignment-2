@@ -92,8 +92,6 @@ class Properties(Resource):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
-        print(hasattr(g, 'user_id'))
-
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
 

@@ -13,10 +13,8 @@ class Usage(Base):
     used_at = Column(DateTime, nullable=False)
 
     def __init__(self, user_id, ip_address, action, status_code):
-        print("Creating user __init__")
         self.user_id = user_id
         self.ip_address = ip_address
         self.action = action
         self.status_code = status_code
-        self.used_at = datetime.date(datetime.today())   #TODO: change to epoch time
-
+        self.used_at = datetime.date(datetime.today())
