@@ -8,7 +8,7 @@ from tahelka.ml.crime_level_preparer import CrimeDataframePreparer
 from tahelka.ml.unemp_level_preparer import UnempDataframePreparer
 
 
-warnings.filterwarnings("ignore", category=DeprecationWarning) 
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 class Predictor:
     PRICE_BUCKETS = [-1, 40, 60, 80, 100, 125, 150, 200, 250, 300, 500, 99_999]
@@ -25,14 +25,14 @@ class Predictor:
         room_type_encoding_file= open('ml_models/room_type_encoding.sav', 'rb')
         property_type_encoder = pickle.load(property_encoding_file)
         room_type_encoder = pickle.load(room_type_encoding_file)
-        
-        filename = 'price_prediction_model.sav'
-        with open(filename, 'rb') as file:  
+
+        filename = 'model.sav'
+        with open(filename, 'rb') as file:
             loaded_model = pickle.load(file)
 
         self.property_type = property_type_encoder.transform([self.property_type])[0]
         self.room_type = room_type_encoder.transform([self.room_type])[0]
-  
+
         dfc = CrimeDataframePreparer.prepare()
         crime_level = dfc.loc[dfc['LGA'] == self.lga, 'crime_level'].iloc[0]
 
@@ -41,8 +41,8 @@ class Predictor:
 
         X_test = [[self.property_type, self.room_type, self.guest_count, self.bed_count, crime_level, unemp_level]]
         predicted_result = loaded_model.predict(X_test)
-        
-        return self.find_range(predicted_result[0], Predictor.PRICE_BUCKETS, 0, 0)    
+
+        return self.find_range(predicted_result[0], Predictor.PRICE_BUCKETS, 0, 0)
 
     def find_range(self, result, buckets, lower ,upper):
         bucket_len = len(buckets)
@@ -51,5 +51,3 @@ class Predictor:
         elif result == bucket_len - 1:
             return {'Lower': buckets[bucket_len - 2]}
         return {'Lower': buckets[result - 1],'Upper': buckets[result]}
-        
-

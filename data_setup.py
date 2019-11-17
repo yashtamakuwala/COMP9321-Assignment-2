@@ -7,6 +7,7 @@ from scripts import dump_to_db
 from alchemy import Session
 from tahelka.models.User import User
 from tahelka.auth.hash_generator import HashGenerator
+from tahelka.ml.trainer import Trainer
 
 def createAdmin():
     session = Session()
@@ -18,3 +19,4 @@ def createAdmin():
     session.commit()
 
 createAdmin()
+Trainer().train()

@@ -23,17 +23,15 @@ class Trainer:
     UNEMP_BUCKETS = [-1, 2, 4, 6, 8, 100_000]
 
     def train(self):
-        df = self.prepare_ml_df()   
+        df = self.prepare_ml_df()
 
         # Encode the categorical attributes
         le_property_type = LabelEncoder()
         le_room_type = LabelEncoder()
-        print(df['room_type'])
         df['property_type'] = le_property_type.fit_transform(df['property_type'])
         df['room_type'] = le_room_type.fit_transform(df['room_type'])
 
         # Get X & Y
-        print(df.iloc[:10])
         Xaxis = df.values[:, [0,1,2,3,5,6]].astype('int')
         Yaxis = df.values[:,4].astype('int')
 
@@ -79,4 +77,3 @@ class Trainer:
         df = df.drop(['lga'], axis=1)
 
         return df
-
