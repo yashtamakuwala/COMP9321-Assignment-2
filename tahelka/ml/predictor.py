@@ -2,49 +2,54 @@ import os
 import warnings
 import pickle
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from tahelka.ml.crime_level_preparer import CrimeDataframePreparer
+from tahelka.ml.unemp_level_preparer import UnempDataframePreparer
+
+
 warnings.filterwarnings("ignore", category=DeprecationWarning) 
 
 class Predictor:
-    def __init__(self, zip_code, property_type, room_type, guest_count,
+    PRICE_BUCKETS = [-1, 40, 60, 80, 100, 125, 150, 200, 250, 300, 500, 99_999]
+    def __init__(self,lga, property_type, room_type, guest_count,
                  bed_count):
-        self.zip_code = zip_code
+        self.lga = lga
         self.property_type = property_type
         self.room_type = room_type
         self.guest_count = guest_count
         self.bed_count = bed_count
 
     def predict(self):
-        #X axis would have columns "property_type","accommodates","beds","room_type","zipcode"
-        # need to refer to the values of label encoders for X_test values
-        le_property_type = LabelEncoder()
-        le_room_type = LabelEncoder()
-        le_zipcode = LabelEncoder()
-        # The encoding for property_type
-        le_property_type.fit(['Aparthotel', 'Apartment', 'Barn', 'Bed and breakfast', 'Boat', 
-        'Boutique hotel', 'Bungalow', 'Cabin', 'Camper/RV', 'Campsite', 'Casa particular (Cuba)', 
-        'Castle', 'Cave', 'Chalet', 'Condominium', 'Cottage', 'Dome house', 'Earth house', 'Farm stay', 
-        'Guest suite', 'Guesthouse', 'Heritage hotel (India)', 'Hostel', 'Hotel', 'House', 
-        'Island', 'Loft', 'Minsu (Taiwan)', 'Other', 'Resort', 'Serviced apartment', 
-        'Tent', 'Tiny house', 'Tipi', 'Townhouse', 'Train', 'Treehouse', 'Villa', 'Yurt'])
-        #encoding for room_type
-        le_room_type.fit(['Entire home/apt', 'Hotel room', 'Private room', 'Shared room'])
-
-        #stored model for zip code
-        zip_code_file = open('zipcode_encoder.pkl', 'rb')
-        le_zipcode = pickle.load(zip_code_file)
-        zip_code_file.close()
-
+        property_encoding_file = open('ml_models/property_type_encoding.sav', 'rb')
+        room_type_encoding_file= open('ml_models/room_type_encoding.sav', 'rb')
+        property_type_encoder = pickle.load(property_encoding_file)
+        room_type_encoder = pickle.load(room_type_encoding_file)
+        
         filename = 'price_prediction_model.sav'
         with open(filename, 'rb') as file:  
             loaded_model = pickle.load(file)
-        #X axis would have columns "property_type","accommodates","beds","room_type","zipcode"
-        self.property_type = le_property_type.transform(self.property_type)
-        self.room_type = le_room_type.transform(self.room_type)
-        self.zip_code = le_zipcode.transform(self.zip_code)
-        X_test = [[self.property_type,self.guest_count,self.bed_count,self.room_type,self.zip_code]]
+
+        self.property_type = property_type_encoder.transform([self.property_type])[0]
+        self.room_type = room_type_encoder.transform([self.room_type])[0]
+  
+        dfc = CrimeDataframePreparer.prepare()
+        crime_level = dfc.loc[dfc['LGA'] == self.lga, 'crime_level'].iloc[0]
+
+        dfu = UnempDataframePreparer.prepare()
+        unemp_level = dfu.loc[dfu['LGA'] == self.lga, 'unemp_level'].iloc[0]
+
+        X_test = [[self.property_type, self.room_type, self.guest_count, self.bed_count, crime_level, unemp_level]]
         predicted_result = loaded_model.predict(X_test)
-        print(predicted_result)     
+        
+        return self.find_range(predicted_result[0], Predictor.PRICE_BUCKETS, 0, 0)    
 
-
+    def find_range(self, result, buckets, lower ,upper):
+        bucket_len = len(buckets)
+        if result == 1:
+            return {'Upper': buckets[1]}
+        elif result == bucket_len - 1:
+            return {'Lower': buckets[bucket_len - 2]}
+        return {'Lower': buckets[result - 1],'Upper': buckets[result]}
+        
 
