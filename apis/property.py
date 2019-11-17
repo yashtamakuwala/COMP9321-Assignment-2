@@ -1,5 +1,5 @@
 from alchemy import Session
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from tahelka.models.Usage import Usage
@@ -26,7 +26,7 @@ listing = api.model('Property', {
 class PropertyList(Resource):
     def get(self):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
 
         start = int(request.args.get('start', 0))
         limit = int(request.args.get('limit', 100))
@@ -43,15 +43,17 @@ class PropertyList(Resource):
 
         # Analytics
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_index', 200)
+        status_code = 200
+        record = Recorder(ip_address, 'property_index', status_code)
         record.recordUsage()
 
         msg = {'data': respJson}
-        return msg, 200
+
+        return msg, status_code
 
     def post(self):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
 
         lga = request.json['lga']
         p_type = request.json['property_type']
@@ -71,17 +73,20 @@ class PropertyList(Resource):
 
         # Analytics
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_create', 201)
+        status_code = 201
+        record = Recorder(ip_address, 'property_create', status_code)
         record.recordUsage()
 
         response = {'message' : 'Property Added.'}
-        return response, 201
+        return response, status_code
 
 @api.route('/<int:id>')
 class Properties(Resource):
     def get(self, id):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
+
+        print(hasattr(g, 'user_id'))
 
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
@@ -93,16 +98,16 @@ class Properties(Resource):
         prop.pop('_sa_instance_state', None)
 
         # Analytics
-        method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_show', 200)
+        status_code = 200
+        record = Recorder(ip_address, 'property_show', status_code)
         record.recordUsage()
 
-        return prop, 200
+        return prop, status_code
 
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
 
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
@@ -143,17 +148,17 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_patch', 200)
+        status_code = 200
+        record = Recorder(ip_address, 'property_patch', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
-        return msg, 200
+        return msg, status_code
 
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
 
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
@@ -166,17 +171,17 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_delete', 200)
+        status_code = 200
+        record = Recorder(ip_address, 'property_delete', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
-        return msg, 200
+        return msg, status_code
 
     def put(self, id):
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        TokenAuthenticator(auth_header, True).authenticate()
 
         session = Session()
         prop = session.query(Property).filter(Property.id == id).first()
@@ -202,10 +207,10 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'property_put', 200)
+        status_code = 200
+        record = Recorder(ip_address, 'property_put', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
-        return msg, 200
+        return msg, status_code

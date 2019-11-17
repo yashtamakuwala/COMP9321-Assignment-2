@@ -1,5 +1,5 @@
 from alchemy import Session
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 from flask_restplus import Namespace, fields, Resource
 from tahelka.auth.hash_generator import HashGenerator
 from tahelka.models.User import User
@@ -35,9 +35,12 @@ class Users(Resource):
         session.add(new_user)
         session.commit()
 
+        # Put the current user id in global
+        g.user_id = user.id
+
         # Analytics here
         ip_address = request.remote_addr
-        Recorder(new_user.id, ip_address, "Register", 201).recordUsage()
+        Recorder(ip_address, "Register", 201).recordUsage()
 
         # method = request.method
         # ip_address = request.remote_addr

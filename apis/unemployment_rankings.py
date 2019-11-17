@@ -4,15 +4,16 @@ from flask_restplus import Namespace, fields, Resource
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.insight.unemployment_ranker import UnemploymentRanker
+from tahelka.analytics.recorder import Recorder
 
 api = Namespace('unemployment_rankings')
 
 @api.route('')
-class Price_Rankings(Resource):
+class UnemploymentRankings(Resource):
     def get(self):
         
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, False).authenticate()
+        TokenAuthenticator(auth_header, False).authenticate()
 
         limit = request.args.get('limit', 5)
         order = str(request.args.get('order', 'ascending'))
@@ -26,5 +27,10 @@ class Price_Rankings(Resource):
 
         data = UnemploymentRanker(limit, order).rank()
 
+        ip_address = request.remote_addr
+        status_code = 200
+        record = Recorder(ip_address, 'unemployment_ranking', status_code)
+        record.recordUsage()
+
         resp = {'data' : data }
-        return resp, 200
+        return resp, status_code

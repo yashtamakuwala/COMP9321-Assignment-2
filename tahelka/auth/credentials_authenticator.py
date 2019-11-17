@@ -3,6 +3,7 @@ from tahelka.auth.hash_matcher import HashMatcher
 from tahelka.auth.token_generator import TokenGenerator
 from tahelka.models.User import User
 from werkzeug.exceptions import Unauthorized
+from flask import g
 
 class CredentialsAuthenticator:
     def __init__(self, email, password):
@@ -14,9 +15,13 @@ class CredentialsAuthenticator:
         if user is None:
             raise Unauthorized
 
+
         matcher = HashMatcher(self.password, user.password)
         if not matcher.is_matched():
             raise Unauthorized
+
+        # Put the authenticated user as current user in global
+        g.user_id = user.id
 
         return user, TokenGenerator(user).generate()
 
