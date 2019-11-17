@@ -8,6 +8,7 @@ import { SignupComponent } from './signup/signup.component';
 import { GetQuoteComponent } from './get-quote/get-quote.component';
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { PriceRankingComponent } from './price-ranking/price-ranking.component';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     AppComponent,
     SignupComponent,
     GetQuoteComponent,
-    LoginComponent
+    LoginComponent,
+    PriceRankingComponent
   ],
   imports: [
     BrowserModule,
