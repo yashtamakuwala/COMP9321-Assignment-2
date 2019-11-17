@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 from apis import blueprint as api_blueprint
 from apis import api
 
 app = Flask(__name__)
+CORS(app)
 
 # Read config
 app.config.from_pyfile('config.py')
@@ -10,7 +12,7 @@ app.config.from_pyfile('config.py')
 # Register blueprint
 app.register_blueprint(api_blueprint)
 
-# Register error handler
+# Register app error handlers
 @app.errorhandler(404)
 def handle_not_found(error):
     # Analytics

@@ -3,7 +3,7 @@ from sqlalchemy import func
 from tahelka.models.Usage import Usage
 
 class Summarizer:
-    def __init__(self, date_start=None, date_end=None, user_id=None):
+    def __init__(self, date_start, date_end, user_id):
         self.date_start = date_start
         self.date_end = date_end
         self.user_id = user_id

@@ -2,21 +2,26 @@
   <form [formGroup] = "myform" (submit)="onSignUp($event)">
     <h2 class="text-center">Sign up</h2>
     <div class="form-group">
+      <label for="email" class="required">Email</label>
       <input formControlName="email" type="text" id="email" class="form-control" placeholder="Email" required="required">
     </div>
     <div class="form-group">
-      <input formControlName="password" type="password" id="password" class="form-control" placeholder="Password" required="required">
+      <label for="password" class="required">Password</label>
+      <input (click)="this.hasError = false" formControlName="password" type="password" id="password" class="form-control" placeholder="Password" required="required">
     </div>
     <div class="form-group">
-      <input formControlName="confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required="required">
+      <label for="confirmPassword" class="required">Confirm Password</label>
+      <input (click)="this.hasError = false" formControlName="confirmPassword" type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required="required">
     </div>
     <div class="form-group">
+      <label for="firstName" class="required">First Name</label>
       <input formControlName="firstName" type="text" id="firstName" class="form-control" placeholder="First Name" required="required">
     </div>
     <div class="form-group">
+      <label for="lastName" class="required">Last Name</label>
       <input formControlName="lastName" type="text" id="lastName" class="form-control" placeholder="Last Name" required="required">
     </div>
-    <div class="form-group">
+    <div *ngIf="this.myform.valid" class="form-group">
       <button class="btn btn-primary btn-block">Sign up</button>
     </div>
   </form>

@@ -13,3 +13,4 @@ class Recorder:
         new_usage = Usage(self.user_id, self.ip_address, self.action, self.status_code)
         session.add(new_usage)
         session.commit()
+

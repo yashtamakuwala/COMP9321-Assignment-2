@@ -1,10 +1,17 @@
 from flask import Blueprint
 from flask_restplus import Api
-from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden
+from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, NotFound
 
 from apis.session import api as session
 from apis.user import api as user
 from apis.property import api as property
+from apis.analytics import api as analytics
+from apis.predictions import api as predictions
+from apis.model_trainings import api as model_trainings
+from apis.price_rankings import api as price_rankings
+from apis.crime_rankings import api as crime_rankings
+from apis.ratings_rankings import api as rating_rankings
+from apis.unemployment_rankings import api as unemployment_ratings
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
 api = Api(blueprint)    #TODO Add metadata
@@ -12,6 +19,13 @@ api = Api(blueprint)    #TODO Add metadata
 api.add_namespace(session)
 api.add_namespace(user)
 api.add_namespace(property)
+api.add_namespace(analytics)
+api.add_namespace(predictions)
+api.add_namespace(model_trainings)
+api.add_namespace(price_rankings)
+api.add_namespace(unemployment_ratings)
+api.add_namespace(rating_rankings)
+api.add_namespace(crime_rankings)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):
@@ -19,6 +33,13 @@ def handle_bad_request(error):
 
     response = {"message": "The request parameters are invalid."}
     return response, 400
+
+@api.errorhandler(NotFound)
+def handle_not_found(error):
+    # Analytics
+
+    response = {"message": "Resource not found."}
+    return response, 404
 
 @api.errorhandler(Unauthorized)
 def handle_unauthorized(error):

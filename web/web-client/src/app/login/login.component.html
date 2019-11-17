@@ -2,12 +2,14 @@
   <form [formGroup]="myform" (submit)="onLogIn($event)">
     <h2 class="text-center">Log in</h2>
     <div class="form-group">
+      <label for="email" class="required">Email</label>
       <input formControlName="email" type="text" id="email" class="form-control" placeholder="Email" required="required">
     </div>
     <div class="form-group">
+      <label for="password" class="required">Password</label>
       <input formControlName="password" type="password" id="password" class="form-control" placeholder="Password" required="required">
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="this.myform.valid">
       <button type="submit" class="btn btn-primary btn-block">Log in</button>
     </div>
   </form>

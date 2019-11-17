@@ -26,11 +26,22 @@ export class SignupComponent implements OnInit {
 
   ngOnInit() {
     this.myform = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl(),
-      confirmPassword: new FormControl(),
-      firstName: new FormControl(),
-      lastName: new FormControl()
+      email: new FormControl('', [
+        Validators.email,
+        Validators.required
+      ]),
+      password: new FormControl('', [
+        Validators.required
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.required
+      ]),
+      firstName: new FormControl('', [
+        Validators.required
+      ]),
+      lastName: new FormControl('', [
+        Validators.required
+      ])
     });
     this.newUser = new NewUser();
     this.error = 'The passwords do not match';
@@ -50,7 +61,6 @@ export class SignupComponent implements OnInit {
       this.webService.signup(this.newUser).subscribe(x => {
         this.responseReceived = true;
         this.signUpUnsuccessful = false;
-        console.log(x);
       },
         msg => {
           this.signUpUnsuccessful = true;

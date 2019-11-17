@@ -24,3 +24,7 @@
   font-size: 15px;
   font-weight: bold;
 }
+.required:after {
+  content:" *";
+  color: red;
+}

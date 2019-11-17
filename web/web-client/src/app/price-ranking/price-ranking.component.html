@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Settle in Sydney</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div id="navbarNavDropdown" class="navbar-collapse collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/quote">Property Price</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="/priceRank">Price Ranking</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Pricing</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="btn  btn-outline-secondary my-2 my-sm-0" (click)="logout()">Log out</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <form [formGroup]="myform" (submit)="getPriceRanking($event)">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="order">Order</label>
+        <select formControlName="order" class="form-control" id="order">
+          <option  *ngFor="let i of orderArray">{{i}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="limit">Limit</label>
+        <select formControlName="limit" class="form-control" id="limit">
+          <option *ngFor="let i of limitArray">{{i}}</option>
+        </select>
+      </div>
+      <div class="form-group col-md-4">
+        <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Price Ranking</button>
+      </div>
+    </div>
+  </form>
+</div>
