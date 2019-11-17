@@ -42,4 +42,18 @@
       </div>
     </div>
   </form>
+  <table *ngIf="this.responseArray.length > 0" class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th scope="col">LGA</th>
+      <th scope="col">Mean Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let i of this.responseArray">
+      <td>{{i.lga}}</td>
+      <td>{{i.mean_price}}</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
