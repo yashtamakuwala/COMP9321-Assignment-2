@@ -29,6 +29,7 @@
   </div>
 </nav>
 <div class="container">
+  <br>
   <form [formGroup]="myform" (submit)="getQuote($event)">
     <div class="form-row">
       <div class="form-group col-md-4">
@@ -70,6 +71,29 @@
     </div>
     <button *ngIf="this.myform.valid" type="submit" class="btn btn-primary" >Get Quote</button>
   </form>
+  <br>
+  <div *ngIf="this.response" class="card bg-light mb-3 text-center" >
+    <div class="card-header">Machine Learning Response</div>
+    <div class="card-body">
+      <h5 class="card-title">Expected price between</h5>
+      <div class="card-text">
+        <table class="table table-hover">
+        <thead>
+        <tr>
+          <th scope="col">Low</th>
+          <th scope="col">High</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{this.response.lower}}</td>
+          <td>{{this.response.upper}}</td>
+        </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
 </div>
 
 

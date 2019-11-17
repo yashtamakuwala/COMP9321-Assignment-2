@@ -10,6 +10,8 @@ import {AuthenticationService} from '../services/authentication.service';
 import {Quote} from '../models/Quote';
 import {WebMethodsService} from '../services/web-methods.service';
 import {GuestCountValidator} from '../validators/GuestCountValidator';
+import {UnemploymentRankingResponse} from '../models/UnemploymentRankingResponse';
+import {QuoteResponse} from '../models/QuoteResponse';
 
 @Component({
   selector: 'app-get-quote',
@@ -80,6 +82,7 @@ export class GetQuoteComponent implements OnInit {
     'Shared room',
     'Hotel room'
   ];
+  response: QuoteResponse;
   constructor(private router: Router, private authenticationService: AuthenticationService, private webService: WebMethodsService) {
     this.myform = new FormGroup({
       LGA: new FormControl(),
@@ -104,19 +107,17 @@ export class GetQuoteComponent implements OnInit {
 
   ngOnInit() {
   }
+  parseResponse(response: QuoteResponse) {
+    this.response = response;
+  }
   getQuote(event) {
     event.preventDefault();
-    if (this.myform.valid) {
-      console.log('valid');
-    } else {
-      console.log('invalid');
-    }
     const quote = new Quote(
       this.myform.value.LGA, this.myform.value.propertyType,
       this.myform.value.roomType, this.myform.value.guestCount,
       this.myform.value.bedCount);
     this.webService.getQuote(quote).subscribe(success => {
-      console.log(success);
+      this.parseResponse(success);
     }, error => {
       console.log(error);
     });
