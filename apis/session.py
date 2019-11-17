@@ -16,7 +16,8 @@ session = api.model('Session', {
 class Sessions(Resource):
     @api.doc(description="Login")
     @api.expect(session)
-    @api.response(201, "Login successful")
+    @api.response(201, "Login successful.")
+    @api.response(401, "The credentials are incorrect.")
     def post(self):
         email = request.json['email']
         password = request.json['password']

@@ -20,14 +20,18 @@ listing = api.model('Property', {
 })
 
 parser = api.parser()
-parser.add_argument('Authorization', location="headers")
+parser.add_argument('Authorization', location="headers",
+                    help='Bearer \<JSON Web Token\>', required=True)
 
 @api.route('')
+@api.response(401, "The JWT provided is incorrect or expired.")
+@api.response(403, "You are not authorized to access this resource.")
 class PropertyList(Resource):
-    @api.doc(description="Get all properties")
-    @api.param('start')
-    @api.param('limit')
+    @api.doc(description="Show list of properties.")
+    @api.param('start', description='The list starts at this index.')
+    @api.param('limit', description='Number of properties to be shown.')
     @api.expect(parser)
+    @api.response(200, "Success.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -54,7 +58,8 @@ class PropertyList(Resource):
 
         return msg, status_code
 
-    @api.doc(description="Create property listing", parser = parser, body = listing)
+    @api.doc(description="Create a property.", parser = parser, body = listing)
+    @api.response(201, "Property creation successful.")
     def post(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -85,9 +90,12 @@ class PropertyList(Resource):
 
 @api.route('/<int:id>')
 @api.param('id','The Property identifier')
-class Properties(Resource):
-
-    @api.doc(description='Get Property by id', parser= parser)
+@api.response(401, "The JWT provided is incorrect or expired.")
+@api.response(403, "You are not authorized to access this resource.")
+@api.response(404, "Property with the specified ID does not exist.")
+class Property(Resource):
+    @api.doc(description='Get a Property by id', parser= parser)
+    @api.response(200, "Success.")
     def get(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -108,7 +116,8 @@ class Properties(Resource):
 
         return prop, status_code
 
-    @api.doc(description='Partial update Property by id', parser= parser)
+    @api.doc(description='Partial update of a Property', parser= parser)
+    @api.response(200, "Property partial update successful.")
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -159,7 +168,8 @@ class Properties(Resource):
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, status_code
 
-    @api.doc(description='Delete Property by id', parser= parser)
+    @api.doc(description='Delete a Property by id', parser= parser)
+    @api.response(200, "Property deletion successful.")
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -182,7 +192,8 @@ class Properties(Resource):
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, status_code
 
-    @api.doc(description='Update Property by id', parser= parser)
+    @api.doc(description='Replace a Property by id', parser= parser)
+    @api.response(200, "Property replacement successful.")
     def put(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
