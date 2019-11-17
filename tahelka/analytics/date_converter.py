@@ -5,5 +5,8 @@ class DateConverter:
         self.date_string = date_string
 
     def convert(self):
+        if self.date_string is None:
+            return
+    
         dt = datetime.strptime(self.date_string, '%Y-%m-%d')
         return datetime.date(dt)

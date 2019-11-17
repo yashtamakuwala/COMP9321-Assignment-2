@@ -29,7 +29,8 @@ class Analytics(Resource):
         start_date = DateConverter(start_date_string).convert()
         end_date = DateConverter(end_date_string).convert()
 
-        summary = Summarizer(user_id=user_id, start_date=start_date, end_date=end_date)
+        summarizer = Summarizer(user_id=user_id, start_date=start_date, end_date=end_date)
+        summary = summarizer.summarize()
 
         status_code = 200
         record = Recorder('analytics', status_code)
