@@ -2,6 +2,8 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Usage import Usage
 from tahelka.auth.token_authenticator import TokenAuthenticator
+from tahelka.ml.trainer import Trainer
+
 
 api = Namespace('model_trainings')
 
@@ -12,7 +14,8 @@ class Training(Resource):
         auth_header = request.headers.get('Authorization')
         user_id = TokenAuthenticator(auth_header, True).authenticate()
 
-        # TODO: call function that trains the model in a background thread.
+        Trainer().train()
+
         msg = {
             'msg' : 'Model training initiated.'
         }

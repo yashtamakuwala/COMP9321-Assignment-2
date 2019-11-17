@@ -1,6 +1,6 @@
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
-
+from tahelka.ml.predictor import Predictor
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
@@ -18,12 +18,7 @@ class PriceRange(Resource):
         g_count = request.args['guest_count']
         b_count = request.args['bed_count']
 
-        # TODO: call predictor function here
-        low, high = 50, 90
-
-        msg = {
-            'low': low,
-            'high': high
-        }
+        p  = Predictor(lga, p_type, r_type, g_count, b_count)
+        msg = p.predict()
 
         return msg, 200
