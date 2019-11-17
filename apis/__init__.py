@@ -9,6 +9,9 @@ from apis.analytics import api as analytics
 from apis.predictions import api as predictions
 from apis.model_trainings import api as model_trainings
 from apis.price_rankings import api as price_rankings
+from apis.crime_rankings import api as crime_rankings
+from apis.ratings_rankings import api as rating_rankings
+from apis.unemployment_rankings import api as unemployment_ratings
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
 api = Api(blueprint)    #TODO Add metadata
@@ -20,6 +23,9 @@ api.add_namespace(analytics)
 api.add_namespace(predictions)
 api.add_namespace(model_trainings)
 api.add_namespace(price_rankings)
+api.add_namespace(unemployment_ratings)
+api.add_namespace(rating_rankings)
+api.add_namespace(crime_rankings)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):

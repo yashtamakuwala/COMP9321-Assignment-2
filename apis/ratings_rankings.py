@@ -3,9 +3,9 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
-from tahelka.insight.price_ranker import PriceRanker
+from tahelka.insight.rating_ranker import RatingRanker
 
-api = Namespace('price_rankings')
+api = Namespace('rating_rankings')
 
 @api.route('')
 class Price_Rankings(Resource):
@@ -24,7 +24,7 @@ class Price_Rankings(Resource):
         else:
             limit = int(limit)
 
-        data = PriceRanker(limit, order).rank()
+        data = RatingRanker(limit, order).rank()
 
         resp = {'data' : data }
         return resp, 200
