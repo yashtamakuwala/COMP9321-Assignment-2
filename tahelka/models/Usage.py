@@ -1,5 +1,6 @@
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from tahelka.models.Base import Base
+from datetime import datetime
 
 class Usage(Base):
     __tablename__ = "usages"
@@ -11,9 +12,11 @@ class Usage(Base):
     status_code = Column(Integer, nullable=False)
     used_at = Column(DateTime, nullable=False)
 
-    def __init__(self, user_id, ip_address, action, status_code, used_at):
+    def __init__(self, user_id, ip_address, action, status_code):
+        print("Creating user __init__")
         self.user_id = user_id
         self.ip_address = ip_address
         self.action = action
         self.status_code = status_code
-        self.used_at = used_at
+        self.used_at = datetime.date(datetime.today())   #TODO: change to epoch time
+

@@ -2,8 +2,11 @@ from alchemy import Session
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
+from tahelka.models.Usage import Usage
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.util.util import areFieldsEmpty
+from tahelka.analytics.recorder import Recorder
+
 
 api = Namespace('properties')
 
@@ -38,6 +41,9 @@ class PropertyList(Resource):
             respJson.append(record)
 
         # Analytics
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property index', 200)
+        record.recordUsage()
 
         msg = {'data':respJson}
         return msg, 200
@@ -62,6 +68,9 @@ class PropertyList(Resource):
         session.commit()
 
         # Analytics
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property create', 201)
+        record.recordUsage()
 
         response = {'message' : 'Property Added.'}
         return response, 201
@@ -82,6 +91,10 @@ class Properties(Resource):
         prop.pop('_sa_instance_state', None)
 
         # Analytics
+        method = request.method
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property show', 200)
+        record.recordUsage()
 
         return prop, 200
 
@@ -128,6 +141,10 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
+        method = request.method
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property patch', 200)
+        record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200
@@ -147,6 +164,10 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
+        method = request.method
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property delete', 200)
+        record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, 200
@@ -179,6 +200,10 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
+        method = request.method
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Property put', 200)
+        record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, 200

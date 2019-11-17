@@ -4,6 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.auth.hash_generator import HashGenerator
 from tahelka.models.User import User
 from werkzeug.exceptions import BadRequest
+from tahelka.analytics.recorder import Recorder
 
 api = Namespace('users')
 
@@ -35,7 +36,13 @@ class Users(Resource):
         session.commit()
 
         # Analytics here
+        ip_address = request.remote_addr
+        Recorder(new_user.id, ip_address, "Register", 201).recordUsage()
 
+        # method = request.method
+        # ip_address = request.remote_addr
+        # record = Recorder(None, ip_address, method, 201)
+        # record.recordUsage()
 
         response = {'message': 'Registration successful.'}
         return response, 201

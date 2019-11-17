@@ -1,7 +1,12 @@
 from flask import jsonify
+from sqlalchemy import Session
+from tahelka.analytics.recorder import Recorder
+
+session = Session()
 
 def handle_bad_request(exception):
     # Analytics here
+    Recorder(None, None, None, 400).recordUsage()
 
     response_dict = {
         'message': "The parameters of the request are invalid."
@@ -10,6 +15,7 @@ def handle_bad_request(exception):
 
 def handle_unauthorized(exception):
     # Analytics here
+    Recorder(None, None, None, 401).recordUsage()
 
     response_dict = {
         'message': "The credentials are incorrect or the token is invalid."
@@ -18,6 +24,7 @@ def handle_unauthorized(exception):
 
 def handle_forbidden(exception):
     # Analytics here
+    Recorder(None, None, None, 403).recordUsage()
 
     response_dict = {
         'message': "Insufficient authorization to access the resource."
@@ -26,6 +33,7 @@ def handle_forbidden(exception):
 
 def handle_not_found(exception):
     # Analytics here
+    Recorder(None, None, None, 404).recordUsage()
 
     response_dict = {
         'message': "Resource not found."
@@ -34,6 +42,7 @@ def handle_not_found(exception):
 
 def handle_internal_server_error(exception):
     # Analytics here
+    Recorder(None, None, None, 500).recordUsage()
 
     response_dict = {
         'message': "Internal server error."

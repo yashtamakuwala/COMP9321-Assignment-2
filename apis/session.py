@@ -1,6 +1,8 @@
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.auth.credentials_authenticator import CredentialsAuthenticator
+from tahelka.analytics.recorder import Recorder
+from tahelka.analytics.summarizer import Summarizer
 
 api = Namespace('sessions')
 
@@ -18,6 +20,11 @@ class Sessions(Resource):
         user, token = authenticator.authenticate()
 
         # Analytics here
+        user_id = user.id
+        method = request.method
+        ip_address = request.remote_addr
+        record = Recorder(user_id, ip_address, 'Login', 201)
+        record.recordUsage()
 
         response = {
             'message': 'Login successful.',
@@ -25,4 +32,8 @@ class Sessions(Resource):
             'is_admin': user.is_admin,
             'token': token
         }
+
+        summ = Summarizer()
+        summ.summarize()
+
         return response, 201
