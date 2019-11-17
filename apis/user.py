@@ -17,6 +17,9 @@ user = api.model('User', {
 
 @api.route('')
 class Users(Resource):
+    @api.expect(user)
+    @api.doc(description="Register User")
+    @api.response(201, "Registration successful.")
     def post(self):
         # Get params
         first_name = request.json.get('first_name')
