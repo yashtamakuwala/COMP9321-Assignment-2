@@ -2,12 +2,8 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Usage import Usage
 from tahelka.auth.token_authenticator import TokenAuthenticator
-<<<<<<< HEAD
 from tahelka.ml.trainer import Trainer
-
-=======
 from tahelka.analytics.recorder import Recorder
->>>>>>> 8c68da52bbcbfd9c273699dc752732bb0e15acf4
 
 api = Namespace('model_trainings')
 

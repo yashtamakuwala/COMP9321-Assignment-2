@@ -1,10 +1,7 @@
 from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
-<<<<<<< HEAD
 from tahelka.ml.predictor import Predictor
-=======
 from tahelka.analytics.recorder import Recorder
->>>>>>> 8c68da52bbcbfd9c273699dc752732bb0e15acf4
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
