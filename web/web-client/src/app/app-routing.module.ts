@@ -4,6 +4,7 @@ import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
 import {GetQuoteComponent} from './get-quote/get-quote.component';
 import {AuthGuard} from './_helpers/auth.guard';
+import {PriceRankingComponent} from './price-ranking/price-ranking.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path: 'quote',
     component: GetQuoteComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'priceRank',
+    component: PriceRankingComponent,
     canActivate: [AuthGuard]
   },
   {
