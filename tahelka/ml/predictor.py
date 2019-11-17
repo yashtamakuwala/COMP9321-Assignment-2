@@ -26,7 +26,7 @@ class Predictor:
         property_type_encoder = pickle.load(property_encoding_file)
         room_type_encoder = pickle.load(room_type_encoding_file)
 
-        filename = 'model.sav'
+        filename = 'ml_model/model.sav'
         with open(filename, 'rb') as file:
             loaded_model = pickle.load(file)
 
