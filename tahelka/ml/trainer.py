@@ -14,6 +14,8 @@ import pickle
 from alchemy import Engine
 from sklearn.utils import shuffle
 from sklearn.metrics import precision_score, accuracy_score, recall_score
+from tahelka.ml.crime_level_preparer import CrimeDataframePreparer
+from tahelka.ml.unemp_level_preparer import UnempDataframePreparer
 
 class Trainer:
     PRICE_BUCKETS = [-1, 40, 60, 80, 100, 125, 150, 200, 250, 300, 500, 99_999]
@@ -26,10 +28,12 @@ class Trainer:
         # Encode the categorical attributes
         le_property_type = LabelEncoder()
         le_room_type = LabelEncoder()
+        print(df['room_type'])
         df['property_type'] = le_property_type.fit_transform(df['property_type'])
         df['room_type'] = le_room_type.fit_transform(df['room_type'])
 
         # Get X & Y
+        print(df.iloc[:10])
         Xaxis = df.values[:, [0,1,2,3,5,6]].astype('int')
         Yaxis = df.values[:,4].astype('int')
 
@@ -60,8 +64,8 @@ class Trainer:
         df = df.drop(['price'], axis=1)
 
         # Get crime & unemp dfs
-        dfc = self.prepare_crime_df()
-        dfu = self.prepare_unemp_df()
+        dfc = CrimeDataframePreparer.prepare()
+        dfu = UnempDataframePreparer.prepare()
 
         # Merge DF with DFC
         df = df.merge(dfc, left_on = "lga", right_on = "LGA" )
@@ -76,45 +80,3 @@ class Trainer:
 
         return df
 
-    def prepare_crime_df(self):
-        # Load DFC
-        root = os.path.abspath(os.curdir)
-        path_of_data = os.path.join(root, 'data/crime_clean.csv')
-        dfc = pd.read_csv(path_of_data)
-
-        # Get monthly mean of crime count
-        month_columns = dfc.columns[1:]
-        dfc['mean_crime_count'] = dfc[month_columns].mean(axis='columns')
-
-        # Drop month columns
-        dfc = dfc.drop(month_columns, axis=1)
-
-        # Group by LGA
-        dfc = dfc.groupby(['LGA']).sum().reset_index()
-
-        # Mean crime count to crime levels
-        dfc['crime_level'] = pd.cut(dfc['mean_crime_count'], bins=Trainer.CRIME_BUCKETS,
-                                    labels=range(1, len(Trainer.CRIME_BUCKETS)))
-        dfc = dfc.drop(['mean_crime_count'], axis=1)
-
-        return dfc
-
-    def prepare_unemp_df(self):
-        # Load DFU
-        root = os.path.abspath(os.curdir)
-        path_of_data = os.path.join(root, 'data/unemployment_clean.csv')
-        dfu = pd.read_csv(path_of_data)
-
-        # Get monthly mean of unemp count
-        month_columns = dfu.columns[1:]
-        dfu['mean_unemp_count'] = dfu[month_columns].mean(axis='columns')
-
-        # Drop month columns
-        dfu = dfu.drop(month_columns, axis=1)
-
-        # Mean crime count to crime levels
-        dfu['unemp_level'] = pd.cut(dfu['mean_unemp_count'], bins=Trainer.UNEMP_BUCKETS,
-                            labels=range(1, len(Trainer.UNEMP_BUCKETS)))
-        dfu = dfu.drop(['mean_unemp_count'], axis=1)
-
-        return dfu
