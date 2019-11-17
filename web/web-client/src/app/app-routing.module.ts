@@ -5,6 +5,9 @@ import {SignupComponent} from './signup/signup.component';
 import {GetQuoteComponent} from './get-quote/get-quote.component';
 import {AuthGuard} from './_helpers/auth.guard';
 import {PriceRankingComponent} from './price-ranking/price-ranking.component';
+import {RatingRankingComponent} from './rating-ranking/rating-ranking.component';
+import {UnemploymentRankingComponent} from './unemployment-ranking/unemployment-ranking.component';
+import {CrimeRankingComponent} from './crime-ranking/crime-ranking.component';
 
 
 const routes: Routes = [
@@ -24,6 +27,21 @@ const routes: Routes = [
   {
     path: 'priceRank',
     component: PriceRankingComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'ratingRank',
+    component: RatingRankingComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'unemploymentRank',
+    component: UnemploymentRankingComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'crimeRank',
+    component: CrimeRankingComponent,
     canActivate: [AuthGuard]
   },
   {
