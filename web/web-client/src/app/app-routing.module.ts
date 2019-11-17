@@ -40,7 +40,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: 'crimeRank',
+    path: 'safetyRank',
     component: CrimeRankingComponent,
     canActivate: [AuthGuard]
   },

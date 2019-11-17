@@ -15,7 +15,7 @@
         <a class="nav-link" routerLink="/ratingRank">Rating Ranking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/crimeRank">Crime Ranking</a>
+        <a class="nav-link" routerLink="/safetyRank">Safety Ranking</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/unemploymentRank">Unemployment Ranking</a>
@@ -45,15 +45,15 @@
         </select>
       </div>
       <div class="form-group col-md-4">
-        <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Mean Rating Ranking</button>
+        <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Average Rating Given by Tenants</button>
       </div>
     </div>
   </form>
   <table *ngIf="this.responseArray.length > 0" class="table table-striped table-hover">
     <thead>
     <tr>
-      <th scope="col">LGA</th>
-      <th scope="col">Mean Rating</th>
+      <th scope="col">Local Government Area</th>
+      <th scope="col">Average Rating Given by Tenants</th>
     </tr>
     </thead>
     <tbody>
