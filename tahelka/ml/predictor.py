@@ -56,7 +56,8 @@ class Predictor:
     def find_range(self, result, buckets, lower ,upper):
         bucket_len = len(buckets)
         if result == 1:
-            return {'upper': buckets[1]}
+            return {'upper': f'${buckets[1]}'}
         elif result == bucket_len - 1:
-            return {'lower' : buckets[bucket_len - 2]}
-        return {'lower' : buckets[result - 1], 'upper': buckets[result]}
+            return {'lower' : f'${buckets[bucket_len - 2]}'}
+        return {'lower' : f'${buckets[result - 1]}',
+                'upper': f'${buckets[result]}'}
