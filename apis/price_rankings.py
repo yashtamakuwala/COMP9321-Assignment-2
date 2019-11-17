@@ -12,7 +12,7 @@ class Price_Rankings(Resource):
     def get(self):
         
         auth_header = request.headers.get('Authorization')
-        user_id = TokenAuthenticator(auth_header, True).authenticate()
+        user_id = TokenAuthenticator(auth_header, False).authenticate()
 
         limit = request.args.get('limit', 5)
         order = str(request.args.get('order', 'ascending'))
