@@ -5,16 +5,16 @@
   </button>
   <div id="navbarNavDropdown" class="navbar-collapse collapse">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
+      <li class="nav-item ">
         <a class="nav-link" routerLink="/quote">Property Price</a>
       </li>
-      <li class="nav-item active">
+      <li class="nav-item">
         <a class="nav-link" routerLink="/priceRank">Price Ranking</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/ratingRank">Rating Ranking</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item active">
         <a class="nav-link" routerLink="/crimeRank">Crime Ranking</a>
       </li>
       <li class="nav-item">
@@ -28,8 +28,9 @@
     </ul>
   </div>
 </nav>
+
 <div class="container">
-  <form [formGroup]="myform" (submit)="getPriceRanking($event)">
+  <form [formGroup]="myform" (submit)="getCrimeRanking($event)">
     <div class="row">
       <div class="form-group col-md-4">
         <label for="order">Order</label>
@@ -44,7 +45,7 @@
         </select>
       </div>
       <div class="form-group col-md-4">
-        <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Price Ranking</button>
+        <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Crime Ranking</button>
       </div>
     </div>
   </form>
@@ -52,14 +53,15 @@
     <thead>
     <tr>
       <th scope="col">LGA</th>
-      <th scope="col">Mean Price</th>
+      <th scope="col">Mean Crime Count</th>
     </tr>
     </thead>
     <tbody>
     <tr *ngFor="let i of this.responseArray">
       <td>{{i.lga}}</td>
-      <td>{{i.mean_price}}</td>
+      <td>{{i.mean_crime_count}}</td>
     </tr>
     </tbody>
   </table>
 </div>
+

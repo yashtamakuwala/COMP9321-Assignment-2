@@ -9,6 +9,9 @@ import { GetQuoteComponent } from './get-quote/get-quote.component';
 import { LoginComponent } from './login/login.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import { PriceRankingComponent } from './price-ranking/price-ranking.component';
+import { RatingRankingComponent } from './rating-ranking/rating-ranking.component';
+import { CrimeRankingComponent } from './crime-ranking/crime-ranking.component';
+import { UnemploymentRankingComponent } from './unemployment-ranking/unemployment-ranking.component';
 
 
 @NgModule({
@@ -17,7 +20,10 @@ import { PriceRankingComponent } from './price-ranking/price-ranking.component';
     SignupComponent,
     GetQuoteComponent,
     LoginComponent,
-    PriceRankingComponent
+    PriceRankingComponent,
+    RatingRankingComponent,
+    CrimeRankingComponent,
+    UnemploymentRankingComponent
   ],
   imports: [
     BrowserModule,

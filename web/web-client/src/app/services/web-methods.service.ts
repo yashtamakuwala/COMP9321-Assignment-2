@@ -42,7 +42,7 @@ export class WebMethodsService {
       .set('bed_count', String(quote.bed_count));
     return this.http.get(quoteUrl, {params: params_, headers: headers_});
   }
-  getPriceRanking(priceRanking: PriceRanking, functionName: string): Observable<any> {
+  getRanking(priceRanking: PriceRanking, functionName: string): Observable<any> {
     const queryUrl = this.API_URL + functionName;
     let headers_ = new HttpHeaders();
     headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
