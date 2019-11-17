@@ -21,7 +21,6 @@ class Sessions(Resource):
 
         # Analytics here
         user_id = user.id
-        method = request.method
         ip_address = request.remote_addr
         record = Recorder(user_id, ip_address, 'Login', 201)
         record.recordUsage()

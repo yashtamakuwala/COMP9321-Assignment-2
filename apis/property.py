@@ -43,7 +43,7 @@ class PropertyList(Resource):
 
         # Analytics
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property index', 200)
+        record = Recorder(user_id, ip_address, 'property_index', 200)
         record.recordUsage()
 
         msg = {'data': respJson}
@@ -71,7 +71,7 @@ class PropertyList(Resource):
 
         # Analytics
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property create', 201)
+        record = Recorder(user_id, ip_address, 'property_create', 201)
         record.recordUsage()
 
         response = {'message' : 'Property Added.'}
@@ -95,7 +95,7 @@ class Properties(Resource):
         # Analytics
         method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property show', 200)
+        record = Recorder(user_id, ip_address, 'property_show', 200)
         record.recordUsage()
 
         return prop, 200
@@ -145,7 +145,7 @@ class Properties(Resource):
         # Analytics
         method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property patch', 200)
+        record = Recorder(user_id, ip_address, 'property_patch', 200)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
@@ -168,7 +168,7 @@ class Properties(Resource):
         # Analytics
         method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property delete', 200)
+        record = Recorder(user_id, ip_address, 'property_delete', 200)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
@@ -204,7 +204,7 @@ class Properties(Resource):
         # Analytics
         method = request.method
         ip_address = request.remote_addr
-        record = Recorder(user_id, ip_address, 'Property put', 200)
+        record = Recorder(user_id, ip_address, 'property_put', 200)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}

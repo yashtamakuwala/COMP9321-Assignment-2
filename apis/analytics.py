@@ -3,6 +3,8 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Usage import Usage
 from tahelka.auth.token_authenticator import TokenAuthenticator
+from tahelka.analytics.date_converter import DateConverter
+from tahelka.analytics.summarizer import Summarizer
 
 api = Namespace('analytics')
 
@@ -20,11 +22,14 @@ class Analytics(Resource):
         auth_header = request.headers.get('Authorization')
         user_id = TokenAuthenticator(auth_header, True).authenticate()
         
-        start_date = request.args.get('start_date')
-        end_date = request.args.get('end_date')
+        start_date_string = request.args.get('start_date')
+        end_date_string = request.args.get('end_date')
         user_id = request.args.get('user_id')
 
-        # TODO: call all usages
+        start_date = DateConverter(start_date_string).convert()
+        end_date = DateConverter(end_date_string).convert()
 
-        respJson = {'data': True}
+        summary = Summarizer(user_id=user_id, start_date=start_date, end_date=end_date)
+
+        respJson = {'data': summary}
         return respJson, 200
