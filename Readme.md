@@ -27,7 +27,7 @@ npm install
 ```
 Run the Web Client
 ```
-ng server
+ng serve
 ```
 Your application can be accessed on
 ```
