@@ -6,29 +6,43 @@
   <form [formGroup]="myform" (submit)="getQuote($event)">
     <div class="form-row">
       <div class="form-group col-md-4">
-        <label for="zipCode">Zip Code</label>
-        <input formControlName="zipCode" type="number" class="form-control" id="zipCode" placeholder="Zip Code">
+        <label for="LGA">Local Government Area</label>
+        <select formControlName="LGA" class="form-control" id="LGA">
+          <option  *ngFor="let i of LGAArray">{{i}}</option>
+        </select>
       </div>
       <div class="form-group col-md-4">
         <label for="propertyType">Property Type</label>
-        <input formControlName="propertyType" type="text" class="form-control" id="propertyType" placeholder="Property Type">
+        <select formControlName="propertyType" class="form-control" id="propertyType">
+          <option *ngFor="let i of propertyTypeArray">{{i}}</option>
+        </select>
       </div>
       <div class="form-group col-md-4">
         <label for="roomType">Room Type</label>
-        <input formControlName="roomType" type="text" class="form-control" id="roomType" placeholder="Room Type">
+        <select formControlName="roomType" class="form-control" id="roomType">
+          <option *ngFor="let i of roomTypeArray">{{i}}</option>
+        </select>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group col-md-4">
-        <label for="guestCount">Guest Count</label>
+      <div class="form-group col-md-4 ">
+        <label for="guestCount" class="required">Guest Count (1-16)</label>
         <input formControlName="guestCount" type="number" class="form-control" id="guestCount" placeholder="Guest Count">
+        <span *ngIf="(this.myform.get('guestCount').dirty || this.myform.get('guestCount').touched) &&
+          (this.myform.get('guestCount').invalid && this.myform.get('guestCount').errors.required)">
+          Guest Count between 1-16
+        </span>
       </div>
       <div class="form-group col-md-4">
-        <label for="bedCount">Bed Count</label>
+        <label for="bedCount" class="required">Bed Count (0-19)</label>
         <input formControlName="bedCount" type="number" class="form-control" id="bedCount" placeholder="Bed Count">
+        <span *ngIf="(this.myform.get('bedCount').dirty || this.myform.get('bedCount').touched) &&
+          (this.myform.get('bedCount').invalid && this.myform.get('bedCount').errors.required)">
+          Bed Count between 0-19
+        </span>
       </div>
     </div>
-    <button type="submit" class="btn btn-primary" >Get Quote</button>
+    <button *ngIf="this.myform.valid" type="submit" class="btn btn-primary" >Get Quote</button>
   </form>
 </div>
 

@@ -34,7 +34,7 @@ export class WebMethodsService {
     let headers_ = new HttpHeaders();
     headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
     const params_ = new HttpParams()
-      .set('zip_code', String(quote.zip_code))
+      .set('lga', String(quote.lga))
       .set('property_type', quote.property_type)
       .set('room_type', quote.room_type)
       .set('guest_count', String(quote.guest_count))
