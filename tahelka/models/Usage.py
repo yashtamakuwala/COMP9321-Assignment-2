@@ -17,4 +17,4 @@ class Usage(Base):
         self.ip_address = ip_address
         self.action = action
         self.status_code = status_code
-        self.used_at = datetime.date(datetime.today())
+        self.used_at = datetime.now()
