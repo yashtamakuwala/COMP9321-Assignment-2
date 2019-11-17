@@ -26,7 +26,7 @@ class Predictor:
         property_type_encoder = pickle.load(property_encoding_file)
         room_type_encoder = pickle.load(room_type_encoding_file)
 
-        filename = 'ml_model/model.sav'
+        filename = 'ml_models/model.sav'
         with open(filename, 'rb') as file:
             loaded_model = pickle.load(file)
 
@@ -47,7 +47,7 @@ class Predictor:
     def find_range(self, result, buckets, lower ,upper):
         bucket_len = len(buckets)
         if result == 1:
-            return {'Upper': buckets[1]}
+            return {'upper': buckets[1]}
         elif result == bucket_len - 1:
-            return {'Lower': buckets[bucket_len - 2]}
-        return {'Lower': buckets[result - 1],'Upper': buckets[result]}
+            return {'lower' : buckets[bucket_len - 2]}
+        return {'lower' : buckets[result - 1], 'upper': buckets[result]}
