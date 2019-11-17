@@ -26,9 +26,8 @@ class Predictions(Resource):
             'high': high
         }
 
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'prediction', status_code)
+        record = Recorder('prediction', status_code)
         record.recordUsage()
 
         return msg, status_code

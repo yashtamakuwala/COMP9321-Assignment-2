@@ -21,9 +21,8 @@ class Sessions(Resource):
         user, token = authenticator.authenticate()
 
         # Analytics here
-        ip_address = request.remote_addr
         status_code = 201
-        record = Recorder(ip_address, 'login', status_code)
+        record = Recorder('login', status_code)
         record.recordUsage()
 
         response = {

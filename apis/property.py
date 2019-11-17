@@ -42,9 +42,8 @@ class PropertyList(Resource):
             respJson.append(record)
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'property_index', status_code)
+        record = Recorder('property_index', status_code)
         record.recordUsage()
 
         msg = {'data': respJson}
@@ -72,9 +71,8 @@ class PropertyList(Resource):
         session.commit()
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 201
-        record = Recorder(ip_address, 'property_create', status_code)
+        record = Recorder('property_create', status_code)
         record.recordUsage()
 
         response = {'message' : 'Property Added.'}
@@ -98,9 +96,8 @@ class Properties(Resource):
         prop.pop('_sa_instance_state', None)
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'property_show', status_code)
+        record = Recorder('property_show', status_code)
         record.recordUsage()
 
         return prop, status_code
@@ -148,9 +145,8 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'property_patch', status_code)
+        record = Recorder('property_patch', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}
@@ -171,9 +167,8 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'property_delete', status_code)
+        record = Recorder('property_delete', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
@@ -207,9 +202,8 @@ class Properties(Resource):
         session.commit()
 
         # Analytics
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'property_put', status_code)
+        record = Recorder('property_put', status_code)
         record.recordUsage()
 
         msg = {'message':'Property '+str(id)+' updated successfully.'}

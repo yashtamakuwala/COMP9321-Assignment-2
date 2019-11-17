@@ -18,9 +18,8 @@ class Training(Resource):
             'msg' : 'Model training initiated.'
         }
 
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'model_training', status_code)
+        record = Recorder('model_training', status_code)
         record.recordUsage()
 
         return msg, status_code

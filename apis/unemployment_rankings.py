@@ -27,9 +27,9 @@ class UnemploymentRankings(Resource):
 
         data = UnemploymentRanker(limit, order).rank()
 
-        ip_address = request.remote_addr
+
         status_code = 200
-        record = Recorder(ip_address, 'unemployment_ranking', status_code)
+        record = Recorder('unemployment_ranking', status_code)
         record.recordUsage()
 
         resp = {'data' : data }

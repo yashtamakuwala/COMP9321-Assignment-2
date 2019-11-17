@@ -27,9 +27,8 @@ class CrimeRankings(Resource):
 
         data = CrimeRanker(limit, order).rank()
 
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'crime_ranking', status_code)
+        record = Recorder('crime_ranking', status_code)
         record.recordUsage()
 
         resp = {'data' : data }

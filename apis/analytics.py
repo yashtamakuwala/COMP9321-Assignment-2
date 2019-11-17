@@ -31,9 +31,8 @@ class Analytics(Resource):
 
         summary = Summarizer(user_id=user_id, start_date=start_date, end_date=end_date)
 
-        ip_address = request.remote_addr
         status_code = 200
-        record = Recorder(ip_address, 'analytics', status_code)
+        record = Recorder('analytics', status_code)
         record.recordUsage()
 
         return summary, status_code

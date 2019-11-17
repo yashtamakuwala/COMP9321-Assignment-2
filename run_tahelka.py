@@ -18,7 +18,7 @@ app.register_blueprint(api_blueprint)
 def handle_not_found(error):
     # Analytics
     status_code = 404
-    Recorder(None, 'not_found_error', status_code).recordUsage()
+    Recorder('not_found_error', status_code).recordUsage()
 
     response = {"message": "Resource not found."}
     return response, status_code
@@ -27,7 +27,7 @@ def handle_not_found(error):
 def handle_internal_server_error(error):
     # Analytics
     status_code = 500
-    Recorder(None, 'internal_server_error', status_code).recordUsage()
+    Recorder('internal_server_error', status_code).recordUsage()
 
     print(error.__class__)
     print(error)

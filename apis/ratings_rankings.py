@@ -27,9 +27,9 @@ class RatingRankings(Resource):
 
         data = RatingRanker(limit, order).rank()
 
-        ip_address = request.remote_addr
+
         status_code = 200
-        record = Recorder(ip_address, 'rating_ranking', status_code)
+        record = Recorder('rating_ranking', status_code)
         record.recordUsage()
 
         resp = {'data' : data }

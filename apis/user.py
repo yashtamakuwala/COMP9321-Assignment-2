@@ -39,8 +39,7 @@ class Users(Resource):
         g.user_id = user.id
 
         # Analytics here
-        ip_address = request.remote_addr
-        Recorder(ip_address, "Register", 201).recordUsage()
+        Recorder("Register", 201).recordUsage()
 
         # method = request.method
         # ip_address = request.remote_addr

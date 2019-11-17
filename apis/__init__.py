@@ -32,7 +32,7 @@ api.add_namespace(crime_rankings)
 def handle_bad_request(error):
     # Analytics
     status_code = 400
-    Recorder(None, 'bad_request', status_code).recordUsage()
+    Recorder('bad_request', status_code).recordUsage()
 
     response = {"message": "The request parameters are invalid."}
     return response, status_code
@@ -41,7 +41,7 @@ def handle_bad_request(error):
 def handle_not_found(error):
     # Analytics
     status_code = 404
-    Recorder(None, 'not_found_error', status_code).recordUsage()
+    Recorder('not_found_error', status_code).recordUsage()
 
     response = {"message": "Resource not found."}
     return response, status_code
@@ -51,7 +51,7 @@ def handle_unauthorized(error):
     print(g)
     # Analytics
     status_code = 401
-    Recorder(None, 'unauthorized_error', status_code).recordUsage()
+    Recorder('unauthorized_error', status_code).recordUsage()
 
     response = {"message": "The provided credentials or token is incorrect."}
     return response, status_code
@@ -60,7 +60,7 @@ def handle_unauthorized(error):
 def handle_forbidden(error):
     # Analytics
     status_code = 403
-    Recorder(None, 'forbidden_error', status_code).recordUsage()
+    Recorder('forbidden_error', status_code).recordUsage()
 
     response = {
         "message": "You don't have permission to access this resource."

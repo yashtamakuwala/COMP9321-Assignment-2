@@ -1,16 +1,16 @@
 from tahelka.models.Usage import Usage
 from alchemy import Session
-from flask import g
+from flask import g, request
 
 class Recorder:
-    def __init__(self, ip_address, action, status_code):
-        self.ip_address = ip_address
+    def __init__(self, action, status_code):
+        self.ip_address = request.remote_addr
         self.action = action
         self.status_code = status_code
 
     def recordUsage(self):
         session = Session()
-        new_usage = Usage(self.get_user_id(), self.ip_address, self.action, self.status_code)
+        new_usage = Usage(self.get_user_id(), request.remote_addr, self.action, self.status_code)
         session.add(new_usage)
         session.commit()
 
