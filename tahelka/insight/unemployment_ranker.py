@@ -27,6 +27,11 @@ class UnemploymentRanker:
         if self.limit >= 0:
             df = df[:self.limit]
 
+        # format
+        df['mean_unemp_rate'] = df['mean_unemp_rate'].apply(lambda x: round(x, 2))
+        df['mean_unemp_rate'] = df['mean_unemp_rate'].astype(str) + '%'
+
+
         return df.to_dict(orient='records')
 
     def load_df():

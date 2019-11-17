@@ -18,6 +18,9 @@ class RatingRanker:
         if self.limit >= 0:
             df = df[:self.limit]
 
+        # format
+        df['mean_rating'] = df['mean_rating'].apply(lambda x: round(x, 2))
+
         return df.to_dict(orient='records')
 
     def load_df():

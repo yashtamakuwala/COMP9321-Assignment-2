@@ -30,6 +30,11 @@ class CrimeRanker:
         if self.limit >= 0:
             df = df[:self.limit]
 
+        # format
+        df['mean_price'] = df['mean_crime_count'].apply(lambda x: round(x, 2))
+        df['mean_price'] = '$' + df['mean_crime_count'].astype('str')
+
+
         return df.to_dict(orient='records')
 
     def load_df():
