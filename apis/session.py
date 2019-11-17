@@ -14,6 +14,9 @@ session = api.model('Session', {
 
 @api.route('')
 class Sessions(Resource):
+    @api.doc(description="Login")
+    @api.expect(session)
+    @api.response(201, "Login successful")
     def post(self):
         email = request.json['email']
         password = request.json['password']
