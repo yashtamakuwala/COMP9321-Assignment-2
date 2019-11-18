@@ -7,11 +7,14 @@ from tahelka.insight.rating_ranker import RatingRanker
 from tahelka.analytics.recorder import Recorder
 
 api = Namespace('rating_rankings')
+parser = api.parser()
+parser.add_argument('limit', type=int, help='Limit the results to this amount.')
+parser.add_argument('order', type=str, help='The order of the ranking (ascending/descending).')
 
 @api.route('')
 class RatingRankings(Resource):
+    @api.expect(parser)
     def get(self):
-
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 
