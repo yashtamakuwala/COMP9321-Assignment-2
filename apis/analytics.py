@@ -12,7 +12,7 @@ api = Namespace('analytics')
 parser = api.parser()
 parser.add_argument('start_date', type=str, help='Show usage summary starting from this date. (Y-m-d)')
 parser.add_argument('end_date', type=str, help='Show usage summary ending on this date. (Y-m-d)')
-parser.add_argument('user_id', type=str, help='Show usage summary for this user ID.')
+parser.add_argument('user_id', type=int, help='Show usage summary for this user ID.')
 
 @api.route('')
 class Analytics(Resource):
