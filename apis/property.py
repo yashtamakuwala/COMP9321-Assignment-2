@@ -93,7 +93,7 @@ class PropertyList(Resource):
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
 @api.response(404, "Property with the specified ID does not exist.")
-class Property(Resource):
+class Properties(Resource):
     @api.doc(description='Get a Property by id', parser= parser)
     @api.response(200, "Success.")
     def get(self, id):
