@@ -15,7 +15,6 @@ class CredentialsAuthenticator:
         if user is None:
             raise Unauthorized
 
-
         matcher = HashMatcher(self.password, user.password)
         if not matcher.is_matched():
             raise Unauthorized

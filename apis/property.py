@@ -11,7 +11,7 @@ from sqlalchemy import text
 
 api = Namespace('properties')
 
-listing = api.model('Property', {
+property = api.model('Property', {
     'lga' : fields.String(required=True),
     'property_type' : fields.String(required=True),
     'room_type' : fields.String(required=True),
@@ -81,7 +81,7 @@ class Properties(Resource):
 
         return msg, status_code
 
-    @api.doc(description="Create a property.", parser = parser, body = listing)
+    @api.doc(description="Create a property.", parser=parser, body=property)
     @api.response(201, "Property creation successful.")
     def post(self):
         auth_header = request.headers.get('Authorization')
@@ -117,7 +117,7 @@ class Properties(Resource):
 @api.response(403, "You are not authorized to access this resource.")
 @api.response(404, "Property with the specified ID does not exist.")
 class PropertyResource(Resource):
-    @api.doc(description='Get a Property by id', parser= parser)
+    @api.doc(description='Get a Property by id', parser=parser)
     @api.response(200, "Success.")
     def get(self, id):
         auth_header = request.headers.get('Authorization')
@@ -139,7 +139,7 @@ class PropertyResource(Resource):
 
         return prop, status_code
 
-    @api.doc(description='Partial update of a Property', parser= parser)
+    @api.doc(description='Partial update of a Property', parser=parser)
     @api.response(200, "Property partial update successful.")
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
@@ -191,7 +191,7 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, status_code
 
-    @api.doc(description='Delete a Property by id', parser= parser)
+    @api.doc(description='Delete a Property by id', parser=parser)
     @api.response(200, "Property deletion successful.")
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
@@ -215,7 +215,7 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, status_code
 
-    @api.doc(description='Replace a Property by id', parser= parser)
+    @api.doc(description='Replace a Property by id', parser=parser, body=property)
     @api.response(200, "Property replacement successful.")
     def put(self, id):
         auth_header = request.headers.get('Authorization')

@@ -7,11 +7,14 @@ from tahelka.insight.crime_ranker import CrimeRanker
 from tahelka.analytics.recorder import Recorder
 
 api = Namespace('crime_rankings')
+parser = api.parser()
+parser.add_argument('limit', type=int, help='Limit the results to this amount.')
+parser.add_argument('order', type=str, help='The order of the ranking (ascending/descending).')
 
 @api.route('')
 class CrimeRankings(Resource):
+    @api.expect(parser)
     def get(self):
-
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 

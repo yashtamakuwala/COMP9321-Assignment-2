@@ -15,7 +15,12 @@ from apis.unemployment_rankings import api as unemployment_ratings
 from tahelka.analytics.recorder import Recorder
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
-api = Api(blueprint)    #TODO Add metadata
+api = Api(
+    blueprint,
+    version='1.0',
+    title='Tahelka Service API',
+    description='A RESTful service to help people to settle in the Sydney area.'
+)
 
 api.add_namespace(session)
 api.add_namespace(user)
