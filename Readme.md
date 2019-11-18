@@ -3,14 +3,15 @@ A Data Analysis project that analyses Airbnb data of properties in Sydney, Austr
 To setup all the things before running the server:
 ```
 pip3 install -r requirements.txt
-python3 db_setup.py
-python3 data_setup.py
+python3 setup_all.py -d
 ```
 
 To run the server:
 ```
 python3 run_tahelka.py
 ```
+When the server is running, its swagger documentation can be accessed on http://[hostname]:5000/api/v1/
+
 To run the client, you must have node.js installed with npm bundled. You can download from the below link
 ```
 https://nodejs.org/en/download/
