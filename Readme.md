@@ -1,6 +1,6 @@
 A Data Analysis project that analyses Airbnb data of properties in Sydney, Australia(as of 14 September, 2019). Users can fill in their requirements such as - room type(private/sharing), property_type and more to get a rough idea of nightly stay they could expect to pay.
 
-###Running the application
+## Running the Application
 
 First, install all requirements:
 ```
@@ -12,7 +12,7 @@ Next, run the script to setup the database and clean the dataset:
 python3 setup_all.py -d
 ```
 
-Set the `JWT_SECRET` environment variable to any string you like to make the application secure.
+Set the `JWT_SECRET` environment variable to any string you like to make the JWT authentication secure.
 
 Run the server:
 ```
