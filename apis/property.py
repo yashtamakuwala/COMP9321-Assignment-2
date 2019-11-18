@@ -7,6 +7,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.util.util import areFieldsEmpty
 from tahelka.analytics.recorder import Recorder
 from tahelka.auth.token_authenticator import TokenAuthenticator
+from sqlalchemy import text
 
 api = Namespace('properties')
 
@@ -38,10 +39,32 @@ class Properties(Resource):
 
         start = int(request.args.get('start', 0))
         limit = int(request.args.get('limit', 100))
+        sort = str(request.args.get('sort', None))
+        order = str(request.args.get('sort', 'asc'))
+        filter_param = str(request.args.get('filter', None))
+        value = str(request.args.get('value', None))
+
+        print('**'*10+"sort:"+sort)
+
         end = start + limit
 
         session = Session()
-        records = session.query(Property).order_by(Property.id)[start:end]
+        query = session.query(Property)
+
+        sortText = str()
+        filterText = str()
+
+        if sort is None:
+            sortText = 'properties.id' + " " + order
+        else:
+            print("sort is not none")
+            sortText = "properties." + sort + " " + order
+
+        if filter is not None:
+            filterText = "properties." + filter_param + " = " + "'" + value + "'"
+            query = query.filter(text(filterText))
+        
+        records = query.order_by(text(sortText))[start:end]
 
         respJson = list()
         for record in records:
