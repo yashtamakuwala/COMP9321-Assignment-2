@@ -21,7 +21,7 @@ class Analytics(Resource):
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
-        
+
         start_date_string = request.args.get('start_date')
         end_date_string = request.args.get('end_date')
         user_id = request.args.get('user_id')
@@ -29,7 +29,8 @@ class Analytics(Resource):
         start_date = DateConverter(start_date_string).convert()
         end_date = DateConverter(end_date_string).convert()
 
-        summarizer = Summarizer(user_id=user_id, start_date=start_date, end_date=end_date)
+        summarizer = Summarizer(user_id=user_id, start_date=start_date,
+                                end_date=end_date)
         summary = summarizer.summarize()
 
         status_code = 200

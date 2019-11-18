@@ -1,4 +1,4 @@
- from unittest import TestCase
+from unittest import TestCase
 from faker import Faker
 faker = Faker()
 
