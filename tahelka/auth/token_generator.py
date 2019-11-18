@@ -14,7 +14,7 @@ class TokenGenerator:
     def construct_payload(self):
         payload = {
             'id': self.user.id,
-            'expired_at': TokenGenerator.decide_expire_time()
+            'exp': TokenGenerator.decide_expire_time()
         }
 
         if self.user.is_admin:

@@ -98,24 +98,22 @@ class TestTokenAuth(TestCase):
         user.is_admin = False
 
         secret = faker.sentence()
-        expired_time = time.time() + (60 * 60 * 24) + randrange(1, 100)
+        expire_time = time.time() - 2 * (60 * 60 * 24) + randrange(1, 100)
 
         with patch('tahelka.auth.token_generator.current_app') as app:
-            app.config = {'JWT_SECRET': secret}
+            with patch(
+                'tahelka.auth.token_authenticator.time.time'
+            ) as mock_time:
+                mock_time.return_value = expire_time
+                app.config = {'JWT_SECRET': secret}
 
-            generator = TokenGenerator(user)
-            token = generator.generate()
+                generator = TokenGenerator(user)
+                token = generator.generate()
 
         with patch('tahelka.auth.token_authenticator.current_app') as app:
             app.config = {'JWT_SECRET': secret}
             with patch('tahelka.auth.token_authenticator.g') as g:
-                with patch(
-                    'tahelka.auth.token_authenticator.time.time'
-                ) as mock_time:
-                    mock_time.return_value = expired_time
-
-                    auth_header = f'Bearer {token}'
-                    authenticator = TokenAuthenticator(auth_header, False)
-                    with self.assertRaises(Unauthorized):
-                        authenticator.authenticate()
-                    self.assertEqual(g.user_id, id)
+                auth_header = f'Bearer {token}'
+                authenticator = TokenAuthenticator(auth_header, False)
+                with self.assertRaises(Unauthorized):
+                    authenticator.authenticate()

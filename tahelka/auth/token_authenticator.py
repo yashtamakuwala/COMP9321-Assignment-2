@@ -20,10 +20,6 @@ class TokenAuthenticator:
         # Set the user_id as global
         g.user_id = payload['id']
 
-        # Check expiry
-        if TokenAuthenticator.is_expired(payload):
-            raise Unauthorized
-
         # Check role
         if self.must_be_admin and 'is_admin' not in payload:
             raise Forbidden
@@ -33,7 +29,7 @@ class TokenAuthenticator:
         try:
             payload = jwt.decode(self.extract_token(), secret,
                                  algorithms='HS256')
-        except(InvalidTokenError):
+        except(InvalidTokenError):  # check expiry is also done here
             raise Unauthorized
 
         return payload
@@ -42,9 +38,6 @@ class TokenAuthenticator:
         return TokenExtractor(self.auth_header).extract()
 
     def validate_payload(payload):
-        for key in ['id', 'expired_at']:
+        for key in ['id', 'exp']:
             if key not in payload:
                 raise Unauthorized
-
-    def is_expired(payload):
-        return int(time.time()) > int(payload['expired_at'])
