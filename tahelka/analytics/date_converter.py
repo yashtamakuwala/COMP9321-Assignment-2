@@ -7,6 +7,10 @@ class DateConverter:
     def convert(self):
         if self.date_string is None:
             return
-    
-        dt = datetime.strptime(self.date_string, '%Y-%m-%d')
+
+        try:
+            dt = datetime.strptime(self.date_string, '%Y-%m-%d')
+        except(ValueError):
+            raise BadRequest
+            
         return datetime.date(dt)
