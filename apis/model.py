@@ -9,17 +9,16 @@ api = Namespace('model')
 
 @api.route('')
 class Training(Resource):
-    @api.doc(description="Training the model")
-    @api.response(200,"Model is trained successfully")
+    @api.doc(description="Retraining the model")
+    @api.response(200, "The ML Model has been retrained successfully")
     def put(self):
-
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
         Trainer().train()
 
         msg = {
-            'msg' : 'Model training initiated.'
+            'message' : 'The ML Model has been retrained successfully.'
         }
 
         status_code = 200
