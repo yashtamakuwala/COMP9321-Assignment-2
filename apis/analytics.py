@@ -22,6 +22,8 @@ class Analytics(Resource):
     @api.param('user_id', description="Stats of the user id.")
     @api.expect(parser)
     @api.response(200, "Success.")
+    @api.response(401, "The credentials are incorrect.")
+    @api.response(403, "The user must be an admin")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()

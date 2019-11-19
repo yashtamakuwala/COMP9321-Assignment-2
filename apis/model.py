@@ -10,7 +10,9 @@ api = Namespace('model')
 @api.route('')
 class Training(Resource):
     @api.doc(description="Training the model")
-    @api.response(200,"Model is trained successfully")
+    @api.response(200, "Model is trained successfully")
+    @api.response(401, "The credentials are incorrect.")
+    @api.response(403, "The user must be an admin")
     def put(self):
 
         auth_header = request.headers.get('Authorization')

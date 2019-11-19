@@ -18,8 +18,9 @@ class PriceRankings(Resource):
     @api.param('limit', description='Limit the results to this amount.')
     @api.param('order', description='The order of the ranking (ascending/descending).')
     @api.expect(parser)
-    @api.response(200,"Price Ranking Successfully Displayed.")
-    @api.response(400,"invalid limit value entered")
+    @api.response(200, "Price Ranking Successfully Displayed.")
+    @api.response(400, "Invalid limit value entered")
+    @api.response(401, "The credentials are incorrect.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()

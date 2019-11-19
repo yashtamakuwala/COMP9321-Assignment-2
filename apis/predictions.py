@@ -22,7 +22,8 @@ class Predictions(Resource):
     @api.param('guest_count', description="The number of people to be the tenant of the property.")
     @api.param('bed_count', description="The number of beds available on the property.")
     @api.expect(parser)
-    @api.response(200,"Prediciton done successfully")
+    @api.response(200, "Prediciton done successfully")
+    @api.response(401, "The credentials are incorrect.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()

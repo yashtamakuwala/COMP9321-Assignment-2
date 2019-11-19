@@ -20,6 +20,7 @@ class UnemploymentRankings(Resource):
     @api.expect(parser)
     @api.response(200, "Unemployment Ranking Successfully Displayed.")
     @api.response(400, "Invalid limit value entered")
+    @api.response(401, "The credentials are incorrect.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
