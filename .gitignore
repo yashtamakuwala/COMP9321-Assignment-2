@@ -7,7 +7,7 @@ data/crime_clean.csv
 data/lga_conversion_clean.csv
 data/unemployment_clean.csv
 
-ml_models/
+ml_models/*.sav
 
 */.ipynb_checkpoints/*
 **/.DS_Store
