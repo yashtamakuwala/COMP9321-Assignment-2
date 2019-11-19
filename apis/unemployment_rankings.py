@@ -19,7 +19,7 @@ class UnemploymentRankings(Resource):
     @api.param('order', description='The order of the ranking (ascending/descending).')
     @api.expect(parser)
     @api.response(200, "Unemployment Ranking Successfully Displayed.")
-    @api.response(400, "Invalid limit value entered")
+    @api.response(400, "Invalid limit or order parameter entered")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
