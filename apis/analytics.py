@@ -16,7 +16,12 @@ parser.add_argument('user_id', type=int, help='Show usage summary for this user 
 
 @api.route('')
 class Analytics(Resource):
+    @api.doc(description="Show list of Stats based on Date and User Id.")
+    @api.param('start_date', description='Start date of stats.')
+    @api.param('end_date', description="End date of stats.")
+    @api.param('user_id', description="Stats of the user id.")
     @api.expect(parser)
+    @api.response(200, "Success.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()

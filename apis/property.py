@@ -28,9 +28,14 @@ parser.add_argument('Authorization', location="headers",
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
 class Properties(Resource):
+    
     @api.doc(description="Show list of properties.")
     @api.param('start', description='The list starts at this index.')
     @api.param('limit', description='Number of properties to be shown.')
+    @api.param('sort', description="Basis for sorting")
+    @api.param('order', description="Order of sorting")
+    @api.param('filter', description="Basis for filtering")
+    @api.param('value', description="Value of filter")
     @api.expect(parser)
     @api.response(200, "Success.")
     def get(self):
@@ -39,12 +44,10 @@ class Properties(Resource):
 
         start = int(request.args.get('start', 0))
         limit = int(request.args.get('limit', 100))
-        sort = str(request.args.get('sort', None))
+        sort = str(request.args.get('sort', ''))
         order = str(request.args.get('sort', 'asc'))
-        filter_param = str(request.args.get('filter', None))
-        value = str(request.args.get('value', None))
-
-        print('**'*10+"sort:"+sort)
+        filter_param = str(request.args.get('filter', ''))
+        value = str(request.args.get('value', ''))
 
         end = start + limit
 
@@ -54,13 +57,14 @@ class Properties(Resource):
         sortText = str()
         filterText = str()
 
-        if sort is None:
+        if not sort:
             sortText = 'properties.id' + " " + order
         else:
-            print("sort is not none")
             sortText = "properties." + sort + " " + order
 
-        if filter is not None:
+        if filter :
+            if not value:
+                raise BadRequest
             filterText = "properties." + filter_param + " = " + "'" + value + "'"
             query = query.filter(text(filterText))
         
