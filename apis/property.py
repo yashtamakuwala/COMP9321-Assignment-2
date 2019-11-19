@@ -28,14 +28,13 @@ parser.add_argument('Authorization', location="headers",
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
 class Properties(Resource):
-    
     @api.doc(description="Show list of properties.")
-    @api.param('start', description='The list starts at this index.')
-    @api.param('limit', description='Number of properties to be shown.')
-    @api.param('sort', description="Basis for sorting")
-    @api.param('order', description="Order of sorting")
-    @api.param('filter', description="Basis for filtering")
-    @api.param('value', description="Value of filter")
+    @api.param('start', type=int, description='The list starts at this index.')
+    @api.param('limit', type=int, description='Number of properties to be shown.')
+    @api.param('sort', type=str, description="Basis for sorting")
+    @api.param('order', type=str, description="Order of sorting")
+    @api.param('filter', type=str, description="Basis for filtering")
+    @api.param('value', type=str, description="Value of filter")
     @api.expect(parser)
     @api.response(200, "Success.")
     def get(self):
@@ -67,7 +66,7 @@ class Properties(Resource):
                 raise BadRequest
             filterText = "properties." + filter_param + " = " + "'" + value + "'"
             query = query.filter(text(filterText))
-        
+
         records = query.order_by(text(sortText))[start:end]
 
         respJson = list()

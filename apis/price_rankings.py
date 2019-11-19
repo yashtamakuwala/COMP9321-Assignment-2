@@ -8,16 +8,12 @@ from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import limitCheck
 
 api = Namespace('price_rankings')
-parser = api.parser()
-parser.add_argument('limit', type=int, help='Limit the results to this amount.')
-parser.add_argument('order', type=str, help='The order of the ranking (ascending/descending).')
 
 @api.route('')
 class PriceRankings(Resource):
     @api.doc(description="Show list of Price Ranking.")
-    @api.param('limit', description='Limit the results to this amount.')
-    @api.param('order', description='The order of the ranking (ascending/descending).')
-    @api.expect(parser)
+    @api.param('limit', type=int, description='Limit the results to this amount.')
+    @api.param('order', type=str, description='The order of the ranking (ascending/descending).')
     @api.response(200,"Price Ranking Successfully Displayed.")
     @api.response(400,"invalid limit value entered")
     def get(self):

@@ -9,18 +9,12 @@ from tahelka.analytics.recorder import Recorder
 
 api = Namespace('analytics')
 
-parser = api.parser()
-parser.add_argument('start_date', type=str, help='Show usage summary starting from this date. (Y-m-d)')
-parser.add_argument('end_date', type=str, help='Show usage summary ending on this date. (Y-m-d)')
-parser.add_argument('user_id', type=int, help='Show usage summary for this user ID.')
-
 @api.route('')
 class Analytics(Resource):
     @api.doc(description="Show list of Stats based on Date and User Id.")
-    @api.param('start_date', description='Start date of stats.')
-    @api.param('end_date', description="End date of stats.")
-    @api.param('user_id', description="Stats of the user id.")
-    @api.expect(parser)
+    @api.param('start_date', type=str, description='Show usage summary starting from this date. (Y-m-d)')
+    @api.param('end_date', type=str, description='Show usage summary ending on this date. (Y-m-d)')
+    @api.param('user_id', type=int, description='Show usage summary for this user ID.')
     @api.response(200, "Success.")
     def get(self):
         auth_header = request.headers.get('Authorization')
