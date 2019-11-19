@@ -19,7 +19,7 @@ class CrimeRankings(Resource):
     @api.param('order', description='The order of the ranking (ascending/descending).')
     @api.expect(parser)
     @api.response(200,"Crime Ranking Successfully Displayed.")
-    @api.response(400,"Invalid limit or order parameter entered")
+    @api.response(400,"Invalid limit value entered")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
