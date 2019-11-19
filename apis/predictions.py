@@ -15,7 +15,14 @@ parser.add_argument('bed_count', type=str, help='The number of beds available on
 
 @api.route('')
 class Predictions(Resource):
+    @api.doc(description="Prediction based on the inputs.")
+    @api.param('lga', description='The local government area of the property.')
+    @api.param('property_type', description='The type of the property.')
+    @api.param('room_type', description="The room type to rent on the property.")
+    @api.param('guest_count', description="The number of people to be the tenant of the property.")
+    @api.param('bed_count', description="The number of beds available on the property.")
     @api.expect(parser)
+    @api.response(200,"Prediciton done successfully")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()

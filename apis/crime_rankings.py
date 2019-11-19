@@ -5,6 +5,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.insight.crime_ranker import CrimeRanker
 from tahelka.analytics.recorder import Recorder
+from tahelka.util.util import limitCheck
 
 api = Namespace('crime_rankings')
 parser = api.parser()
@@ -13,7 +14,12 @@ parser.add_argument('order', type=str, help='The order of the ranking (ascending
 
 @api.route('')
 class CrimeRankings(Resource):
+    @api.doc(description="Show list of Crime Ranks.")
+    @api.param('limit', description='Limit the results to this amount.')
+    @api.param('order', description='The order of the ranking (ascending/descending).')
     @api.expect(parser)
+    @api.response(200,"Crime Ranking Successfully Displayed.")
+    @api.response(400,"Invalid limit value entered")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
@@ -23,10 +29,7 @@ class CrimeRankings(Resource):
 
         order = order == "ascending"    #order is true for ascending, false otherwise
 
-        if limit == "all" :
-            limit = -1
-        else:
-            limit = int(limit)
+        limit = limitCheck(limit)
 
         data = CrimeRanker(limit, order).rank()
 

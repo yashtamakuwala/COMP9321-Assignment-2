@@ -9,6 +9,8 @@ api = Namespace('model')
 
 @api.route('')
 class Training(Resource):
+    @api.doc(description="Training the model")
+    @api.response(200,"Model is trained successfully")
     def put(self):
 
         auth_header = request.headers.get('Authorization')
