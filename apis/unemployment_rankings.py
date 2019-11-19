@@ -9,11 +9,17 @@ from tahelka.util.util import limitCheck
 
 api = Namespace('unemployment_rankings')
 
+parser = api.parser()
+parser.add_argument('Authorization', location="headers",
+                    help='Bearer \<JSON Web Token\>', required=True)
+
+
 @api.route('')
 class UnemploymentRankings(Resource):
     @api.doc(description="Show list of Unemployment Ranking.")
     @api.param('limit', type=int, description='Limit the results to this amount.')
     @api.param('order', type=str, description='The order of the ranking (ascending/descending).')
+    @api.expect(parser)
     @api.response(200, "Unemployment Ranking Successfully Displayed.")
     @api.response(400, "Invalid limit value entered")
     def get(self):

@@ -7,6 +7,11 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('predictions')
 
+parser = api.parser()
+parser.add_argument('Authorization', location="headers",
+                    help='Bearer \<JSON Web Token\>', required=True)
+
+
 @api.route('')
 class Predictions(Resource):
     @api.doc(description="Prediction based on the inputs.")
@@ -15,6 +20,7 @@ class Predictions(Resource):
     @api.param('room_type', type=str, description="The room type to rent on the property.", required=True)
     @api.param('guest_count', type=int, description="The number of people to be the tenant of the property.", required=True)
     @api.param('bed_count', type=int, description="The number of beds available on the property.", required=True)
+    @api.expect(parser)
     @api.response(200, "Price range prediction done successfully.")
     def get(self):
         auth_header = request.headers.get('Authorization')
