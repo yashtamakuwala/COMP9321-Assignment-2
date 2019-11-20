@@ -21,7 +21,7 @@ export class WebMethodsService {
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   login(user: User): Observable<any> {
-    const loginUrl = this.API_URL + 'sessions';
+    const loginUrl = this.API_URL + 'tokens';
     return this.http.post(loginUrl, user, httpOptions);
   }
 
