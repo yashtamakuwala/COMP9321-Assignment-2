@@ -7,16 +7,10 @@ from tahelka.analytics.recorder import Recorder
 
 api = Namespace('model')
 
-parser = api.parser()
-parser.add_argument('Authorization', location="headers",
-                    help='Bearer \<JSON Web Token\>', required=True)
-
-
 @api.route('')
 class Training(Resource):
     @api.doc(description="Retraining the model")
     @api.response(200, "The ML Model has been retrained successfully")
-    @api.expect(parser)
     def put(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()

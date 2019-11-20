@@ -20,10 +20,6 @@ property = api.model('Property', {
     'price' : fields.Integer(required=True),
 })
 
-parser = api.parser()
-parser.add_argument('Authorization', location="headers",
-                    help='Bearer \<JSON Web Token\>', required=True)
-
 @api.route('')
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
@@ -38,7 +34,6 @@ class Properties(Resource):
     @api.param('room_type', type=str, description="Filter by Type of Room")
     @api.param('bed_count', type=int, description="Filter by Count of Beds")
     @api.param('guest_count', type=int, description="Filter by Count of Guests")
-    @api.expect(parser)
     @api.response(200, "Success.")
     def get(self):
         auth_header = request.headers.get('Authorization')
@@ -56,7 +51,7 @@ class Properties(Resource):
         b_count = request.args.get('bed_count')
 
         end = start + limit
-        
+
         property_attributes = [
             'lga',
             'property_type',
@@ -77,7 +72,7 @@ class Properties(Resource):
             if order not in ['asc', 'desc', '']:
                 raise BadRequest
             sortText = "properties." + sort + " " + order
-        
+
         if lga:
             query = query.filter(text("properties.lga = '"+ lga + "'"))
         if p_type :
@@ -108,7 +103,7 @@ class Properties(Resource):
 
         return msg, status_code
 
-    @api.doc(description="Create a property.", parser=parser, body=property)
+    @api.doc(description="Create a property.", body=property)
     @api.response(201, "Property creation successful.")
     def post(self):
         auth_header = request.headers.get('Authorization')
@@ -144,7 +139,7 @@ class Properties(Resource):
 @api.response(403, "You are not authorized to access this resource.")
 @api.response(404, "Property with the specified ID does not exist.")
 class PropertyResource(Resource):
-    @api.doc(description='Get a Property by id', parser=parser)
+    @api.doc(description='Get a Property by id')
     @api.response(200, "Success.")
     def get(self, id):
         auth_header = request.headers.get('Authorization')
@@ -166,7 +161,7 @@ class PropertyResource(Resource):
 
         return prop, status_code
 
-    @api.doc(description='Partial update of a Property', parser=parser)
+    @api.doc(description='Partial update of a Property')
     @api.response(200, "Property partial update successful.")
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
@@ -218,7 +213,7 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, status_code
 
-    @api.doc(description='Delete a Property by id', parser=parser)
+    @api.doc(description='Delete a Property by id')
     @api.response(200, "Property deletion successful.")
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
@@ -242,7 +237,7 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, status_code
 
-    @api.doc(description='Replace a Property by id', parser=parser, body=property)
+    @api.doc(description='Replace a Property by id', body=property)
     @api.response(200, "Property replacement successful.")
     def put(self, id):
         auth_header = request.headers.get('Authorization')

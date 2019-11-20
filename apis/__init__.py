@@ -15,11 +15,22 @@ from apis.local_government_areas.unemployment_ranking import api as unemployment
 from tahelka.analytics.recorder import Recorder
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
+
+authorizations = {
+    'HTTP Bearer Authentication': {
+        'type': 'apiKey',
+        'name': 'Authorization',
+        'in': 'header'
+    }
+}
+
 api = Api(
     blueprint,
+    authorizations=authorizations,
     version='1.0',
     title='Tahelka Service API',
-    description='A RESTful service to help people to settle in the Sydney area.'
+    description='A RESTful service to help people to settle in the Sydney area.',
+    security='HTTP Bearer Authentication'
 )
 
 api.add_namespace(tokens)

@@ -18,7 +18,7 @@ user = api.model('User', {
 @api.route('')
 class Users(Resource):
     @api.expect(user)
-    @api.doc(description="Register a user.")
+    @api.doc(security=[], description="Register a user.")
     @api.response(201, "Registration successful.")
     @api.response(400, "The parameters submmited are invalid.")
     def post(self):

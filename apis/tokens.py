@@ -14,7 +14,7 @@ credential = api.model('Credential', {
 
 @api.route('')
 class Tokens(Resource):
-    @api.doc(description="Login")
+    @api.doc(security=[], description="Login")
     @api.expect(credential)
     @api.response(201, "Login successful. Token sucessfully created.")
     @api.response(401, "The credentials provided are incorrect.")
