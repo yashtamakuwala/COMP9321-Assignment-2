@@ -7,7 +7,8 @@ from tahelka.insight.unemployment_ranker import UnemploymentRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local_government_areas/unemployment_ranking')
+api = Namespace('Local Areas by Unemployment', path='/local_government_areas/unemployment_ranking',
+                description='Ranks local government areas around Sydney by monthly average unemployment rate')
 
 @api.route('')
 class UnemploymentRanking(Resource):

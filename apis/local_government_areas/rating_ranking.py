@@ -7,7 +7,8 @@ from tahelka.insight.rating_ranker import RatingRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local_government_areas/rating_ranking')
+api = Namespace('Local Areas by Tenant Rating', path='/local_government_areas/rating_ranking',
+                description='Ranks local government areas around Sydney by average given rating by tenants in Airbnb')
 
 @api.route('')
 class RatingRanking(Resource):

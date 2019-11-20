@@ -7,14 +7,24 @@ from tahelka.analytics.date_converter import DateConverter
 from tahelka.analytics.summarizer import Summarizer
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('usage_summary')
+api = Namespace('API Usage Summary', path='/usage_summary',
+                description='Shows a summary of the recorded usage of the API')
 
 @api.route('')
 class UsageSummary(Resource):
-    @api.doc(description="Show list of Stats based on Date and User Id.")
-    @api.param('start_date', type=str, description='Only consider usage starting from this date (Y-m-d)', format='date')
-    @api.param('end_date', type=str, description='Only consider usage ending on this date. (Y-m-d)', format='date')
-    @api.param('user_id', type=int, description='Only consider usage of this user ID.')
+    description='''\
+    Shows a summary of the recorded usage of the API.<br />
+    The user could specify the date interval of the records to be considered.
+    This endpoint is also able to show a summary of the API usage by a particular user.<br />
+    The summary includes:
+    - The total usage count
+    - The usage counts of different endpoints
+    - Counts of different HTTP response status codes given by the service
+    '''
+    @api.doc(description=description)
+    @api.param('start_date', type=str, description='Only consider records starting from this date (Y-m-d)', format='date')
+    @api.param('end_date', type=str, description='Only consider records ending on this date. (Y-m-d)', format='date')
+    @api.param('user_id', type=int, description='Only consider usage by this user ID.')
     @api.response(200, "API usage summary has been successfully shown.")
     @api.response(401, "The JWT provided is incorrect or expired.")
     @api.response(403, "You are not authorized to access this resource.")

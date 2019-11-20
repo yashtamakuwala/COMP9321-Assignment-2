@@ -5,11 +5,20 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.ml.trainer import Trainer
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('model')
+api = Namespace('Model Retraining', path='/model',
+                description='Replaces the current machine learning model by retraining a new model')
 
 @api.route('')
-class Training(Resource):
-    @api.doc(description="Retraining the model")
+class Model(Resource):
+    description='''
+    Replaces the current machine learning model by retraining a new model.<br />
+    No parameters needed to be specified.
+    The model will be retrained automatically.
+    This endpoint is used to replace the current machine learning model after \
+    updating the properties dataset using the CRUD operations provided by \
+    this service.
+    '''
+    @api.doc(description=description)
     @api.response(200, "The ML Model has been retrained successfully.")
     @api.response(401, "The JWT provided is incorrect or expired.")
     @api.response(403, "You are not authorized to access this resource.")

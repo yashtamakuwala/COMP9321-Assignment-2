@@ -9,15 +9,16 @@ from tahelka.analytics.recorder import Recorder
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from sqlalchemy import text
 
-api = Namespace('properties')
+api = Namespace("Properties Dataset", path='/properties',
+                description="CRUD operations on the dataset")
 
 property = api.model('Property', {
-    'lga' : fields.String(required=True),
-    'property_type' : fields.String(required=True),
-    'room_type' : fields.String(required=True),
-    'guest_count' : fields.Integer(required=True),
-    'bed_count' : fields.Integer(required=True),
-    'price' : fields.Integer(required=True),
+    'lga' : fields.String(required=True, description='Local government area of the property'),
+    'property_type' : fields.String(required=True, description='The type of the property'),
+    'room_type' : fields.String(required=True, description='Room type available in the property'),
+    'guest_count' : fields.Integer(required=True, description='Number of persons that the property can accommodate'),
+    'bed_count' : fields.Integer(required=True, description='Number of beds in the property'),
+    'price' : fields.Integer(required=True, description='Per-night rent price of the property'),
 })
 
 @api.route('')

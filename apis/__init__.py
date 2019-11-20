@@ -24,12 +24,29 @@ authorizations = {
     }
 }
 
+description = '''\
+A RESTful service to help people to settle in the Sydney area.
+This service uses machine learning techniques to learn patterns from these datasets:
+- Airbnb property listings around Sydney
+- Monthly crime offences per local government areas since 1995
+- Monthly unemployment rate per local government areas since 2010
+
+Based on these datasets, the service predicts rent price of a property based on some of its attributes.
+The attributes are room type, property type, number of beds, and number of people it can accommodates, monthly average crime offences, and monthly unemployment rate.
+The users specify local government area, property type, room type, number of beds, and number of guests, then this service will predict the rent price of a property with those specifications.
+
+Besides that, the service also gives rankings of local government areas around Sydney based on some metrics.
+These metrics are average price, average airbnb rating, monthly average crime offences, and monthly unemployment rate.
+These rankings could help the user in deciding which local government area it wants to settle in.
+\
+'''
+
 api = Api(
     blueprint,
     authorizations=authorizations,
     version='1.0',
     title='Tahelka Service API',
-    description='A RESTful service to help people to settle in the Sydney area.',
+    description=description,
     security='HTTP Bearer Authentication'
 )
 

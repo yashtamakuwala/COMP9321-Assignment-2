@@ -7,7 +7,8 @@ from tahelka.insight.crime_ranker import CrimeRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local_government_areas/safety_ranking')
+api = Namespace('Local Areas by Safety', path='/local_government_areas/safety_ranking',
+                description='Ranks local government areas around Sydney by monthly average count of crime offences')
 
 @api.route('')
 class SafetyRanking(Resource):
