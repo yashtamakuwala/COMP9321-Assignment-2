@@ -2,16 +2,16 @@ from flask import Blueprint, g
 from flask_restplus import Api
 from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, NotFound
 
-from apis.session import api as session
-from apis.user import api as user
-from apis.property import api as property
-from apis.analytics import api as analytics
-from apis.predictions import api as predictions
+from apis.tokens import api as tokens
+from apis.users import api as users
+from apis.properties import api as properties
+from apis.usage_summary import api as usage_summary
+from apis.property_price_prediction import api as property_price_prediction
 from apis.model import api as model
-from apis.price_rankings import api as price_rankings
-from apis.crime_rankings import api as crime_rankings
-from apis.ratings_rankings import api as rating_rankings
-from apis.unemployment_rankings import api as unemployment_ratings
+from apis.local_government_areas.price_ranking import api as price_ranking
+from apis.local_government_areas.safety_ranking import api as safety_ranking
+from apis.local_government_areas.rating_ranking import api as rating_ranking
+from apis.local_government_areas.unemployment_ranking import api as unemployment_ranking
 from tahelka.analytics.recorder import Recorder
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
@@ -22,16 +22,16 @@ api = Api(
     description='A RESTful service to help people to settle in the Sydney area.'
 )
 
-api.add_namespace(session)
-api.add_namespace(user)
-api.add_namespace(property)
-api.add_namespace(analytics)
-api.add_namespace(predictions)
+api.add_namespace(tokens)
+api.add_namespace(users)
+api.add_namespace(properties)
+api.add_namespace(usage_summary)
+api.add_namespace(property_price_prediction)
 api.add_namespace(model)
-api.add_namespace(price_rankings)
-api.add_namespace(unemployment_ratings)
-api.add_namespace(rating_rankings)
-api.add_namespace(crime_rankings)
+api.add_namespace(price_ranking)
+api.add_namespace(safety_ranking)
+api.add_namespace(rating_ranking)
+api.add_namespace(unemployment_ranking)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):

@@ -5,19 +5,19 @@ from tahelka.analytics.recorder import Recorder
 from tahelka.analytics.summarizer import Summarizer
 
 
-api = Namespace('sessions')
+api = Namespace('tokens')
 
-session = api.model('Session', {
+credential = api.model('Credential', {
     'email': fields.String(required=True),
     'password': fields.String(required=True)
 })
 
 @api.route('')
-class Sessions(Resource):
+class Tokens(Resource):
     @api.doc(description="Login")
-    @api.expect(session)
-    @api.response(201, "Login successful.")
-    @api.response(401, "The credentials are incorrect.")
+    @api.expect(credential)
+    @api.response(201, "Login successful. Token sucessfully created.")
+    @api.response(401, "The credentials provided are incorrect.")
     def post(self):
         email = request.json['email']
         password = request.json['password']

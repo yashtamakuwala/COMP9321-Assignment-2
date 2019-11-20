@@ -5,7 +5,7 @@ from tahelka.analytics.recorder import Recorder
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
-api = Namespace('predictions')
+api = Namespace('property-price-prediction')
 
 parser = api.parser()
 parser.add_argument('Authorization', location="headers",
@@ -13,8 +13,8 @@ parser.add_argument('Authorization', location="headers",
 
 
 @api.route('')
-class Predictions(Resource):
-    @api.doc(description="Prediction based on the inputs.")
+class PropertyPricePrediction(Resource):
+    @api.doc(description="Show price prediction of a property based on the specified attributes.")
     @api.param('lga', type=str, description='The local government area of the property.', required=True)
     @api.param('property_type', type=str, description='The type of the property.', required=True)
     @api.param('room_type', type=str, description="The room type to rent on the property.", required=True)

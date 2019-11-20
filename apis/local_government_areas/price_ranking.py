@@ -3,24 +3,25 @@ from flask import Blueprint, request
 from flask_restplus import Namespace, fields, Resource
 from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
-from tahelka.insight.crime_ranker import CrimeRanker
+from tahelka.insight.price_ranker import PriceRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import limitCheck
 
-api = Namespace('crime_rankings')
+api = Namespace('local-government-areas/price-ranking')
 
 parser = api.parser()
 parser.add_argument('Authorization', location="headers",
                     help='Bearer \<JSON Web Token\>', required=True)
 
+
 @api.route('')
-class CrimeRankings(Resource):
-    @api.doc(description="Show list of Crime Ranks.")
+class PriceRanking(Resource):
+    @api.doc(description="Show list of Price Ranking.")
     @api.param('limit', type=int, description='Limit the results to this amount.')
     @api.param('order', type=str, description='The order of the ranking (ascending/descending).')
     @api.expect(parser)
-    @api.response(200,"Crime Ranking Successfully Displayed.")
-    @api.response(400,"Invalid limit value entered")
+    @api.response(200,"Price Ranking Successfully Displayed.")
+    @api.response(400,"invalid limit value entered")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
@@ -32,10 +33,10 @@ class CrimeRankings(Resource):
 
         limit = limitCheck(limit)
 
-        data = CrimeRanker(limit, order).rank()
+        data = PriceRanker(limit, order).rank()
 
         status_code = 200
-        record = Recorder('crime_rankings', status_code)
+        record = Recorder('price_rankings', status_code)
         record.recordUsage()
 
         resp = {'data' : data }
