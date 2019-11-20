@@ -7,7 +7,7 @@ from tahelka.insight.price_ranker import PriceRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local-government-areas/price-ranking')
+api = Namespace('local_government_areas/price_ranking')
 
 @api.route('')
 class PriceRanking(Resource):

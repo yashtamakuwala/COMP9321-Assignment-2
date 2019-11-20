@@ -7,7 +7,7 @@ from tahelka.insight.crime_ranker import CrimeRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local-government-areas/safety-ranking')
+api = Namespace('local_government_areas/safety_ranking')
 
 @api.route('')
 class SafetyRanking(Resource):

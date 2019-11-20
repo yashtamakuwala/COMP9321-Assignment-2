@@ -7,7 +7,7 @@ from tahelka.insight.rating_ranker import RatingRanker
 from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
-api = Namespace('local-government-areas/rating-ranking')
+api = Namespace('local_government_areas/rating_ranking')
 
 @api.route('')
 class RatingRanking(Resource):

@@ -7,7 +7,7 @@ from tahelka.analytics.date_converter import DateConverter
 from tahelka.analytics.summarizer import Summarizer
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('usage-summary')
+api = Namespace('usage_summary')
 
 @api.route('')
 class UsageSummary(Resource):

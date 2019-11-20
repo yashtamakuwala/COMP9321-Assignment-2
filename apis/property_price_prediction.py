@@ -6,7 +6,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.util.util import validate_integer_param
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
-api = Namespace('property-price-prediction')
+api = Namespace('property_price_prediction')
 
 @api.route('')
 class PropertyPricePrediction(Resource):
