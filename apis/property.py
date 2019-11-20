@@ -61,7 +61,9 @@ class Properties(Resource):
         else:
             sortText = "properties." + sort + " " + order
 
-        if filter :
+        if filter:
+            if not is_filter_valid(filter):
+                raise BadRequest
             if not value:
                 raise BadRequest
             filterText = "properties." + filter_param + " = " + "'" + value + "'"
