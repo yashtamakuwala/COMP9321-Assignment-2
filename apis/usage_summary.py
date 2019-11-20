@@ -8,12 +8,12 @@ from tahelka.analytics.summarizer import Summarizer
 from tahelka.analytics.recorder import Recorder
 
 api = Namespace('API Usage Summary', path='/usage_summary',
-                description='Shows a summary of the recorded usage of the API')
+                description='Summary of the recorded usage of the API')
 
 @api.route('')
 class UsageSummary(Resource):
     description='''\
-    Shows a summary of the recorded usage of the API.<br />
+    Shows a summary of the recorded usage of the API with specified query parameters.
     The user could specify the date interval of the records to be considered.
     This endpoint is also able to show a summary of the API usage by a particular user.<br />
     The summary includes:
@@ -29,6 +29,9 @@ class UsageSummary(Resource):
     @api.response(401, "The JWT provided is incorrect or expired.")
     @api.response(403, "You are not authorized to access this resource.")
     def get(self):
+        '''
+        Shows a summary of the recorded usage of the API
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 

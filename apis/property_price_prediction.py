@@ -7,7 +7,7 @@ from tahelka.util.util import validate_integer_param
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('Property Price Prediction', path='/property_price_prediction',
-                description='Predicts rent price of a property by using a trained machine learning model')
+                description='Predicts rent price of a property by using a machine learning model')
 
 @api.route('')
 class PropertyPricePrediction(Resource):
@@ -38,6 +38,9 @@ class PropertyPricePrediction(Resource):
     @api.response(400, "The query parameters specified are invalid.")
     @api.response(401, "The JWT provided is incorrect or expired.")
     def get(self):
+        '''
+        Shows per-night rent price prediction of a property with specified attributes by using a trained machine learning model
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 

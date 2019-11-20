@@ -59,6 +59,9 @@ class Properties(Resource):
     @api.response(200, "List of properties has successfully been shown.")
     @api.response(400, "The parameters submitted are invalid.")
     def get(self):
+        '''
+        Shows list of properties in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
@@ -135,11 +138,14 @@ class Properties(Resource):
     - Room type
     - Bed count
     - Guest count
-    - Per-night Rent price
+    - Per-night rent price
     '''
     @api.doc(description=post_description, body=property)
     @api.response(201, "Property creation successful.")
     def post(self):
+        '''
+        Creates a new property in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
@@ -182,6 +188,9 @@ class PropertyResource(Resource):
     @api.doc(description=get_description)
     @api.response(200, "Detail of a property has successfully been shown.")
     def get(self, id):
+        '''
+        Shows detail of a property in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
@@ -214,6 +223,9 @@ class PropertyResource(Resource):
     @api.doc(description=patch_description, body=property_update)
     @api.response(200, "Property update successful.")
     def patch(self, id):
+        '''
+        Updates a property in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
@@ -272,6 +284,9 @@ class PropertyResource(Resource):
     @api.doc(description=delete_description)
     @api.response(200, "Property deletion successful.")
     def delete(self, id):
+        '''
+        Deletes a property in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
@@ -311,6 +326,9 @@ class PropertyResource(Resource):
     @api.doc(description=put_description, body=property)
     @api.response(200, "Property replacement successful.")
     def put(self, id):
+        '''
+        Replaces a property in the dataset.
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 

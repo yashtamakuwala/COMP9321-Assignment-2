@@ -25,6 +25,9 @@ class Tokens(Resource):
     @api.response(201, "User authenticated. JWT token sucessfully created.")
     @api.response(401, "The credentials provided are incorrect.")
     def post(self):
+        '''
+        Authenticates a user and creates a JWT token for the user
+        '''
         email = request.json['email']
         password = request.json['password']
         authenticator = CredentialsAuthenticator(email, password)

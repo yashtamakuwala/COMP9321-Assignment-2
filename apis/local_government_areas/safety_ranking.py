@@ -8,7 +8,7 @@ from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
 api = Namespace('Local Areas by Safety', path='/local_government_areas/safety_ranking',
-                description='Ranks local government areas around Sydney by monthly average number of crime offences')
+                description='Ranking of local government areas by monthly average number of crime offences')
 
 @api.route('')
 class SafetyRanking(Resource):
@@ -28,6 +28,9 @@ class SafetyRanking(Resource):
     @api.response(400, "The query parameters specified are invalid.")
     @api.response(401, "The JWT provided is incorrect or expired.")
     def get(self):
+        '''
+        Shows ranking of local government areas around Sydney by monthly average number of crime offences
+        '''
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
 

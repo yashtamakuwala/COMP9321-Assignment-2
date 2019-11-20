@@ -19,6 +19,7 @@ user = api.model('User', {
 @api.route('')
 class Users(Resource):
     description = '''\
+    Creates a new user.
     Accepts the first name, last name, email, and password of a new user.
     Rejects email that has been registered before.
     Hashes the password using bcrypt.
@@ -29,6 +30,9 @@ class Users(Resource):
     @api.response(201, "Registration successful.")
     @api.response(400, "The parameters submitted are invalid or the provided email has been registered.")
     def post(self):
+        '''
+        Registers a new user
+        '''
         # Get params
         first_name = request.json.get('first_name')
         last_name = request.json.get('last_name')
