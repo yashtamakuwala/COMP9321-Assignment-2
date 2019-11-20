@@ -17,3 +17,10 @@ def limitCheck(limit):
             return limit
         except:
             raise BadRequest
+
+def validateAndGetInt(param):
+    try:
+        param = int(param)
+        return param
+    except:
+        raise BadRequest

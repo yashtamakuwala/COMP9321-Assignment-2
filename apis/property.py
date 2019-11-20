@@ -4,7 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from tahelka.models.Usage import Usage
 from werkzeug.exceptions import NotFound, BadRequest
-from tahelka.util.util import areFieldsEmpty
+from tahelka.util.util import areFieldsEmpty, validateAndGetInt
 from tahelka.analytics.recorder import Recorder
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from sqlalchemy import text
@@ -33,8 +33,11 @@ class Properties(Resource):
     @api.param('limit', type=int, description='Number of properties to be shown.')
     @api.param('sort', type=str, description="Basis for sorting")
     @api.param('order', type=str, description="Order of sorting")
-    @api.param('filter', type=str, description="Basis for filtering")
-    @api.param('value', type=str, description="Value of filter")
+    @api.param('lga', type=str, description="Filter by Local Government Area")
+    @api.param('property_type', type=str, description="Filter by Type of property")
+    @api.param('room_type', type=str, description="Filter by Type of Room")
+    @api.param('bed_count', type=int, description="Filter by Count of Beds")
+    @api.param('guest_count', type=int, description="Filter by Count of Guests")
     @api.expect(parser)
     @api.response(200, "Success.")
     def get(self):
@@ -45,14 +48,15 @@ class Properties(Resource):
         limit = int(request.args.get('limit', 100))
         sort = str(request.args.get('sort', ''))
         order = str(request.args.get('order', 'asc'))
-        filter = str(request.args.get('filter', ''))
-        value = str(request.args.get('value', ''))
+
+        lga = str(request.args.get('lga',''))
+        p_type = str(request.args.get('property_type',''))
+        r_type = str(request.args.get('room_type',''))
+        g_count = request.args.get('guest_count')
+        b_count = request.args.get('bed_count')
 
         end = start + limit
-
-        session = Session()
-        query = session.query(Property)
-
+        
         property_attributes = [
             'lga',
             'property_type',
@@ -61,6 +65,9 @@ class Properties(Resource):
             'guest_count',
         ]
 
+        session = Session()
+        query = session.query(Property)
+
         sortText = str()
         if not sort:
             sortText = 'properties.id' + " " + order
@@ -68,18 +75,21 @@ class Properties(Resource):
             if sort not in property_attributes:
                 raise BadRequest
             if order not in ['asc', 'desc', '']:
-                print('what')
                 raise BadRequest
             sortText = "properties." + sort + " " + order
-
-        filterText = str()
-        if filter:
-            if filter not in property_attributes:
-                raise BadRequest
-            if not value:
-                raise BadRequest
-            filterText = "properties." + filter + " = " + "'" + value + "'"
-            query = query.filter(text(filterText))
+        
+        if lga:
+            query = query.filter(text("properties.lga = '"+ lga + "'"))
+        if p_type :
+            query = query.filter(text("properties.property_type = '"+ p_type + "'"))
+        if r_type :
+            query = query.filter(text("properties.room_type = '"+ r_type + "'"))
+        if b_count is not None:
+            b_count = validateAndGetInt(b_count)
+            query = query.filter(text("properties.bed_count = "+ str(b_count)))
+        if g_count is not None:
+            g_count = validateAndGetInt(g_count)
+            query = query.filter(text("properties.guest_count = "+ str(g_count)))
 
         records = query.order_by(text(sortText))[start:end]
 
