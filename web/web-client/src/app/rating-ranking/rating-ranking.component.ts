@@ -40,7 +40,7 @@ export class RatingRankingComponent implements OnInit {
   }
   getRatingRanking(event) {
     event.preventDefault();
-    this.webservice.getRanking(this.myform.value, 'rating_rankings').subscribe(success => {
+    this.webservice.getRanking(this.myform.value, 'rating_ranking').subscribe(success => {
       this.parseResponse(success.data);
     }, error => {
       console.log(error);
