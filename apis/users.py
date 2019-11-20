@@ -20,7 +20,7 @@ class Users(Resource):
     @api.expect(user)
     @api.doc(security=[], description="Register a user.")
     @api.response(201, "Registration successful.")
-    @api.response(400, "The parameters submmited are invalid.")
+    @api.response(400, "The parameters submitted are invalid.")
     def post(self):
         # Get params
         first_name = request.json.get('first_name')
@@ -44,11 +44,6 @@ class Users(Resource):
 
         # Analytics here
         Recorder("register", 201).recordUsage()
-
-        # method = request.method
-        # ip_address = request.remote_addr
-        # record = Recorder(None, ip_address, method, 201)
-        # record.recordUsage()
 
         response = {'message': 'Registration successful.'}
         return response, 201

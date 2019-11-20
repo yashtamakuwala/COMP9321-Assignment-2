@@ -4,7 +4,7 @@ from flask_restplus import Namespace, fields, Resource
 from tahelka.models.Property import Property
 from tahelka.models.Usage import Usage
 from werkzeug.exceptions import NotFound, BadRequest
-from tahelka.util.util import areFieldsEmpty, validateAndGetInt
+from tahelka.util.util import is_all_none, validate_integer_param
 from tahelka.analytics.recorder import Recorder
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from sqlalchemy import text
@@ -24,23 +24,24 @@ property = api.model('Property', {
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
 class Properties(Resource):
-    @api.doc(description="Show list of properties.")
-    @api.param('start', type=int, description='The list starts at this index.')
-    @api.param('limit', type=int, description='Number of properties to be shown.')
-    @api.param('sort', type=str, description="Basis for sorting")
-    @api.param('order', type=str, description="Order of sorting")
-    @api.param('lga', type=str, description="Filter by Local Government Area")
-    @api.param('property_type', type=str, description="Filter by Type of property")
-    @api.param('room_type', type=str, description="Filter by Type of Room")
-    @api.param('bed_count', type=int, description="Filter by Count of Beds")
-    @api.param('guest_count', type=int, description="Filter by Count of Guests")
+    @api.doc(description="Show the list of properties in the dataset.")
+    @api.param('start', type=int, description='The list starts at this index.', default=0, minimum=0)
+    @api.param('limit', type=int, description='Number of properties to be shown.', default=100, minimum=0)
+    @api.param('sort', type=str, description="Sort based on this attribute", enum=['lga', 'property_type', 'room_type', 'guest_count', 'bed_count'])
+    @api.param('order', type=str, description="Order of sorting (asc/desc)", default='asc', enum=['asc', 'desc'])
+    @api.param('lga', type=str, description="Filter the properties by this Local Government Area.")
+    @api.param('property_type', type=str, description="Filter the properties by this property type.")
+    @api.param('room_type', type=str, description="Filter the properties by this room type.")
+    @api.param('bed_count', type=int, description="Only show properties with this number of beds.", minimum=0)
+    @api.param('guest_count', type=int, description="Only show properties with this number of guests", minimum=0)
     @api.response(200, "Success.")
+    @api.response(400, "The parameters submitted are invalid.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
 
-        start = int(request.args.get('start', 0))
-        limit = int(request.args.get('limit', 100))
+        start = request.args.get('start', 0)
+        limit = request.args.get('limit', 100)
         sort = str(request.args.get('sort', ''))
         order = str(request.args.get('order', 'asc'))
 
@@ -49,8 +50,6 @@ class Properties(Resource):
         r_type = str(request.args.get('room_type',''))
         g_count = request.args.get('guest_count')
         b_count = request.args.get('bed_count')
-
-        end = start + limit
 
         property_attributes = [
             'lga',
@@ -80,12 +79,15 @@ class Properties(Resource):
         if r_type :
             query = query.filter(text("properties.room_type = '"+ r_type + "'"))
         if b_count is not None:
-            b_count = validateAndGetInt(b_count)
+            b_count = validate_integer_param(b_count)
             query = query.filter(text("properties.bed_count = "+ str(b_count)))
         if g_count is not None:
-            g_count = validateAndGetInt(g_count)
+            g_count = validate_integer_param(g_count)
             query = query.filter(text("properties.guest_count = "+ str(g_count)))
 
+        start = validate_integer_param(start)
+        limit = validate_integer_param(limit)
+        end = start + limit
         records = query.order_by(text(sortText))[start:end]
 
         respJson = list()
@@ -116,7 +118,7 @@ class Properties(Resource):
         b_count = request.json['bed_count']
         price = request.json['price']
 
-        if areFieldsEmpty(lga, price, p_type, g_count, b_count, r_type):
+        if is_all_none(lga, price, p_type, g_count, b_count, r_type):
             raise BadRequest
 
         new_property = Property(lga, p_type, r_type, g_count, b_count, None,
@@ -182,7 +184,7 @@ class PropertyResource(Resource):
         price = request.json.get('price')
 
         # Empty request
-        if areFieldsEmpty(lga, price, p_type, g_count, b_count, r_type):
+        if is_all_none(lga, price, p_type, g_count, b_count, r_type):
             raise BadRequest
 
         if lga is not None:

@@ -30,7 +30,7 @@ class Tokens(Resource):
         record.recordUsage()
 
         response = {
-            'message': 'Login successful.',
+            'message': 'Login successful. Token is successfully created.',
             'email': user.email,
             'is_admin': user.is_admin,
             'token': token

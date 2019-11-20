@@ -12,10 +12,12 @@ api = Namespace('usage-summary')
 @api.route('')
 class UsageSummary(Resource):
     @api.doc(description="Show list of Stats based on Date and User Id.")
-    @api.param('start_date', type=str, description='Show usage summary starting from this date. (Y-m-d)')
-    @api.param('end_date', type=str, description='Show usage summary ending on this date. (Y-m-d)')
-    @api.param('user_id', type=int, description='Show usage summary for this user ID.')
-    @api.response(200, "Success.")
+    @api.param('start_date', type=str, description='Only consider usage starting from this date (Y-m-d)', format='date')
+    @api.param('end_date', type=str, description='Only consider usage ending on this date. (Y-m-d)', format='date')
+    @api.param('user_id', type=int, description='Only consider usage of this user ID.')
+    @api.response(200, "API usage summary has been successfully shown.")
+    @api.response(401, "The JWT provided is incorrect or expired.")
+    @api.response(403, "You are not authorized to access this resource.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -32,7 +34,7 @@ class UsageSummary(Resource):
         summary = summarizer.summarize()
 
         status_code = 200
-        record = Recorder('analytics', status_code)
+        record = Recorder('usage_summary', status_code)
         record.recordUsage()
 
         return summary, status_code

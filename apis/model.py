@@ -10,7 +10,9 @@ api = Namespace('model')
 @api.route('')
 class Training(Resource):
     @api.doc(description="Retraining the model")
-    @api.response(200, "The ML Model has been retrained successfully")
+    @api.response(200, "The ML Model has been retrained successfully.")
+    @api.response(401, "The JWT provided is incorrect or expired.")
+    @api.response(403, "You are not authorized to access this resource.")
     def put(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -22,7 +24,7 @@ class Training(Resource):
         }
 
         status_code = 200
-        record = Recorder('put_model', status_code)
+        record = Recorder('train_model', status_code)
         record.recordUsage()
 
         return msg, status_code

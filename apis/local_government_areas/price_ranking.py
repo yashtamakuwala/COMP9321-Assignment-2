@@ -5,17 +5,18 @@ from werkzeug.exceptions import NotFound, BadRequest
 from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.insight.price_ranker import PriceRanker
 from tahelka.analytics.recorder import Recorder
-from tahelka.util.util import limitCheck
+from tahelka.util.util import check_limit
 
 api = Namespace('local-government-areas/price-ranking')
 
 @api.route('')
 class PriceRanking(Resource):
     @api.doc(description="Show list of Price Ranking.")
-    @api.param('limit', type=int, description='Limit the results to this amount.')
-    @api.param('order', type=str, description='The order of the ranking (ascending/descending).')
-    @api.response(200,"Price Ranking Successfully Displayed.")
-    @api.response(400,"invalid limit value entered")
+    @api.param('limit', type=int, description='Limit the results to this amount.', default=5)
+    @api.param('order', type=str, description='The order of the ranking (ascending/descending).', default='ascending')
+    @api.response(200, "LGA price ranking has been successfully shown.")
+    @api.response(400, "The parameters submitted are invalid.")
+    @api.response(401, "The JWT provided is incorrect or expired.")
     def get(self):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, False).authenticate()
@@ -25,12 +26,12 @@ class PriceRanking(Resource):
 
         order = order == "ascending"    #order is true for ascending, false otherwise
 
-        limit = limitCheck(limit)
+        limit = check_limit(limit)
 
         data = PriceRanker(limit, order).rank()
 
         status_code = 200
-        record = Recorder('price_rankings', status_code)
+        record = Recorder('price_ranking', status_code)
         record.recordUsage()
 
         resp = {'data' : data }
