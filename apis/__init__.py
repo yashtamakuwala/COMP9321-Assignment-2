@@ -69,7 +69,9 @@ def handle_unauthorized(error):
     status_code = 401
     Recorder('unauthorized_error', status_code).recordUsage()
 
-    response = {"message": "The provided credentials or token is incorrect."}
+    response = {
+        "message": "The provided credentials or token is incorrect or expired."
+    }
     return response, status_code
 
 @api.errorhandler(Forbidden)
