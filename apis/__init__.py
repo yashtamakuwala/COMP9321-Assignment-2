@@ -36,7 +36,7 @@ The attributes are room type, property type, number of beds, and number of peopl
 The users specify local government area, property type, room type, number of beds, and number of guests, then this service will predict the rent price of a property with those specifications.
 
 Besides that, the service also gives rankings of local government areas around Sydney based on some metrics.
-These metrics are average price, average airbnb rating, monthly average crime offences, and monthly unemployment rate.
+These metrics are average per-night rent price, average airbnb tenants rating, monthly average number of crime offences, and monthly average unemployment rate.
 These rankings could help the user in deciding which local government area it wants to settle in.
 \
 '''

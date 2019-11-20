@@ -21,11 +21,32 @@ property = api.model('Property', {
     'price' : fields.Integer(required=True, description='Per-night rent price of the property'),
 })
 
+property_update = api.model('Property Update', {
+    'lga' : fields.String(description='Updated local government area of the property'),
+    'property_type' : fields.String(description='Updated type of the property'),
+    'room_type' : fields.String(description='Updated room type of the property'),
+    'guest_count' : fields.Integer(description='Updated number of persons that the property can accommodate'),
+    'bed_count' : fields.Integer(description='Updated number of beds in the property'),
+    'price' : fields.Integer(description='Updated per-night rent price of the property'),
+})
+
 @api.route('')
 @api.response(401, "The JWT provided is incorrect or expired.")
 @api.response(403, "You are not authorized to access this resource.")
 class Properties(Resource):
-    @api.doc(description="Show the list of properties in the dataset.")
+    get_description='''\
+    Shows the list of properties stored in the dataset.
+    The user is able to sort and filter the properties based on these attributes:
+    - Local government area
+    - Property type
+    - Room type
+    - Bed count
+    - Guest count
+    The user is also able to specify the order of the sorting (ascending/descending).
+    Supports pagination by enabling the user to specify the number of properties \
+    shown and the starting index of the list.
+    '''
+    @api.doc(description=get_description)
     @api.param('start', type=int, description='The list starts at this index.', default=0, minimum=0)
     @api.param('limit', type=int, description='Number of properties to be shown.', default=100, minimum=0)
     @api.param('sort', type=str, description="Sort based on this attribute", enum=['lga', 'property_type', 'room_type', 'guest_count', 'bed_count'])
@@ -35,7 +56,7 @@ class Properties(Resource):
     @api.param('room_type', type=str, description="Filter the properties by this room type.")
     @api.param('bed_count', type=int, description="Only show properties with this number of beds.", minimum=0)
     @api.param('guest_count', type=int, description="Only show properties with this number of guests", minimum=0)
-    @api.response(200, "Success.")
+    @api.response(200, "List of properties has successfully been shown.")
     @api.response(400, "The parameters submitted are invalid.")
     def get(self):
         auth_header = request.headers.get('Authorization')
@@ -106,7 +127,17 @@ class Properties(Resource):
 
         return msg, status_code
 
-    @api.doc(description="Create a property.", body=property)
+    post_description='''\
+    Creates a new property record to be stored in the dataset.
+    These are the attributes of the new property that the user must specify:
+    - Local government area
+    - Property type
+    - Room type
+    - Bed count
+    - Guest count
+    - Per-night Rent price
+    '''
+    @api.doc(description=post_description, body=property)
     @api.response(201, "Property creation successful.")
     def post(self):
         auth_header = request.headers.get('Authorization')
@@ -142,8 +173,14 @@ class Properties(Resource):
 @api.response(403, "You are not authorized to access this resource.")
 @api.response(404, "Property with the specified ID does not exist.")
 class PropertyResource(Resource):
-    @api.doc(description='Get a Property by id')
-    @api.response(200, "Success.")
+    get_description='''\
+    Show the attributes of a specified property in the dataset.
+    The user specifies the property to be shown by giving its ID.
+    If a property with the specified ID does not exist or has been deleted, \
+    an HTTP 404 response would be given.
+    '''
+    @api.doc(description=get_description)
+    @api.response(200, "Detail of a property has successfully been shown.")
     def get(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -164,8 +201,18 @@ class PropertyResource(Resource):
 
         return prop, status_code
 
-    @api.doc(description='Partial update of a Property')
-    @api.response(200, "Property partial update successful.")
+    patch_description='''\
+    Updates some of the attributes of a specified property in the dataset.
+    The user specifies the property to be updated by giving its ID.
+    If a property with the specified ID does not exist or has been deleted, \
+    an HTTP 404 response would be given.
+    In the request body, the user specified the attributes to be updated and \
+    the corresponding new value.
+    Only the specified attributes would be updated.
+    Attributes that are not specified would not be changed.
+    '''
+    @api.doc(description=patch_description, body=property_update)
+    @api.response(200, "Property update successful.")
     def patch(self, id):
         auth_header = request.headers.get('Authorization')
         TokenAuthenticator(auth_header, True).authenticate()
@@ -216,7 +263,13 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' updated successfully.'}
         return msg, status_code
 
-    @api.doc(description='Delete a Property by id')
+    delete_description='''\
+    Deletes a specified property from the dataset.
+    The user specifies the property to be deleted by giving its ID.
+    If a property with the specified ID does not exist or has been deleted, \
+    an HTTP 404 response would be given.
+    '''
+    @api.doc(description=delete_description)
     @api.response(200, "Property deletion successful.")
     def delete(self, id):
         auth_header = request.headers.get('Authorization')
@@ -240,7 +293,22 @@ class PropertyResource(Resource):
         msg = {'message':'Property '+str(id)+' deleted successfully.'}
         return msg, status_code
 
-    @api.doc(description='Replace a Property by id', body=property)
+    put_description='''\
+    Replaces a specified property in the dataset.
+    The user specifies the property to be replaced by giving its ID.
+    If a property with the specified ID does not exist or has been deleted,
+    an HTTP 404 response would be given.
+    In the request body, the user must specify all of the attributes \
+    of the replacement property.
+    The attributes are:
+    - Local government area
+    - Property type
+    - Room type
+    - Bed count
+    - Guest count
+    - Per-night Rent price
+    '''
+    @api.doc(description=put_description, body=property)
     @api.response(200, "Property replacement successful.")
     def put(self, id):
         auth_header = request.headers.get('Authorization')
