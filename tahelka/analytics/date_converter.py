@@ -1,4 +1,5 @@
 from datetime import datetime
+from werkzeug.exceptions import BadRequest
 
 class DateConverter:
     def __init__(self, date_string):
@@ -12,5 +13,5 @@ class DateConverter:
             dt = datetime.strptime(self.date_string, '%Y-%m-%d')
         except(ValueError):
             raise BadRequest
-            
+
         return datetime.date(dt)
