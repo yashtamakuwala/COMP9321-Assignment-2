@@ -17,13 +17,3 @@ def limitCheck(limit):
             return limit
         except:
             raise BadRequest
-
-def is_filter_valid(filter):
-    possible_filters = [
-        'lga',
-        'property_type',
-        'room_type',
-        'bed_count',
-        'guest_count',
-    ]
-    return filter in possible_filters

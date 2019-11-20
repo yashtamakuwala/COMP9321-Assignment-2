@@ -44,8 +44,8 @@ class Properties(Resource):
         start = int(request.args.get('start', 0))
         limit = int(request.args.get('limit', 100))
         sort = str(request.args.get('sort', ''))
-        order = str(request.args.get('sort', 'asc'))
-        filter_param = str(request.args.get('filter', ''))
+        order = str(request.args.get('order', 'asc'))
+        filter = str(request.args.get('filter', ''))
         value = str(request.args.get('value', ''))
 
         end = start + limit
@@ -53,20 +53,32 @@ class Properties(Resource):
         session = Session()
         query = session.query(Property)
 
-        sortText = str()
-        filterText = str()
+        property_attributes = [
+            'lga',
+            'property_type',
+            'room_type',
+            'bed_count',
+            'guest_count',
+        ]
 
+        sortText = str()
         if not sort:
             sortText = 'properties.id' + " " + order
         else:
+            if sort not in property_attributes:
+                raise BadRequest
+            if order not in ['asc', 'desc', '']:
+                print('what')
+                raise BadRequest
             sortText = "properties." + sort + " " + order
 
+        filterText = str()
         if filter:
-            if not is_filter_valid(filter):
+            if filter not in property_attributes:
                 raise BadRequest
             if not value:
                 raise BadRequest
-            filterText = "properties." + filter_param + " = " + "'" + value + "'"
+            filterText = "properties." + filter + " = " + "'" + value + "'"
             query = query.filter(text(filterText))
 
         records = query.order_by(text(sortText))[start:end]
