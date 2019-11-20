@@ -12,9 +12,16 @@ api = Namespace('Local Areas by Unemployment', path='/local_government_areas/une
 
 @api.route('')
 class UnemploymentRanking(Resource):
-    @api.doc(description="Show list of Unemployment Ranking.")
+    description='''\
+    Ranks local government areas around Sydney by monthly average unemployment rate.
+    The monthly average unemployment rates are calculated by averaging the \
+    unemployment rate of each local government areas since 2010.
+    The user could specify the number of local government areas to be shown.
+    The user could also specify the sorting of the ranking (ascending/descending).
+    '''
+    @api.doc(description=description)
     @api.param('limit', type=int, description='Limit the results to this amount.', default=5)
-    @api.param('order', type=str, description='The order of the ranking (ascending/descending).', default='ascending')
+    @api.param('order', type=str, description='The order of the ranking.', default='ascending', enum=['ascending', 'descending'])
     @api.response(200, "LGA unemployment rate ranking has been successfully shown.")
     @api.response(400, "The query parameters specified are invalid.")
     @api.response(401, "The JWT provided is incorrect or expired.")

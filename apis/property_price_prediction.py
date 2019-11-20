@@ -7,22 +7,26 @@ from tahelka.util.util import validate_integer_param
 from tahelka.auth.token_authenticator import TokenAuthenticator
 
 api = Namespace('Property Price Prediction', path='/property_price_prediction',
-                description='Predicts the rent price of a property using machine learning techniques')
+                description='Predicts rent price of a property by using a trained machine learning model')
 
 @api.route('')
 class PropertyPricePrediction(Resource):
     description = '''\
-    Shows per-night rent price prediction of a property based on the specified attributes.
-    The attributes are:
+    Predicts per-night rent price of a property given the specified attributes using a trained machine learning model.
+    The attributes that needs to be specified are:
     - Local government area
     - Property type
     - Room type
     - Bed count
     - Guest count
-    The local government area would be converted to safety level of the area and unemployment rate level of the area.
-    
-    Given all of these 6 attributes, based on the airbnb dataset, and using a Decision Tree machine learning model, \
-    predicts the lower bound and upper bound of the per-night rent price of a property having these attributes.\
+    The specified local government area would be converted to its corresponding
+    safety level of and unemployment rate level first before supplying \
+    the attributes to the machine learning model.
+    The machine learning model is a a Decision Tree machine learning model \
+    that is trained with the airbnb dataset, monthly crime offences dataset, \
+    and unemployment rate dataset.
+    The prediction result is the lower bound and upper bound of \
+    the per-night rent price of a property having the specified attributes.\
     '''
     @api.doc(description=description)
     @api.param('lga', type=str, description='The local government area of the property.', required=True)

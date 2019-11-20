@@ -8,13 +8,23 @@ from tahelka.analytics.recorder import Recorder
 from tahelka.util.util import check_limit
 
 api = Namespace('Local Areas by Tenant Rating', path='/local_government_areas/rating_ranking',
-                description='Ranks local government areas around Sydney by average given rating by tenants in Airbnb')
+                description='Ranks local government areas around Sydney by average rating given by Airbnb tenants')
 
 @api.route('')
 class RatingRanking(Resource):
-    @api.doc(description="Show list of Rating Ranking.")
+    description='''\
+    Ranks local government areas around Sydney by ratings given by Airbnb tenants\
+    of the properties in the area.
+    The average ratings are calculated by grouping the properties in the \
+    Airbnb dataset by its local government area and averaging all the average \
+    rating given by Airbnb tenants of the properties in each of the local \
+    government areas.
+    The user could specify the number of local government areas to be shown.
+    The user could also specify the sorting of the ranking (ascending/descending).
+    '''
+    @api.doc(description=description)
     @api.param('limit', type=int, description='Limit the results to this amount.', default=5)
-    @api.param('order', type=str, description='The order of the ranking (ascending/descending).', default='descending')
+    @api.param('order', type=str, description='The order of the ranking.', default='descending', enum=['ascending', 'descending'])
     @api.response(200, "LGA rating ranking has been successfully shown.")
     @api.response(400, "The query parameters specified are invalid.")
     @api.response(401, "The JWT provided is incorrect or expired.")
