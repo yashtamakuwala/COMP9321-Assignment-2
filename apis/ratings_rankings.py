@@ -27,7 +27,7 @@ class RatingRankings(Resource):
         TokenAuthenticator(auth_header, False).authenticate()
 
         limit = request.args.get('limit', 5)
-        order = str(request.args.get('order', 'ascending'))
+        order = str(request.args.get('order', 'descending'))
 
         order = order == "ascending"    #order is true for ascending, false otherwise
 
