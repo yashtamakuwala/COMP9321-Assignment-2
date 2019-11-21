@@ -32,19 +32,19 @@
 <div class="container">
   <form [formGroup]="myform" (submit)="getCrimeRanking($event)">
     <div class="row">
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <label for="order">Order</label>
         <select formControlName="order" class="form-control" id="order">
           <option  *ngFor="let i of orderArray">{{i}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <label for="limit">Limit</label>
         <select formControlName="limit" class="form-control" id="limit">
           <option *ngFor="let i of limitArray">{{i}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Safety Ranking</button>
       </div>
     </div>
