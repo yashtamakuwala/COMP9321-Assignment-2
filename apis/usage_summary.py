@@ -8,7 +8,7 @@ from tahelka.analytics.summarizer import Summarizer
 from tahelka.analytics.recorder import Recorder
 
 api = Namespace('API Usage Summary', path='/usage_summary',
-                description='Summary of the recorded usage of the API')
+                description='Summary of recorded usage of the API')
 
 @api.route('')
 class UsageSummary(Resource):
@@ -17,7 +17,7 @@ class UsageSummary(Resource):
     The user could specify the date interval of the records to be considered.
     This endpoint is also able to show a summary of the API usage by a particular user.<br />
     The summary includes:
-    - The total usage count
+    - The total count of usage of the API
     - The usage counts of different endpoints
     - Counts of different HTTP response status codes given by the service
     '''

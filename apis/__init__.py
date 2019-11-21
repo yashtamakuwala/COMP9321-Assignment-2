@@ -6,12 +6,8 @@ from apis.tokens import api as tokens
 from apis.users import api as users
 from apis.properties import api as properties
 from apis.usage_summary import api as usage_summary
-from apis.property_price_prediction import api as property_price_prediction
 from apis.model import api as model
-from apis.local_government_areas.price_ranking import api as price_ranking
-from apis.local_government_areas.safety_ranking import api as safety_ranking
-from apis.local_government_areas.rating_ranking import api as rating_ranking
-from apis.local_government_areas.unemployment_ranking import api as unemployment_ranking
+from apis.local_government_areas import api as local_government_areas
 from tahelka.analytics.recorder import Recorder
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
@@ -54,12 +50,8 @@ api.add_namespace(tokens)
 api.add_namespace(users)
 api.add_namespace(properties)
 api.add_namespace(usage_summary)
-api.add_namespace(property_price_prediction)
 api.add_namespace(model)
-api.add_namespace(price_ranking)
-api.add_namespace(safety_ranking)
-api.add_namespace(rating_ranking)
-api.add_namespace(unemployment_ranking)
+api.add_namespace(local_government_areas)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):

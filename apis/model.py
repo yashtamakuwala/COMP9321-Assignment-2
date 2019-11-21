@@ -5,8 +5,8 @@ from tahelka.auth.token_authenticator import TokenAuthenticator
 from tahelka.ml.trainer import Trainer
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('Model Retraining', path='/model',
-                description='Retrains the machine learning model')
+api = Namespace('Machine Learning Model', path='/model',
+                description='Operations on the machine learning model')
 
 @api.route('')
 class Model(Resource):
