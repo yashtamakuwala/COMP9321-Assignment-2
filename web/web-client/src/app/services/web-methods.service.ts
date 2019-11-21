@@ -31,7 +31,7 @@ export class WebMethodsService {
   }
 
   getQuote(quote: Quote): Observable<any> {
-    const quoteUrl = this.API_URL + 'property_price_prediction';
+    const quoteUrl = this.API_URL + 'properties/predict_price';
     let headers_ = new HttpHeaders();
     headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
     const params_ = new HttpParams()
