@@ -20,27 +20,27 @@ const routes: Routes = [
     component: SignupComponent
   },
   {
-    path: 'quote',
+    path: 'propertiesPredictPrice',
     component: GetQuoteComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'priceRank',
+    path: 'areasPriceRank',
     component: PriceRankingComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'ratingRank',
+    path: 'areasRatingRank',
     component: RatingRankingComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'unemploymentRank',
+    path: 'areasUnemploymentRank',
     component: UnemploymentRankingComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: 'safetyRank',
+    path: 'areasSafetyRank',
     component: CrimeRankingComponent,
     canActivate: [AuthGuard]
   },

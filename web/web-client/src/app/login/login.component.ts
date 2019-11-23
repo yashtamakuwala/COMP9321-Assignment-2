@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     this.webService.login(this.user).subscribe(success => {
       const authUser = new AuthenticatedUser(success.email, success.is_admin, success.token);
       this.authenticationService.login(authUser);
-      this.router.navigate(['/quote']);
+      this.router.navigate(['/propertiesPredictPrice']);
     }, error => {
       this.error = true;
     });

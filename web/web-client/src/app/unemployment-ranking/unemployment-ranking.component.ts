@@ -41,7 +41,7 @@ export class UnemploymentRankingComponent implements OnInit {
   }
   getUnemploymentRanking(event) {
     event.preventDefault();
-    this.webservice.getRanking(this.myform.value, 'unemployment_rankings').subscribe(success => {
+    this.webservice.getRanking(this.myform.value, 'unemployment_ranking').subscribe(success => {
       this.parseResponse(success.data);
     }, error => {
       console.log(error);

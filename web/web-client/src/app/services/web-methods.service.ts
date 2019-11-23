@@ -21,7 +21,7 @@ export class WebMethodsService {
   constructor(private http: HttpClient, private authenticationService: AuthenticationService) { }
 
   login(user: User): Observable<any> {
-    const loginUrl = this.API_URL + 'sessions';
+    const loginUrl = this.API_URL + 'tokens';
     return this.http.post(loginUrl, user, httpOptions);
   }
 
@@ -31,7 +31,7 @@ export class WebMethodsService {
   }
 
   getQuote(quote: Quote): Observable<any> {
-    const quoteUrl = this.API_URL + 'predictions';
+    const quoteUrl = this.API_URL + 'properties/predict_price';
     let headers_ = new HttpHeaders();
     headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
     const params_ = new HttpParams()
@@ -43,7 +43,8 @@ export class WebMethodsService {
     return this.http.get(quoteUrl, {params: params_, headers: headers_});
   }
   getRanking(priceRanking: PriceRanking, functionName: string): Observable<any> {
-    const queryUrl = this.API_URL + functionName;
+    const lga = this.API_URL + 'local_government_areas/';
+    const queryUrl = lga + functionName;
     let headers_ = new HttpHeaders();
     headers_ = headers_.set('Authorization', 'Bearer ' + this.authenticationService.currentUserValue.token);
     const params_ = new HttpParams()

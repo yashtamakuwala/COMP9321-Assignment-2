@@ -2,36 +2,56 @@ from flask import Blueprint, g
 from flask_restplus import Api
 from werkzeug.exceptions import BadRequest, Unauthorized, Forbidden, NotFound
 
-from apis.session import api as session
-from apis.user import api as user
-from apis.property import api as property
-from apis.analytics import api as analytics
-from apis.predictions import api as predictions
+from apis.tokens import api as tokens
+from apis.users import api as users
+from apis.properties import api as properties
+from apis.usage_summary import api as usage_summary
 from apis.model import api as model
-from apis.price_rankings import api as price_rankings
-from apis.crime_rankings import api as crime_rankings
-from apis.ratings_rankings import api as rating_rankings
-from apis.unemployment_rankings import api as unemployment_ratings
+from apis.local_government_areas import api as local_government_areas
 from tahelka.analytics.recorder import Recorder
 
 blueprint = Blueprint('apiv1', __name__, url_prefix='/api/v1')
+
+authorizations = {
+    'HTTP Bearer Authentication': {
+        'type': 'apiKey',
+        'name': 'Authorization',
+        'in': 'header'
+    }
+}
+
+description = '''\
+A RESTful service to help people to settle in the Sydney area.
+This service uses machine learning techniques to learn patterns from these datasets:
+- Airbnb property listings around Sydney
+- Monthly crime offences per local government areas since 1995
+- Monthly unemployment rate per local government areas since 2010
+
+Based on these datasets, the service predicts rent price of a property based on some of its attributes.
+The attributes are room type, property type, number of beds, and number of people it can accommodates, monthly average crime offences, and monthly unemployment rate.
+The users specify local government area, property type, room type, number of beds, and number of guests, then this service will predict the rent price of a property with those specifications.
+
+Besides that, the service also gives rankings of local government areas around Sydney based on some metrics.
+These metrics are average per-night rent price, average airbnb tenants rating, monthly average number of crime offences, and monthly average unemployment rate.
+These rankings could help the user in deciding which local government area it wants to settle in.
+\
+'''
+
 api = Api(
     blueprint,
+    authorizations=authorizations,
     version='1.0',
     title='Tahelka Service API',
-    description='A RESTful service to help people to settle in the Sydney area.'
+    description=description,
+    security='HTTP Bearer Authentication'
 )
 
-api.add_namespace(session)
-api.add_namespace(user)
-api.add_namespace(property)
-api.add_namespace(analytics)
-api.add_namespace(predictions)
+api.add_namespace(tokens)
+api.add_namespace(users)
+api.add_namespace(properties)
+api.add_namespace(usage_summary)
 api.add_namespace(model)
-api.add_namespace(price_rankings)
-api.add_namespace(unemployment_ratings)
-api.add_namespace(rating_rankings)
-api.add_namespace(crime_rankings)
+api.add_namespace(local_government_areas)
 
 @api.errorhandler(BadRequest)
 def handle_bad_request(error):
@@ -58,7 +78,9 @@ def handle_unauthorized(error):
     status_code = 401
     Recorder('unauthorized_error', status_code).recordUsage()
 
-    response = {"message": "The provided credentials or token is incorrect."}
+    response = {
+        "message": "The provided credentials or token is incorrect or expired."
+    }
     return response, status_code
 
 @api.errorhandler(Forbidden)

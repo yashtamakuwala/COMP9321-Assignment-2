@@ -6,22 +6,33 @@ from tahelka.models.User import User
 from werkzeug.exceptions import BadRequest
 from tahelka.analytics.recorder import Recorder
 
-api = Namespace('users')
+api = Namespace('Registration', path='/users',
+                description='New user registration')
 
 user = api.model('User', {
-    'first_name': fields.String(),
-    'last_name': fields.String(),
-    'email': fields.String(required=True),
-    'password': fields.String(required=True)
+    'first_name': fields.String(description='First name of the user'),
+    'last_name': fields.String(description='Last name of the user'),
+    'email': fields.String(required=True, description='Email of the user'),
+    'password': fields.String(required=True, description='Password that will be used by the user when logging in to the service')
 })
 
 @api.route('')
 class Users(Resource):
+    description = '''\
+    Creates a new user.
+    Accepts the first name, last name, email, and password of a new user.
+    Rejects email that has been registered before.
+    Hashes the password using bcrypt.
+    Saves the new user attributes and the hashed password to the database.\
+    '''
+    @api.doc(security=[], description=description)
     @api.expect(user)
-    @api.doc(description="Register a user.")
     @api.response(201, "Registration successful.")
-    @api.response(400, "The parameters submmited are invalid.")
+    @api.response(400, "The parameters submitted are invalid or the provided email has been registered.")
     def post(self):
+        '''
+        Registers a new user
+        '''
         # Get params
         first_name = request.json.get('first_name')
         last_name = request.json.get('last_name')
@@ -44,11 +55,6 @@ class Users(Resource):
 
         # Analytics here
         Recorder("register", 201).recordUsage()
-
-        # method = request.method
-        # ip_address = request.remote_addr
-        # record = Recorder(None, ip_address, method, 201)
-        # record.recordUsage()
 
         response = {'message': 'Registration successful.'}
         return response, 201

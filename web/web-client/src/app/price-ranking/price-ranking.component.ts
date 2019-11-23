@@ -44,7 +44,7 @@ export class PriceRankingComponent implements OnInit {
   }
   getPriceRanking(event) {
     event.preventDefault();
-    this.webservice.getRanking(this.myform.value, 'price_rankings').subscribe(success => {
+    this.webservice.getRanking(this.myform.value, 'price_ranking').subscribe(success => {
       this.parseResponse(success.data);
     }, error => {
       console.log(error);

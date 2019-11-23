@@ -6,19 +6,19 @@
   <div id="navbarNavDropdown" class="navbar-collapse collapse">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" routerLink="/quote">Property Price</a>
+        <a class="nav-link" routerLink="/propertiesPredictPrice">Predict Property Price</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/priceRank">Price Ranking</a>
+        <a class="nav-link" routerLink="/areasPriceRank">Area Price Ranking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/ratingRank">Rating Ranking</a>
+        <a class="nav-link" routerLink="/areasRatingRank">Area Rating Ranking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/safetyRank">Safety Ranking</a>
+        <a class="nav-link" routerLink="/areasSafetyRank">Area Safety Ranking</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" routerLink="/unemploymentRank">Unemployment Ranking</a>
+        <a class="nav-link" routerLink="/areasUnemploymentRank">Area Unemployment Ranking</a>
       </li>
     </ul>
     <ul class="navbar-nav">
@@ -31,19 +31,19 @@
 <div class="container">
   <form [formGroup]="myform" (submit)="getPriceRanking($event)">
     <div class="row">
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <label for="order">Order</label>
         <select formControlName="order" class="form-control" id="order">
           <option  *ngFor="let i of orderArray">{{i}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <label for="limit">Limit</label>
         <select formControlName="limit" class="form-control" id="limit">
           <option *ngFor="let i of limitArray">{{i}}</option>
         </select>
       </div>
-      <div class="form-group col-md-4">
+      <div class="form-group col-lg-4">
         <button style="margin-top: 30px;" *ngIf="this.myform.valid" type="submit" class="form-control btn btn-primary" >Get Average Rent Price per Night</button>
       </div>
     </div>
