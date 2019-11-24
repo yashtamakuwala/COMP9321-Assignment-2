@@ -1,0 +1,769 @@
+{
+    "swagger": "2.0",
+    "basePath": "/api/v1",
+    "paths": {
+        "/local_government_areas/price_ranking": {
+            "get": {
+                "responses": {
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The query parameters specified are invalid."
+                    },
+                    "200": {
+                        "description": "LGA price ranking has been successfully shown."
+                    }
+                },
+                "summary": "Shows ranking of local government areas around Sydney by average per-night rent price",
+                "description": "Ranks local government areas around Sydney by average per-night rent price    of properties in the area.\n    The average rent prices are calculated by grouping the properties in the     Airbnb dataset by its local government area and averaging all the rent     price of the properties in each of the local government areas.\n    The user could specify the number of local government areas to be shown.\n    The user could also specify the sorting of the ranking (ascending/descending).",
+                "operationId": "get_price_ranking",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "ascending",
+                        "enum": [
+                            "ascending",
+                            "descending"
+                        ],
+                        "in": "query",
+                        "description": "The order of the ranking.",
+                        "name": "order"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 5,
+                        "in": "query",
+                        "description": "Limit the results to this amount.",
+                        "name": "limit"
+                    }
+                ],
+                "tags": [
+                    "Local Government Areas"
+                ]
+            }
+        },
+        "/local_government_areas/rating_ranking": {
+            "get": {
+                "responses": {
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The query parameters specified are invalid."
+                    },
+                    "200": {
+                        "description": "LGA rating ranking has been successfully shown."
+                    }
+                },
+                "summary": "Shows ranking of local government areas around Sydney by average ratings given by Airbnb tenants",
+                "description": "Ranks local government areas around Sydney by ratings given by Airbnb tenants    of the properties in the area.\n    The average ratings are calculated by grouping the properties in the     Airbnb dataset by its local government area and averaging all the average     rating given by Airbnb tenants of the properties in each of the local     government areas.\n    The user could specify the number of local government areas to be shown.\n    The user could also specify the sorting of the ranking (ascending/descending).",
+                "operationId": "get_rating_ranking",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "descending",
+                        "enum": [
+                            "ascending",
+                            "descending"
+                        ],
+                        "in": "query",
+                        "description": "The order of the ranking.",
+                        "name": "order"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 5,
+                        "in": "query",
+                        "description": "Limit the results to this amount.",
+                        "name": "limit"
+                    }
+                ],
+                "tags": [
+                    "Local Government Areas"
+                ]
+            }
+        },
+        "/local_government_areas/safety_ranking": {
+            "get": {
+                "responses": {
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The query parameters specified are invalid."
+                    },
+                    "200": {
+                        "description": "LGA safety ranking has been successfully shown."
+                    }
+                },
+                "summary": "Shows ranking of local government areas around Sydney by monthly average number of crime offences",
+                "description": "Ranks local government areas around Sydney by monthly average     number of recorded crime offences.\n    The monthly average of number of recorded crime offences are calculated     by averaging the sum of counts of all types of crime offences in each month since 1995 for     each local government areas.\n    The user could specify the number of local government areas to be shown.\n    The user could also specify the sorting of the ranking (ascending/descending).",
+                "operationId": "get_safety_ranking",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "ascending",
+                        "enum": [
+                            "ascending",
+                            "descending"
+                        ],
+                        "in": "query",
+                        "description": "The order of the ranking.",
+                        "name": "order"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 5,
+                        "in": "query",
+                        "description": "Limit the results to this amount.",
+                        "name": "limit"
+                    }
+                ],
+                "tags": [
+                    "Local Government Areas"
+                ]
+            }
+        },
+        "/local_government_areas/unemployment_ranking": {
+            "get": {
+                "responses": {
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The query parameters specified are invalid."
+                    },
+                    "200": {
+                        "description": "LGA unemployment rate ranking has been successfully shown."
+                    }
+                },
+                "summary": "Shows ranking of local government areas around Sydney by monthly average unemployment rate",
+                "description": "Ranks local government areas around Sydney by monthly average unemployment rate.\n    The monthly average unemployment rates are calculated by averaging the     unemployment rate of each local government areas since 2010.\n    The user could specify the number of local government areas to be shown.\n    The user could also specify the sorting of the ranking (ascending/descending).",
+                "operationId": "get_unemployment_ranking",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "default": "ascending",
+                        "enum": [
+                            "ascending",
+                            "descending"
+                        ],
+                        "in": "query",
+                        "description": "The order of the ranking.",
+                        "name": "order"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 5,
+                        "in": "query",
+                        "description": "Limit the results to this amount.",
+                        "name": "limit"
+                    }
+                ],
+                "tags": [
+                    "Local Government Areas"
+                ]
+            }
+        },
+        "/model": {
+            "put": {
+                "responses": {
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "The ML Model has been retrained successfully."
+                    }
+                },
+                "summary": "Replaces the current machine learning model by retraining a new model",
+                "description": "Replaces the current machine learning model by retraining a new model.<br />\n    No parameters needed to be specified.\n    The model will be retrained automatically.\n    This endpoint is intended to be used after updating the properties dataset     using the CRUD operations provided by the other endpoints.",
+                "operationId": "put_model",
+                "tags": [
+                    "Machine Learning Model"
+                ]
+            }
+        },
+        "/properties": {
+            "post": {
+                "responses": {
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "201": {
+                        "description": "Property creation successful."
+                    }
+                },
+                "summary": "Creates a new property in the dataset",
+                "description": "Creates a new property record to be stored in the dataset.\n    These are the attributes of the new property that the user must specify:\n    - Local government area\n    - Property type\n    - Room type\n    - Bed count\n    - Guest count\n    - Per-night rent price",
+                "operationId": "post_properties",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Property"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Properties"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The parameters submitted are invalid."
+                    },
+                    "200": {
+                        "description": "List of properties has successfully been shown."
+                    }
+                },
+                "summary": "Shows list of properties in the dataset",
+                "description": "Shows the list of properties stored in the dataset.\n    The user is able to sort and filter the properties based on these attributes:\n    - Local government area\n    - Property type\n    - Room type\n    - Bed count\n    - Guest count\n    The user is also able to specify the order of the sorting (ascending/descending).\n    Supports pagination by enabling the user to specify the number of properties     shown and the starting index of the list.",
+                "operationId": "get_properties",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "Only show properties with this number of guests",
+                        "name": "guest_count"
+                    },
+                    {
+                        "type": "integer",
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "Only show properties with this number of beds.",
+                        "name": "bed_count"
+                    },
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "description": "Filter the properties by this room type.",
+                        "name": "room_type"
+                    },
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "description": "Filter the properties by this property type.",
+                        "name": "property_type"
+                    },
+                    {
+                        "type": "string",
+                        "in": "query",
+                        "description": "Filter the properties by this Local Government Area.",
+                        "name": "lga"
+                    },
+                    {
+                        "type": "string",
+                        "default": "asc",
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "in": "query",
+                        "description": "Order of sorting (asc/desc)",
+                        "name": "order"
+                    },
+                    {
+                        "type": "string",
+                        "enum": [
+                            "lga",
+                            "property_type",
+                            "room_type",
+                            "guest_count",
+                            "bed_count"
+                        ],
+                        "in": "query",
+                        "description": "Sort based on this attribute",
+                        "name": "sort"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 100,
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "Number of properties to be shown.",
+                        "name": "limit"
+                    },
+                    {
+                        "type": "integer",
+                        "default": 0,
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "The list starts at this index.",
+                        "name": "start"
+                    }
+                ],
+                "tags": [
+                    "Properties"
+                ]
+            }
+        },
+        "/properties/predict_price": {
+            "get": {
+                "responses": {
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "400": {
+                        "description": "The query parameters specified are invalid."
+                    },
+                    "200": {
+                        "description": "Price range prediction done successfully."
+                    }
+                },
+                "summary": "Shows per-night rent price prediction of a property with specified attributes by using a trained machine learning model",
+                "description": "Predicts per-night rent price of a property given the specified attributes using a trained machine learning model.\n    The attributes that needs to be specified are:\n    - Local government area\n    - Property type\n    - Room type\n    - Bed count\n    - Guest count\n    The specified local government area would be converted to its corresponding\n    safety level of and unemployment rate level first before supplying     the attributes to the machine learning model.\n    The machine learning model is a a Decision Tree machine learning model     that is trained with the airbnb dataset, monthly crime offences dataset,     and unemployment rate dataset.\n    The prediction result is the lower bound and upper bound of     the per-night rent price of a property having the specified attributes.",
+                "operationId": "get_price_prediction",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "required": true,
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "The number of beds available on the property.",
+                        "name": "bed_count"
+                    },
+                    {
+                        "type": "integer",
+                        "required": true,
+                        "minimum": 0,
+                        "in": "query",
+                        "description": "The number of people to be the tenant of the property.",
+                        "name": "guest_count"
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "query",
+                        "description": "The room type to rent on the property.",
+                        "name": "room_type"
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "query",
+                        "description": "The type of the property.",
+                        "name": "property_type"
+                    },
+                    {
+                        "type": "string",
+                        "required": true,
+                        "in": "query",
+                        "description": "The local government area of the property.",
+                        "name": "lga"
+                    }
+                ],
+                "tags": [
+                    "Properties"
+                ]
+            }
+        },
+        "/properties/{id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "The Property identifier",
+                    "name": "id",
+                    "required": true,
+                    "type": "integer"
+                }
+            ],
+            "patch": {
+                "responses": {
+                    "404": {
+                        "description": "Property with the specified ID does not exist."
+                    },
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "Property update successful."
+                    }
+                },
+                "summary": "Updates a property in the dataset",
+                "description": "Updates some of the attributes of a specified property in the dataset.\n    The user specifies the property to be updated by giving its ID.\n    If a property with the specified ID does not exist or has been deleted,     an HTTP 404 response would be given.\n    In the request body, the user specified the attributes to be updated and     the corresponding new value.\n    Only the specified attributes would be updated.\n    Attributes that are not specified would not be changed.",
+                "operationId": "patch_property_resource",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Property Update"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Properties"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "404": {
+                        "description": "Property with the specified ID does not exist."
+                    },
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "Detail of a property has successfully been shown."
+                    }
+                },
+                "summary": "Shows detail of a property in the dataset",
+                "description": "Show the attributes of a specified property in the dataset.\n    The user specifies the property to be shown by giving its ID.\n    If a property with the specified ID does not exist or has been deleted,     an HTTP 404 response would be given.",
+                "operationId": "get_property_resource",
+                "tags": [
+                    "Properties"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "404": {
+                        "description": "Property with the specified ID does not exist."
+                    },
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "Property replacement successful."
+                    }
+                },
+                "summary": "Replaces a property in the dataset",
+                "description": "Replaces a specified property in the dataset.\n    The user specifies the property to be replaced by giving its ID.\n    If a property with the specified ID does not exist or has been deleted,\n    an HTTP 404 response would be given.\n    In the request body, the user must specify all of the attributes     of the replacement property.\n    The attributes are:\n    - Local government area\n    - Property type\n    - Room type\n    - Bed count\n    - Guest count\n    - Per-night Rent price",
+                "operationId": "put_property_resource",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Property"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Properties"
+                ]
+            },
+            "delete": {
+                "responses": {
+                    "404": {
+                        "description": "Property with the specified ID does not exist."
+                    },
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "Property deletion successful."
+                    }
+                },
+                "summary": "Deletes a property in the dataset",
+                "description": "Deletes a specified property from the dataset.\n    The user specifies the property to be deleted by giving its ID.\n    If a property with the specified ID does not exist or has been deleted,     an HTTP 404 response would be given.",
+                "operationId": "delete_property_resource",
+                "tags": [
+                    "Properties"
+                ]
+            }
+        },
+        "/tokens": {
+            "post": {
+                "responses": {
+                    "401": {
+                        "description": "The credentials provided are incorrect."
+                    },
+                    "201": {
+                        "description": "User authenticated. JWT token sucessfully created."
+                    }
+                },
+                "summary": "Authenticates a user and creates a JWT token for the user",
+                "description": "Authenticates a user based on submitted credentials.\n    Upon successful authentication,     creates a JWT token to be used in subsequent requests by the user.",
+                "operationId": "post_tokens",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/Credential"
+                        }
+                    }
+                ],
+                "security": [],
+                "tags": [
+                    "Authentication"
+                ]
+            }
+        },
+        "/usage_summary": {
+            "get": {
+                "responses": {
+                    "403": {
+                        "description": "You are not authorized to access this resource."
+                    },
+                    "401": {
+                        "description": "The JWT provided is incorrect or expired."
+                    },
+                    "200": {
+                        "description": "API usage summary has been successfully shown."
+                    }
+                },
+                "summary": "Shows a summary of the recorded usage of the API",
+                "description": "Shows a summary of the recorded usage of the API with specified query parameters.\n    The user could specify the date interval of the records to be considered.\n    This endpoint is also able to show a summary of the API usage by a particular user.<br />\n    The summary includes:\n    - The total count of usage of the API\n    - The usage counts of different endpoints\n    - Counts of different HTTP response status codes given by the service",
+                "operationId": "get_usage_summary",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "in": "query",
+                        "description": "Only consider usage by this user ID.",
+                        "name": "user_id"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date",
+                        "in": "query",
+                        "description": "Only consider records ending on this date. (Y-m-d)",
+                        "name": "end_date"
+                    },
+                    {
+                        "type": "string",
+                        "format": "date",
+                        "in": "query",
+                        "description": "Only consider records starting from this date (Y-m-d)",
+                        "name": "start_date"
+                    }
+                ],
+                "tags": [
+                    "API Usage Summary"
+                ]
+            }
+        },
+        "/users": {
+            "post": {
+                "responses": {
+                    "400": {
+                        "description": "The parameters submitted are invalid or the provided email has been registered."
+                    },
+                    "201": {
+                        "description": "Registration successful."
+                    }
+                },
+                "summary": "Registers a new user",
+                "description": "Creates a new user.\n    Accepts the first name, last name, email, and password of a new user.\n    Rejects email that has been registered before.\n    Hashes the password using bcrypt.\n    Saves the new user attributes and the hashed password to the database.",
+                "operationId": "post_users",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "security": [],
+                "tags": [
+                    "Registration"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Tahelka Service API",
+        "version": "1.0",
+        "description": "A RESTful service to help people to settle in the Sydney area.\nThis service uses machine learning techniques to learn patterns from these datasets:\n- Airbnb property listings around Sydney\n- Monthly crime offences per local government areas since 1995\n- Monthly unemployment rate per local government areas since 2010\n\nBased on these datasets, the service predicts rent price of a property based on some of its attributes.\nThe attributes are room type, property type, number of beds, and number of people it can accommodates, monthly average crime offences, and monthly unemployment rate.\nThe users specify local government area, property type, room type, number of beds, and number of guests, then this service will predict the rent price of a property with those specifications.\n\nBesides that, the service also gives rankings of local government areas around Sydney based on some metrics.\nThese metrics are average per-night rent price, average airbnb tenants rating, monthly average number of crime offences, and monthly average unemployment rate.\nThese rankings could help the user in deciding which local government area it wants to settle in.\n"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "HTTP Bearer Authentication": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    },
+    "security": [
+        {
+            "HTTP Bearer Authentication": []
+        }
+    ],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "User authentication and JWT token creation"
+        },
+        {
+            "name": "Registration",
+            "description": "New user registration"
+        },
+        {
+            "name": "Properties",
+            "description": "Operations on the properties dataset"
+        },
+        {
+            "name": "API Usage Summary",
+            "description": "Summary of recorded usage of the API"
+        },
+        {
+            "name": "Machine Learning Model",
+            "description": "Operations on the machine learning model"
+        },
+        {
+            "name": "Local Government Areas",
+            "description": "Rankings of local government areas around Sydney by various metrics"
+        }
+    ],
+    "definitions": {
+        "Credential": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Email of the user"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password that the user specified when registering to the service"
+                }
+            },
+            "type": "object"
+        },
+        "User": {
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "first_name": {
+                    "type": "string",
+                    "description": "First name of the user"
+                },
+                "last_name": {
+                    "type": "string",
+                    "description": "Last name of the user"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email of the user"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Password that will be used by the user when logging in to the service"
+                }
+            },
+            "type": "object"
+        },
+        "Property": {
+            "required": [
+                "bed_count",
+                "guest_count",
+                "lga",
+                "price",
+                "property_type",
+                "room_type"
+            ],
+            "properties": {
+                "lga": {
+                    "type": "string",
+                    "description": "Local government area of the property"
+                },
+                "property_type": {
+                    "type": "string",
+                    "description": "The type of the property"
+                },
+                "room_type": {
+                    "type": "string",
+                    "description": "Room type available in the property"
+                },
+                "guest_count": {
+                    "type": "integer",
+                    "description": "Number of persons that the property can accommodate"
+                },
+                "bed_count": {
+                    "type": "integer",
+                    "description": "Number of beds in the property"
+                },
+                "price": {
+                    "type": "integer",
+                    "description": "Per-night rent price of the property"
+                }
+            },
+            "type": "object"
+        },
+        "Property Update": {
+            "properties": {
+                "lga": {
+                    "type": "string",
+                    "description": "Updated local government area of the property"
+                },
+                "property_type": {
+                    "type": "string",
+                    "description": "Updated type of the property"
+                },
+                "room_type": {
+                    "type": "string",
+                    "description": "Updated room type of the property"
+                },
+                "guest_count": {
+                    "type": "integer",
+                    "description": "Updated number of persons that the property can accommodate"
+                },
+                "bed_count": {
+                    "type": "integer",
+                    "description": "Updated number of beds in the property"
+                },
+                "price": {
+                    "type": "integer",
+                    "description": "Updated per-night rent price of the property"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        },
+        "BadRequest": {},
+        "NotFound": {},
+        "Unauthorized": {},
+        "Forbidden": {}
+    }
+}
